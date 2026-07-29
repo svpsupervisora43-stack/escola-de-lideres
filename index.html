@@ -323,7 +323,6 @@
         padding: 14px;
         text-align: center;
         margin-top: 14px;
-        animation: pulse 2s infinite ease-in-out;
       }
       .status-apto-box h3 {
         font-size: 0.95rem;
@@ -666,7 +665,7 @@
           </div>
         </div>
 
-        <!-- NOVO BLOCO: OBJETIVO DE CARREIRA E TRILHA DE QUALIFICAÇÃO -->
+        <!-- SEÇÃO: OBJETIVO DE CARREIRA E TRILHA DE QUALIFICAÇÃO -->
         <div class="section-card" style="border: 1px solid var(--accent-blue)">
           <div class="section-title" style="color: var(--accent-blue)">
             <span>🎯 Objetivo de Carreira & Trilha</span>
@@ -682,14 +681,14 @@
                 margin-bottom: 6px;
               "
             >
-              PRÓXIMO CARGO QUE DESEJA ALCANÇAR:
+              SELECIONE O PRÓXIMO CARGO QUE DESEJA ALCANÇAR:
             </label>
             <select
               id="selectCargoAlvo"
               class="form-select"
               onchange="alterarCargoAlvo(this.value)"
             >
-              <!-- Opções geradas dinamicamente com base no cargo atual -->
+              <!-- Opções sem restrições geradas via JS -->
             </select>
           </div>
 
@@ -698,13 +697,12 @@
           </div>
         </div>
 
-        <!-- SEÇÃO: AVALIAÇÃO TRIMESTRAL DA GESTÃO (4 BLOCOS) -->
+        <!-- SEÇÃO: AVALIAÇÃO TRIMESTRAL DA GESTÃO -->
         <div class="section-card">
           <div class="section-title">
             <span>📋 Avaliação Trimestral da Gestão</span>
           </div>
 
-          <!-- Abas dos 4 Trimestres -->
           <div class="tri-tabs">
             <button
               class="tri-btn active"
@@ -723,26 +721,20 @@
             </button>
           </div>
 
-          <!-- Detalhamento de Performance -->
           <div class="eval-box">
             <h4>
               <span>🎭 Performance</span>
               <span class="badge-score" id="mediaPerfText">Média: -</span>
             </h4>
-            <div id="perfCriteriaList">
-              <!-- Gerado dinamicamente -->
-            </div>
+            <div id="perfCriteriaList"></div>
           </div>
 
-          <!-- Detalhamento de Atitude -->
           <div class="eval-box">
             <h4>
               <span>⚡ Atitude</span>
               <span class="badge-score" id="mediaAtitText">Média: -</span>
             </h4>
-            <div id="atitCriteriaList">
-              <!-- Gerado dinamicamente -->
-            </div>
+            <div id="atitCriteriaList"></div>
           </div>
 
           <p
@@ -915,20 +907,23 @@
           />
         </div>
 
+        <!-- SELEÇÃO DIRETA DO NÍVEL DO FUNCIONÁRIO -->
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px">
           <div class="form-group">
-            <label>Nível na Trilha (1-5)</label>
-            <input
-              type="number"
-              id="editNivel"
-              min="1"
-              max="5"
-              class="form-input"
-            />
+            <label>Nível na Trilha</label>
+            <select id="editNivel" class="form-select">
+              <option value="1">Nível 1 - Recreador Base</option>
+              <option value="2">
+                Nível 2 - Especialista (Mídias/Recepção/Líder)
+              </option>
+              <option value="3">Nível 3 - Recepcionista Coringa</option>
+              <option value="4">Nível 4 - Supervisor</option>
+              <option value="5">Nível 5 - Subgerente ⭐</option>
+            </select>
           </div>
 
           <div class="form-group">
-            <label>Progresso (%)</label>
+            <label>Progresso Geral (%)</label>
             <input
               type="number"
               id="editProgresso"
@@ -965,7 +960,6 @@
             </select>
           </div>
 
-          <!-- CRITÉRIOS DINÂMICOS DE PERFORMANCE -->
           <div style="margin-top: 8px">
             <label
               style="
@@ -982,7 +976,6 @@
             ></div>
           </div>
 
-          <!-- CRITÉRIOS DINÂMICOS DE ATITUDE -->
           <div style="margin-top: 10px">
             <label
               style="
@@ -1052,6 +1045,15 @@
     </div>
 
     <script>
+      // LISTA COMPLETA DE CARGOS DISPONÍVEIS PARA ESCOLHA
+      const TODOS_CARGOS_ALVO = [
+        "Mídia",
+        "Líder",
+        "Recepcionista",
+        "Supervisor",
+        "Subgerente",
+      ];
+
       // TRILHAS DE QUALIFICAÇÃO PARA CADA CARGO ALVO
       const TRILHAS_QUALIFICACAO = {
         Mídia: [
@@ -1086,7 +1088,7 @@
         ],
       };
 
-      // MATRIZ DE CRITÉRIOS POR CARGO
+      // MATRIZ DE CRITÉRIOS POR TIPO DE CARGO
       const CRITERIOS = {
         RECREADOR: {
           perf: [
@@ -1157,39 +1159,9 @@
         return triObj;
       }
 
-      // REGRAS DE OPÇÕES DE CARGO ALVO COM BASE NO CARGO ATUAL
-      function obterOpcoesCargoAlvo(cargoStr, especializacoes = []) {
-        const c = cargoStr.toLowerCase();
-
-        if (c.includes("gerente") || c.includes("subgerente")) {
-          return [];
-        }
-        if (c.includes("supervisor")) {
-          return ["Subgerente"];
-        }
-        if (c.includes("recep")) {
-          return ["Supervisor"];
-        }
-
-        // Regras para equipe de Recreação
-        const isLider =
-          c.includes("líder") ||
-          c.includes("lider") ||
-          especializacoes.includes("lider");
-        const isMidia =
-          c.includes("mídia") ||
-          c.includes("midia") ||
-          especializacoes.includes("midias");
-
-        if (isLider) {
-          return ["Recepcionista"];
-        }
-        if (isMidia) {
-          return ["Líder", "Recepcionista"];
-        }
-
-        // Recreador comum no Nível 1
-        return ["Mídia", "Líder", "Recepcionista"];
+      // RETORNA TODAS AS OPÇÕES DE CARGO ALVO SEM RESTRIÇÕES
+      function obterOpcoesCargoAlvo() {
+        return TODOS_CARGOS_ALVO;
       }
 
       // DADOS INICIAIS DA EQUIPE
@@ -1482,17 +1454,12 @@
         },
       };
 
-      // CARREGAR / SALVAR DADOS NO LOCALSTORAGE
       function carregarDados() {
         const dadosSalvos = localStorage.getItem("escola_lideres_equipe");
         if (dadosSalvos) {
           try {
             return JSON.parse(dadosSalvos);
           } catch (e) {
-            console.error(
-              "Erro ao carregar do LocalStorage, restaurando padrão.",
-              e,
-            );
             return JSON.parse(JSON.stringify(EQUIPE_INICIAL));
           }
         }
@@ -1522,9 +1489,7 @@
         }
       }
 
-      // INICIALIZAÇÃO DA EQUIPE
       let equipe = carregarDados();
-
       let pinUsuarioAtual = null;
       let pinSendoEditado = null;
       let trimestreAtivoPerfil = "Q1";
@@ -1571,7 +1536,7 @@
         // Atualizar Seção de Cargo Alvo & Trilha
         configurarCargoAlvoETrilha(user);
 
-        // Atualizar Trilha Geral
+        // Atualizar Trilha Geral dos 5 Níveis
         for (let i = 1; i <= 5; i++) {
           const step = document.getElementById(`step-lvl${i}`);
           step.className = "level-step";
@@ -1586,35 +1551,18 @@
           else el.classList.remove("unlocked");
         });
 
-        // Renderizar Avaliação do Trimestre Ativo
         renderizarAvaliacaoPerfil(user, trimestreAtivoPerfil);
       }
 
       function configurarCargoAlvoETrilha(user) {
         const select = document.getElementById("selectCargoAlvo");
-        const opcoes = obterOpcoesCargoAlvo(
-          user.cargo,
-          user.especializacoes || [],
-        );
+        const opcoes = obterOpcoesCargoAlvo();
 
         select.innerHTML = "";
-
-        if (opcoes.length === 0) {
-          select.innerHTML = `<option value="">🏆 Nível Máximo de Liderança Alçado</option>`;
-          select.disabled = true;
-          document.getElementById("containerQualificacoes").innerHTML = `
-        <p style="font-size:0.85rem; color:var(--text-muted); text-align:center; padding:12px;">
-          Você já está na liderança máxima da unidade Via Parque!
-        </p>`;
-          return;
-        }
-
-        select.disabled = false;
         opcoes.forEach((op) => {
           select.innerHTML += `<option value="${op}">${op}</option>`;
         });
 
-        // Se usuário já possui escolha salva compatível, seleciona ela; caso contrário escolhe a primeira
         if (user.cargoAlvo && opcoes.includes(user.cargoAlvo)) {
           select.value = user.cargoAlvo;
         } else {
@@ -1655,7 +1603,7 @@
 
         let html = `
       <div style="display:flex; justify-content:space-between; font-size:0.8rem; font-weight:700; margin-bottom:4px;">
-        <span>Progresso das Qualificações para ${cargoAlvo}</span>
+        <span>Qualificações para ${cargoAlvo}</span>
         <span style="color:${estaApto ? "var(--accent-green)" : "var(--accent-gold)"};">${pct}% (${quantConcluidos}/${total})</span>
       </div>
       <div class="progress-bar-bg" style="height:8px; margin-bottom:12px;">
@@ -1681,7 +1629,7 @@
           html += `
         <div class="status-apto-box">
           <h3>🏆 STATUS: APTO PARA PROMOÇÃO!</h3>
-          <p>Você concluiu 100% das qualificações necessárias. Aguardando a abertura oficial de vaga para o cargo de <strong>${cargoAlvo}</strong>.</p>
+          <p>Parabéns! Você concluiu 100% das qualificações. Seu nome está registrado para a vaga de <strong>${cargoAlvo}</strong> assim que for aberta!</p>
         </div>
       `;
         }
@@ -1807,7 +1755,6 @@
         pins.forEach((pin) => {
           const colab = equipe[pin];
 
-          // Calcular se está apto para o cargo alvo
           let statusApto = "";
           if (colab.cargoAlvo && TRILHAS_QUALIFICACAO[colab.cargoAlvo]) {
             const total = TRILHAS_QUALIFICACAO[colab.cargoAlvo].length;
@@ -1844,7 +1791,7 @@
 
         document.getElementById("editNome").value = user.nome;
         document.getElementById("editCargo").value = user.cargo;
-        document.getElementById("editNivel").value = user.nivel;
+        document.getElementById("editNivel").value = user.nivel || 1;
         document.getElementById("editProgresso").value = user.progresso;
         document.getElementById("editPresenca").value = user.presenca;
         document.getElementById("editCursos").value = user.cursos;
@@ -1971,7 +1918,7 @@
           carregarPerfil(user);
         }
 
-        alert("Perfil e avaliação salvos com sucesso!");
+        alert("Perfil e nível salvos com sucesso!");
       }
 
       function fecharModal(modalId) {
