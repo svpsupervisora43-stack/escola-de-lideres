@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Via Parque - Escola de Líderes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg-main: #0f172a;
+        --bg-card: #1e293b;
+        --bg-hover: #334155;
+        --accent-green: #10b981;
+        --accent-blue: #3b82f6;
+        --accent-purple: #8b5cf6;
+        --accent-orange: #f97316;
+        --accent-gold: #eab308;
+        --text-main: #f8fafc;
+        --text-muted: #94a3b8;
+        --border: #334155;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Plus Jakarta Sans", sans-serif;
+      }
+      body {
+        background-color: var(--bg-main);
+        color: var(--text-main);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        padding: 12px;
+      }
+
+      .app-container {
+        width: 100%;
+        max-width: 480px;
+        margin: 0 auto;
+      }
+
+      /* TELAS */
+      .screen {
+        display: none;
+      }
+      .screen.active {
+        display: block;
+      }
+
+      /* TELA DE LOGIN */
+      .login-box {
+        background: var(--bg-card);
+        border-radius: 20px;
+        padding: 32px 24px;
+        text-align: center;
+        margin-top: 40px;
+        border: 1px solid var(--border);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+      }
+      .logo-badge {
+        font-size: 3rem;
+        margin-bottom: 10px;
+      }
+      .login-box h1 {
+        font-size: 1.5rem;
+        margin-bottom: 6px;
+        font-weight: 800;
+      }
+      .login-box p {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-bottom: 24px;
+      }
+      .pin-input {
+        width: 100%;
+        padding: 16px;
+        font-size: 1.5rem;
+        letter-spacing: 12px;
+        text-align: center;
+        background: var(--bg-main);
+        border: 2px solid var(--border);
+        color: var(--text-main);
+        border-radius: 12px;
+        margin-bottom: 20px;
+        outline: none;
+      }
+      .pin-input:focus {
+        border-color: var(--accent-blue);
+      }
+      .btn-primary {
+        width: 100%;
+        padding: 16px;
+        background: linear-gradient(
+          135deg,
+          var(--accent-blue),
+          var(--accent-purple)
+        );
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+
+      /* HEADER */
+      .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        margin-bottom: 16px;
+        border-bottom: 1px solid var(--border);
+      }
+      .top-bar .unit {
+        font-weight: 700;
+        color: var(--accent-blue);
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+      }
+      .btn-logout {
+        background: none;
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        cursor: pointer;
+      }
+
+      /* CARTÃO PROFILE */
+      .profile-card {
+        background: var(--bg-card);
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 16px;
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .avatar {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: #334155;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        font-weight: 700;
+        border: 2px solid var(--accent-blue);
+      }
+      .profile-info h2 {
+        font-size: 1.2rem;
+        font-weight: 700;
+      }
+      .profile-info .nickname {
+        color: var(--accent-blue);
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
+      .profile-info .level-tag {
+        display: inline-block;
+        background: rgba(59, 130, 246, 0.15);
+        color: var(--accent-blue);
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        margin-top: 6px;
+      }
+
+      /* TRILHA DE CARREIRA */
+      .section-card {
+        background: var(--bg-card);
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 16px;
+        border: 1px solid var(--border);
+      }
+      .section-title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        margin-bottom: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .level-step {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 8px;
+        background: var(--bg-main);
+        opacity: 0.5;
+      }
+      .level-step.active {
+        opacity: 1;
+        border: 1px solid var(--accent-blue);
+        background: rgba(59, 130, 246, 0.05);
+      }
+      .level-step.completed {
+        opacity: 1;
+        border: 1px solid var(--accent-green);
+      }
+
+      .step-number {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #334155;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.8rem;
+      }
+      .level-step.active .step-number {
+        background: var(--accent-blue);
+        color: white;
+      }
+      .level-step.completed .step-number {
+        background: var(--accent-green);
+        color: white;
+      }
+      .step-title {
+        font-size: 0.9rem;
+        font-weight: 600;
+        flex: 1;
+      }
+
+      /* ESPECIALIZAÇÕES NIVEL 2 */
+      .specs-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 8px;
+        margin: 8px 0 12px 38px;
+      }
+      .spec-item {
+        background: var(--bg-card);
+        padding: 8px;
+        border-radius: 8px;
+        text-align: center;
+        font-size: 0.75rem;
+        border: 1px dashed var(--border);
+        color: var(--text-muted);
+      }
+      .spec-item.unlocked {
+        border: 1px solid var(--accent-blue);
+        color: var(--text-main);
+        background: rgba(59, 130, 246, 0.1);
+        font-weight: 600;
+      }
+
+      /* PROGRESSO */
+      .progress-bar-bg {
+        background: var(--bg-main);
+        height: 10px;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-top: 8px;
+      }
+      .progress-bar-fill {
+        background: linear-gradient(
+          90deg,
+          var(--accent-blue),
+          var(--accent-purple)
+        );
+        height: 100%;
+        border-radius: 10px;
+        transition: width 0.3s;
+      }
+
+      /* ANIMATEAMS DATA */
+      .animateams-box {
+        background: rgba(16, 185, 129, 0.05);
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        border-radius: 12px;
+        padding: 14px;
+        margin-bottom: 16px;
+      }
+      .animateams-header {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--accent-green);
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+      .grid-3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 8px;
+        text-align: center;
+      }
+      .metric-value {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: var(--text-main);
+      }
+      .metric-label {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+      }
+
+      /* GESTÃO */
+      .staff-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px;
+        background: var(--bg-main);
+        border-radius: 10px;
+        margin-bottom: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- TELA 1: LOGIN POR PIN -->
+      <div id="screen-login" class="screen active">
+        <div class="login-box">
+          <div class="logo-badge">🚀</div>
+          <h1>Escola de Líderes</h1>
+          <p>Via Parque • Desenvolvimento de Pessoas</p>
+
+          <input
+            type="password"
+            id="pinInput"
+            class="pin-input"
+            maxlength="4"
+            placeholder="••••"
+          />
+          <button class="btn-primary" onclick="autenticar()">
+            Acessar Perfil
+          </button>
+
+          <p style="margin-top: 20px; font-size: 0.75rem">
+            💡 Teste com os PINs:<br />
+            <b>1234</b> (Colaborador) | <b>9999</b> (Supervisão)
+          </p>
+        </div>
+      </div>
+
+      <!-- TELA 2: PERFIL DO COLABORADOR -->
+      <div id="screen-profile" class="screen">
+        <div class="top-bar">
+          <span class="unit">VIA PARQUE • APPS CARREIRA</span>
+          <button class="btn-logout" onclick="sair()">Sair</button>
+        </div>
+
+        <!-- CARTÃO DO PERFIL -->
+        <div class="profile-card">
+          <div class="avatar" id="userAvatar">LC</div>
+          <div class="profile-info">
+            <h2 id="userName">Lucas Cabral</h2>
+            <span class="nickname" id="userNickname">"Saturno"</span><br />
+            <span class="level-tag" id="userLevelTag">Nível 1 • Recreador</span>
+          </div>
+        </div>
+
+        <!-- DADOS VINDOS DO ANIMATEAMS -->
+        <div class="animateams-box">
+          <div class="animateams-header">
+            📊 Indicadores Animateams (Métricas)
+          </div>
+          <div class="grid-3">
+            <div>
+              <div class="metric-value" id="attRate">99%</div>
+              <div class="metric-label">Presença</div>
+            </div>
+            <div>
+              <div class="metric-value" id="trainRate">100%</div>
+              <div class="metric-label">Cursos</div>
+            </div>
+            <div>
+              <div class="metric-value" id="reviewsCount">6x</div>
+              <div class="metric-label">Elogios</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROGRESSO DO PRÓXIMO NÍVEL -->
+        <div class="section-card">
+          <div class="section-title">🎯 Prontidão para o Próximo Nível</div>
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              font-size: 0.85rem;
+              font-weight: 600;
+            "
+          >
+            <span>Progresso Geral</span>
+            <span id="progressText">80%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div
+              id="progressBar"
+              class="progress-bar-fill"
+              style="width: 80%"
+            ></div>
+          </div>
+        </div>
+
+        <!-- TRILHA DOS 5 NÍVEIS -->
+        <div class="section-card">
+          <div class="section-title">🗺️ Trilha de Carreira Via Parque</div>
+
+          <!-- NIVEL 1 -->
+          <div class="level-step completed" id="step-lvl1">
+            <div class="step-number">1</div>
+            <div class="step-title">Recreador (Base)</div>
+          </div>
+
+          <!-- NIVEL 2 COM AS 3 ESPECIALIZAÇÕES -->
+          <div class="level-step active" id="step-lvl2">
+            <div class="step-number">2</div>
+            <div class="step-title">Especializações (Escolha 1 ou +)</div>
+          </div>
+          <div class="specs-grid">
+            <div class="spec-item" id="spec-midias">📹 Mídias</div>
+            <div class="spec-item" id="spec-recep">📋 Recepção</div>
+            <div class="spec-item unlocked" id="spec-lider">
+              ⚡ Recreador Líder
+            </div>
+          </div>
+
+          <!-- NIVEL 3 -->
+          <div class="level-step" id="step-lvl3">
+            <div class="step-number">3</div>
+            <div class="step-title">Recepcionista Coringa</div>
+          </div>
+
+          <!-- NIVEL 4 -->
+          <div class="level-step" id="step-lvl4">
+            <div class="step-number">4</div>
+            <div class="step-title">Supervisor</div>
+          </div>
+
+          <!-- NIVEL 5 -->
+          <div class="level-step" id="step-lvl5">
+            <div class="step-number">5</div>
+            <div class="step-title">Subgerente Noite ⭐</div>
+          </div>
+        </div>
+
+        <!-- FEEDBACK TRIMESTRAL -->
+        <div class="section-card">
+          <div class="section-title">💬 Último Feedback da Supervisão</div>
+          <p
+            id="feedbackText"
+            style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.5"
+          >
+            "Excelente energia nas festas e ótimo engajamento com as crianças.
+            Focar nos próximos 3 meses em desenvolver postura de liderança com
+            os demais recreadores da pista."
+          </p>
+        </div>
+      </div>
+
+      <!-- TELA 3: PAINEL DA GESTÃO / SUPERVISÃO -->
+      <div id="screen-manager" class="screen">
+        <div class="top-bar">
+          <span class="unit">PAINEL DA SUPERVISÃO</span>
+          <button class="btn-logout" onclick="sair()">Sair</button>
+        </div>
+
+        <div class="section-card">
+          <div class="section-title">👥 Equipe Via Parque - Avaliação</div>
+
+          <div id="staffList">
+            <!-- Lista de colaboradores inserida via JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // BANCO DE DADOS LOCAL (Exemplo para testes)
+      const colaboradores = {
+        1234: {
+          nome: "Lucas Cabral",
+          apelido: "Saturno",
+          cargo: "Recreador",
+          nivel: 1,
+          progresso: 80,
+          presenca: "99%",
+          cursos: "100%",
+          elogios: "6x",
+          especializacoes: ["lider"], // Mídias, Recepção, Líder
+          feedback:
+            "Excelente energia nas festas e ótimo engajamento. Focar em liderança de pista.",
+        },
+      };
+
+      const listaEquipe = [
+        {
+          nome: "Lucas Cabral (Saturno)",
+          cargo: "Recreador",
+          nivel: "Nível 1",
+        },
+        {
+          nome: "Ana Paula (Pink)",
+          cargo: "Recreador Líder",
+          nivel: "Nível 2",
+        },
+        {
+          nome: "Mariana Silva",
+          cargo: "Recepcionista Coringa",
+          nivel: "Nível 3",
+        },
+      ];
+
+      function autenticar() {
+        const pin = document.getElementById("pinInput").value;
+
+        if (pin === "9999") {
+          // Abre o Painel da Gestão
+          trocarTela("screen-manager");
+          carregarPainelGestao();
+        } else if (colaboradores[pin]) {
+          // Abre o Perfil do Colaborador
+          carregarPerfil(colaboradores[pin]);
+          trocarTela("screen-profile");
+        } else {
+          alert(
+            "PIN incorreto! Tente 1234 (Funcionário) ou 9999 (Supervisão).",
+          );
+        }
+      }
+
+      function carregarPerfil(user) {
+        document.getElementById("userName").innerText = user.nome;
+        document.getElementById("userNickname").innerText = `"${user.apelido}"`;
+        document.getElementById("userLevelTag").innerText =
+          `Nível ${user.nivel} • ${user.cargo}`;
+        document.getElementById("userAvatar").innerText = user.nome
+          .split(" ")
+          .map((n) => n[0])
+          .join("");
+
+        document.getElementById("attRate").innerText = user.presenca;
+        document.getElementById("trainRate").innerText = user.cursos;
+        document.getElementById("reviewsCount").innerText = user.elogios;
+
+        document.getElementById("progressText").innerText =
+          user.progresso + "%";
+        document.getElementById("progressBar").style.width =
+          user.progresso + "%";
+        document.getElementById("feedbackText").innerText =
+          `"${user.feedback}"`;
+
+        // Atualiza badges de especialização
+        if (user.especializacoes.includes("lider"))
+          document.getElementById("spec-lider").classList.add("unlocked");
+        if (user.especializacoes.includes("midias"))
+          document.getElementById("spec-midias").classList.add("unlocked");
+        if (user.especializacoes.includes("recep"))
+          document.getElementById("spec-recep").classList.add("unlocked");
+      }
+
+      function carregarPainelGestao() {
+        const container = document.getElementById("staffList");
+        container.innerHTML = "";
+
+        listaEquipe.forEach((colab) => {
+          container.innerHTML += `
+        <div class="staff-item">
+          <div>
+            <strong style="font-size:0.9rem;">${colab.nome}</strong><br>
+            <span style="font-size:0.75rem; color:var(--text-muted);">${colab.cargo} • ${colab.nivel}</span>
+          </div>
+          <button style="background:var(--accent-blue); color:white; border:none; padding:6px 12px; border-radius:6px; font-size:0.75rem; cursor:pointer;">Avaliar</button>
+        </div>
+      `;
+        });
+      }
+
+      function trocarTela(screenId) {
+        document
+          .querySelectorAll(".screen")
+          .forEach((s) => s.classList.remove("active"));
+        document.getElementById(screenId).classList.add("active");
+      }
+
+      function sair() {
+        document.getElementById("pinInput").value = "";
+        trocarTela("screen-login");
+      }
+    </script>
+  </body>
+</html>
