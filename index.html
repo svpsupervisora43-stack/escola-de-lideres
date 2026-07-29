@@ -61,7 +61,7 @@
         border-radius: 20px;
         padding: 32px 24px;
         text-align: center;
-        margin-top: 40px;
+        margin-top: 30px;
         border: 1px solid var(--border);
         box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
       }
@@ -89,7 +89,7 @@
         border: 2px solid var(--border);
         color: var(--text-main);
         border-radius: 12px;
-        margin-bottom: 20px;
+        margin-bottom: 16px;
         outline: none;
       }
       .pin-input:focus {
@@ -148,25 +148,22 @@
         gap: 16px;
       }
       .avatar {
-        width: 64px;
-        height: 64px;
+        width: 60px;
+        height: 60px;
         border-radius: 50%;
         background: #334155;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.8rem;
+        font-size: 1.4rem;
         font-weight: 700;
         border: 2px solid var(--accent-blue);
+        color: var(--accent-blue);
+        flex-shrink: 0;
       }
       .profile-info h2 {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         font-weight: 700;
-      }
-      .profile-info .nickname {
-        color: var(--accent-blue);
-        font-weight: 600;
-        font-size: 0.9rem;
       }
       .profile-info .level-tag {
         display: inline-block;
@@ -179,7 +176,7 @@
         margin-top: 6px;
       }
 
-      /* TRILHA DE CARREIRA */
+      /* CARD SEÇÕES */
       .section-card {
         background: var(--bg-card);
         border-radius: 16px;
@@ -207,7 +204,7 @@
         border-radius: 10px;
         margin-bottom: 8px;
         background: var(--bg-main);
-        opacity: 0.5;
+        opacity: 0.4;
       }
       .level-step.active {
         opacity: 1;
@@ -239,7 +236,7 @@
         color: white;
       }
       .step-title {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         font-weight: 600;
         flex: 1;
       }
@@ -263,7 +260,7 @@
       .spec-item.unlocked {
         border: 1px solid var(--accent-blue);
         color: var(--text-main);
-        background: rgba(59, 130, 246, 0.1);
+        background: rgba(59, 130, 246, 0.15);
         font-weight: 600;
       }
 
@@ -349,38 +346,53 @@
             Acessar Perfil
           </button>
 
-          <p style="margin-top: 20px; font-size: 0.75rem">
-            💡 Teste com os PINs:<br />
-            <b>1234</b> (Colaborador) | <b>9999</b> (Supervisão)
-          </p>
+          <div
+            style="
+              margin-top: 20px;
+              font-size: 0.75rem;
+              color: var(--text-muted);
+              text-align: left;
+              background: var(--bg-main);
+              padding: 12px;
+              border-radius: 8px;
+            "
+          >
+            🔑 <b>PINs cadastrados para teste:</b><br />
+            • <b>9999</b> : Painel de Gestão<br />
+            • <b>1001</b> : Patrícia (Gerente)<br />
+            • <b>1002</b> : Thainá (Subgerente Dia)<br />
+            • <b>1003</b> : Felipe (Subgerente Noite)<br />
+            • <b>1004</b> : Ana Vitória (Supervisora)<br />
+            • <b>1005</b> : Pâmella (Recepcionista)<br />
+            • <b>1006</b> : Michelly (Líder em Treinamento)<br />
+            • <b>1016</b> : Lucas Cabral (Recreador)<br />
+            • <b>1018</b> : Rosenilda Santos (ASG)
+          </div>
         </div>
       </div>
 
       <!-- TELA 2: PERFIL DO COLABORADOR -->
       <div id="screen-profile" class="screen">
         <div class="top-bar">
-          <span class="unit">VIA PARQUE • APPS CARREIRA</span>
+          <span class="unit">VIA PARQUE • ESCOLA DE LÍDERES</span>
           <button class="btn-logout" onclick="sair()">Sair</button>
         </div>
 
         <!-- CARTÃO DO PERFIL -->
         <div class="profile-card">
-          <div class="avatar" id="userAvatar">LC</div>
+          <div class="avatar" id="userAvatar">--</div>
           <div class="profile-info">
-            <h2 id="userName">Lucas Cabral</h2>
-            <span class="nickname" id="userNickname">"Saturno"</span><br />
-            <span class="level-tag" id="userLevelTag">Nível 1 • Recreador</span>
+            <h2 id="userName">Nome do Colaborador</h2>
+            <span class="level-tag" id="userLevelTag">Nível --</span>
           </div>
         </div>
 
         <!-- DADOS VINDOS DO ANIMATEAMS -->
         <div class="animateams-box">
-          <div class="animateams-header">
-            📊 Indicadores Animateams (Métricas)
-          </div>
+          <div class="animateams-header">📊 Indicadores Animateams</div>
           <div class="grid-3">
             <div>
-              <div class="metric-value" id="attRate">99%</div>
+              <div class="metric-value" id="attRate">100%</div>
               <div class="metric-label">Presença</div>
             </div>
             <div>
@@ -388,7 +400,7 @@
               <div class="metric-label">Cursos</div>
             </div>
             <div>
-              <div class="metric-value" id="reviewsCount">6x</div>
+              <div class="metric-value" id="reviewsCount">0x</div>
               <div class="metric-label">Elogios</div>
             </div>
           </div>
@@ -405,14 +417,14 @@
               font-weight: 600;
             "
           >
-            <span>Progresso Geral</span>
-            <span id="progressText">80%</span>
+            <span>Evolução Atual</span>
+            <span id="progressText">0%</span>
           </div>
           <div class="progress-bar-bg">
             <div
               id="progressBar"
               class="progress-bar-fill"
-              style="width: 80%"
+              style="width: 0%"
             ></div>
           </div>
         </div>
@@ -421,38 +433,31 @@
         <div class="section-card">
           <div class="section-title">🗺️ Trilha de Carreira Via Parque</div>
 
-          <!-- NIVEL 1 -->
-          <div class="level-step completed" id="step-lvl1">
+          <div class="level-step" id="step-lvl1">
             <div class="step-number">1</div>
-            <div class="step-title">Recreador (Base)</div>
+            <div class="step-title">Recreador (Base Operacional)</div>
           </div>
 
-          <!-- NIVEL 2 COM AS 3 ESPECIALIZAÇÕES -->
-          <div class="level-step active" id="step-lvl2">
+          <div class="level-step" id="step-lvl2">
             <div class="step-number">2</div>
-            <div class="step-title">Especializações (Escolha 1 ou +)</div>
+            <div class="step-title">Especializações do Nível 2</div>
           </div>
           <div class="specs-grid">
             <div class="spec-item" id="spec-midias">📹 Mídias</div>
             <div class="spec-item" id="spec-recep">📋 Recepção</div>
-            <div class="spec-item unlocked" id="spec-lider">
-              ⚡ Recreador Líder
-            </div>
+            <div class="spec-item" id="spec-lider">⚡ Recreador Líder</div>
           </div>
 
-          <!-- NIVEL 3 -->
           <div class="level-step" id="step-lvl3">
             <div class="step-number">3</div>
             <div class="step-title">Recepcionista Coringa</div>
           </div>
 
-          <!-- NIVEL 4 -->
           <div class="level-step" id="step-lvl4">
             <div class="step-number">4</div>
             <div class="step-title">Supervisor</div>
           </div>
 
-          <!-- NIVEL 5 -->
           <div class="level-step" id="step-lvl5">
             <div class="step-number">5</div>
             <div class="step-title">Subgerente Noite ⭐</div>
@@ -461,14 +466,12 @@
 
         <!-- FEEDBACK TRIMESTRAL -->
         <div class="section-card">
-          <div class="section-title">💬 Último Feedback da Supervisão</div>
+          <div class="section-title">💬 Último Feedback da Gestão</div>
           <p
             id="feedbackText"
             style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.5"
           >
-            "Excelente energia nas festas e ótimo engajamento com as crianças.
-            Focar nos próximos 3 meses em desenvolver postura de liderança com
-            os demais recreadores da pista."
+            Sem avaliações registradas.
           </p>
         </div>
       </div>
@@ -476,82 +479,248 @@
       <!-- TELA 3: PAINEL DA GESTÃO / SUPERVISÃO -->
       <div id="screen-manager" class="screen">
         <div class="top-bar">
-          <span class="unit">PAINEL DA SUPERVISÃO</span>
+          <span class="unit">PAINEL DE GESTÃO VIA PARQUE</span>
           <button class="btn-logout" onclick="sair()">Sair</button>
         </div>
 
         <div class="section-card">
-          <div class="section-title">👥 Equipe Via Parque - Avaliação</div>
+          <div class="section-title">
+            👥 Equipe Cadastrada (<span id="totalStaff">0</span>)
+          </div>
 
           <div id="staffList">
-            <!-- Lista de colaboradores inserida via JS -->
+            <!-- Lista gerada dinamicamente -->
           </div>
         </div>
       </div>
     </div>
 
     <script>
-      // BANCO DE DADOS LOCAL (Exemplo para testes)
-      const colaboradores = {
-        1234: {
+      // BANCO DE DADOS DA EQUIPE VIA PARQUE
+      const equipe = {
+        1001: {
+          nome: "Patrícia",
+          cargo: "Gerente",
+          nivel: 5,
+          progresso: 100,
+          presenca: "100%",
+          cursos: "100%",
+          elogios: "12x",
+          especializacoes: ["midias", "recep", "lider"],
+          feedback: "Liderança executiva da unidade Via Parque.",
+        },
+        1002: {
+          nome: "Thainá Freires",
+          cargo: "Subgerente (Dia)",
+          nivel: 5,
+          progresso: 95,
+          presenca: "100%",
+          cursos: "100%",
+          elogios: "8x",
+          especializacoes: ["recep", "lider"],
+          feedback: "Excelente gestão no turno do dia.",
+        },
+        1003: {
+          nome: "Felipe Mamedes",
+          cargo: "Subgerente (Noite)",
+          nivel: 5,
+          progresso: 95,
+          presenca: "98%",
+          cursos: "100%",
+          elogios: "7x",
+          especializacoes: ["lider"],
+          feedback: "Ótima condução da operação noturna.",
+        },
+        1004: {
+          nome: "Ana Vitória dos Santos",
+          cargo: "Supervisora",
+          nivel: 4,
+          progresso: 85,
+          presenca: "99%",
+          cursos: "100%",
+          elogios: "9x",
+          especializacoes: ["recep", "lider"],
+          feedback: "Promovida a Supervisora. Foco em gestão de equipe.",
+        },
+        1005: {
+          nome: "Pâmella dos Santos",
+          cargo: "Recepcionista",
+          nivel: 2,
+          progresso: 70,
+          presenca: "96%",
+          cursos: "100%",
+          elogios: "4x",
+          especializacoes: ["recep"],
+          feedback: "Ótimo atendimento na recepção.",
+        },
+        1006: {
+          nome: "Michelly Barbosa",
+          cargo: "Recreadora / Líder em Treinamento",
+          nivel: 2,
+          progresso: 75,
+          presenca: "97%",
+          cursos: "100%",
+          elogios: "5x",
+          especializacoes: ["lider"],
+          feedback: "Em treinamento para Líder de Recreação.",
+        },
+        1007: {
+          nome: "Vinícius Valente",
+          cargo: "Recreador",
+          nivel: 1,
+          progresso: 40,
+          presenca: "95%",
+          cursos: "100%",
+          elogios: "2x",
+          especializacoes: [],
+          feedback: "Focar em pontualidade e engajamento na pista.",
+        },
+        1008: {
+          nome: "Alex de Oliveira",
+          cargo: "Recreador",
+          nivel: 1,
+          progresso: 50,
+          presenca: "98%",
+          cursos: "100%",
+          elogios: "3x",
+          especializacoes: [],
+          feedback: "Boa energia nas brincadeiras.",
+        },
+        1009: {
+          nome: "Aline Ferreira",
+          cargo: "Recreadora",
+          nivel: 1,
+          progresso: 50,
+          presenca: "97%",
+          cursos: "100%",
+          elogios: "2x",
+          especializacoes: [],
+          feedback: "Atenção aos detalhes das festas.",
+        },
+        1010: {
+          nome: "Davi Campello",
+          cargo: "Recreador",
+          nivel: 1,
+          progresso: 60,
+          presenca: "99%",
+          cursos: "100%",
+          elogios: "4x",
+          especializacoes: [],
+          feedback: "Proativo na pista.",
+        },
+        1011: {
+          nome: "Eduarda Gonçalves",
+          cargo: "Recreadora",
+          nivel: 1,
+          progresso: 50,
+          presenca: "98%",
+          cursos: "100%",
+          elogios: "3x",
+          especializacoes: [],
+          feedback: "Bom relacionamento com as crianças.",
+        },
+        1012: {
+          nome: "Geovana Isabelly",
+          cargo: "Recreadora",
+          nivel: 1,
+          progresso: 55,
+          presenca: "98%",
+          cursos: "100%",
+          elogios: "3x",
+          especializacoes: [],
+          feedback: "Boa comunicação com os pais.",
+        },
+        1013: {
+          nome: "Isabelly Vitória",
+          cargo: "Recreadora",
+          nivel: 1,
+          progresso: 50,
+          presenca: "97%",
+          cursos: "100%",
+          elogios: "2x",
+          especializacoes: [],
+          feedback: "Pontual e animada.",
+        },
+        1014: {
+          nome: "Kainá Rosendo",
+          cargo: "Recreador",
+          nivel: 1,
+          progresso: 60,
+          presenca: "99%",
+          cursos: "100%",
+          elogios: "3x",
+          especializacoes: [],
+          feedback: "Destaque na condução de jogos.",
+        },
+        1015: {
+          nome: "Lohana Pessoa",
+          cargo: "Recreadora",
+          nivel: 1,
+          progresso: 50,
+          presenca: "98%",
+          cursos: "100%",
+          elogios: "2x",
+          especializacoes: [],
+          feedback: "Ótima postura e simpatia.",
+        },
+        1016: {
           nome: "Lucas Cabral",
-          apelido: "Saturno",
           cargo: "Recreador",
           nivel: 1,
           progresso: 80,
           presenca: "99%",
           cursos: "100%",
           elogios: "6x",
-          especializacoes: ["lider"], // Mídias, Recepção, Líder
+          especializacoes: ["lider"],
           feedback:
-            "Excelente energia nas festas e ótimo engajamento. Focar em liderança de pista.",
+            "Excelente energia nas festas. Focar em liderar grandes grupos.",
+        },
+        1017: {
+          nome: "Micaela de Souza",
+          cargo: "Recreadora",
+          nivel: 1,
+          progresso: 55,
+          presenca: "98%",
+          cursos: "100%",
+          elogios: "3x",
+          especializacoes: [],
+          feedback: "Atenciosa com os pequenos.",
+        },
+        1018: {
+          nome: "Rosenilda Santos",
+          cargo: "ASG",
+          nivel: 1,
+          progresso: 90,
+          presenca: "100%",
+          cursos: "100%",
+          elogios: "5x",
+          especializacoes: [],
+          feedback: "Zelo e organização impecáveis na loja.",
         },
       };
-
-      const listaEquipe = [
-        {
-          nome: "Lucas Cabral (Saturno)",
-          cargo: "Recreador",
-          nivel: "Nível 1",
-        },
-        {
-          nome: "Ana Paula (Pink)",
-          cargo: "Recreador Líder",
-          nivel: "Nível 2",
-        },
-        {
-          nome: "Mariana Silva",
-          cargo: "Recepcionista Coringa",
-          nivel: "Nível 3",
-        },
-      ];
 
       function autenticar() {
         const pin = document.getElementById("pinInput").value;
 
         if (pin === "9999") {
-          // Abre o Painel da Gestão
           trocarTela("screen-manager");
           carregarPainelGestao();
-        } else if (colaboradores[pin]) {
-          // Abre o Perfil do Colaborador
-          carregarPerfil(colaboradores[pin]);
+        } else if (equipe[pin]) {
+          carregarPerfil(equipe[pin]);
           trocarTela("screen-profile");
         } else {
-          alert(
-            "PIN incorreto! Tente 1234 (Funcionário) ou 9999 (Supervisão).",
-          );
+          alert("PIN não encontrado! Verifique a lista de PINs disponíveis.");
         }
       }
 
       function carregarPerfil(user) {
         document.getElementById("userName").innerText = user.nome;
-        document.getElementById("userNickname").innerText = `"${user.apelido}"`;
         document.getElementById("userLevelTag").innerText =
           `Nível ${user.nivel} • ${user.cargo}`;
         document.getElementById("userAvatar").innerText = user.nome
           .split(" ")
           .map((n) => n[0])
+          .slice(0, 2)
           .join("");
 
         document.getElementById("attRate").innerText = user.presenca;
@@ -565,30 +734,46 @@
         document.getElementById("feedbackText").innerText =
           `"${user.feedback}"`;
 
-        // Atualiza badges de especialização
-        if (user.especializacoes.includes("lider"))
-          document.getElementById("spec-lider").classList.add("unlocked");
-        if (user.especializacoes.includes("midias"))
-          document.getElementById("spec-midias").classList.add("unlocked");
-        if (user.especializacoes.includes("recep"))
-          document.getElementById("spec-recep").classList.add("unlocked");
+        // Atualiza visualização da Trilha de Carreira
+        for (let i = 1; i <= 5; i++) {
+          const step = document.getElementById(`step-lvl${i}`);
+          step.className = "level-step";
+          if (i < user.nivel) step.classList.add("completed");
+          else if (i === user.nivel) step.classList.add("active");
+        }
+
+        // Especializações Nível 2
+        ["midias", "recep", "lider"].forEach((spec) => {
+          const el = document.getElementById(`spec-${spec}`);
+          if (user.especializacoes.includes(spec)) el.classList.add("unlocked");
+          else el.classList.remove("unlocked");
+        });
       }
 
       function carregarPainelGestao() {
         const container = document.getElementById("staffList");
         container.innerHTML = "";
 
-        listaEquipe.forEach((colab) => {
+        const pins = Object.keys(equipe);
+        document.getElementById("totalStaff").innerText = pins.length;
+
+        pins.forEach((pin) => {
+          const colab = equipe[pin];
           container.innerHTML += `
         <div class="staff-item">
           <div>
             <strong style="font-size:0.9rem;">${colab.nome}</strong><br>
-            <span style="font-size:0.75rem; color:var(--text-muted);">${colab.cargo} • ${colab.nivel}</span>
+            <span style="font-size:0.75rem; color:var(--text-muted);">${colab.cargo} • Nível ${colab.nivel} (PIN: ${pin})</span>
           </div>
-          <button style="background:var(--accent-blue); color:white; border:none; padding:6px 12px; border-radius:6px; font-size:0.75rem; cursor:pointer;">Avaliar</button>
+          <button style="background:var(--accent-blue); color:white; border:none; padding:6px 12px; border-radius:6px; font-size:0.75rem; cursor:pointer;" onclick="verPerfilDirect('${pin}')">Ver Perfil</button>
         </div>
       `;
         });
+      }
+
+      function verPerfilDirect(pin) {
+        carregarPerfil(equipe[pin]);
+        trocarTela("screen-profile");
       }
 
       function trocarTela(screenId) {
