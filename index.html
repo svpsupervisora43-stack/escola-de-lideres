@@ -688,7 +688,7 @@
               class="form-select"
               onchange="alterarCargoAlvo(this.value)"
             >
-              <!-- Opções sem restrições geradas via JS -->
+              <!-- Opções geradas via JS -->
             </select>
           </div>
 
@@ -913,9 +913,7 @@
             <label>Nível na Trilha</label>
             <select id="editNivel" class="form-select">
               <option value="1">Nível 1 - Recreador Base</option>
-              <option value="2">
-                Nível 2 - Especialista (Mídias/Recepção/Líder)
-              </option>
+              <option value="2">Nível 2 - Especialista</option>
               <option value="3">Nível 3 - Recepcionista Coringa</option>
               <option value="4">Nível 4 - Supervisor</option>
               <option value="5">Nível 5 - Subgerente ⭐</option>
@@ -931,6 +929,94 @@
               max="100"
               class="form-input"
             />
+          </div>
+        </div>
+
+        <!-- SELEÇÃO DE ESPECIALIZAÇÕES DO NÍVEL 2 (EXCLUSIVO DO GESTOR) -->
+        <div
+          class="form-group"
+          style="
+            background: var(--bg-main);
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+          "
+        >
+          <label
+            style="
+              color: var(--accent-blue);
+              font-weight: 700;
+              font-size: 0.8rem;
+              display: block;
+              margin-bottom: 8px;
+            "
+          >
+            🎯 Especializações do Nível 2 (Atribuídas pela Gestão)
+          </label>
+          <div style="display: flex; gap: 14px; flex-wrap: wrap">
+            <label
+              style="
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 0.82rem;
+                cursor: pointer;
+                color: var(--text-main);
+              "
+            >
+              <input
+                type="checkbox"
+                id="editSpecMidias"
+                style="
+                  accent-color: var(--accent-blue);
+                  width: 16px;
+                  height: 16px;
+                "
+              />
+              📹 Mídias
+            </label>
+            <label
+              style="
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 0.82rem;
+                cursor: pointer;
+                color: var(--text-main);
+              "
+            >
+              <input
+                type="checkbox"
+                id="editSpecRecep"
+                style="
+                  accent-color: var(--accent-blue);
+                  width: 16px;
+                  height: 16px;
+                "
+              />
+              📋 Recepção
+            </label>
+            <label
+              style="
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 0.82rem;
+                cursor: pointer;
+                color: var(--text-main);
+              "
+            >
+              <input
+                type="checkbox"
+                id="editSpecLider"
+                style="
+                  accent-color: var(--accent-blue);
+                  width: 16px;
+                  height: 16px;
+                "
+              />
+              ⚡ Recreador Líder
+            </label>
           </div>
         </div>
 
@@ -1159,7 +1245,6 @@
         return triObj;
       }
 
-      // RETORNA TODAS AS OPÇÕES DE CARGO ALVO SEM RESTRIÇÕES
       function obterOpcoesCargoAlvo() {
         return TODOS_CARGOS_ALVO;
       }
@@ -1544,6 +1629,7 @@
           else if (i === user.nivel) step.classList.add("active");
         }
 
+        // Atualizar visual das especializações do Nível 2
         ["midias", "recep", "lider"].forEach((spec) => {
           const el = document.getElementById(`spec-${spec}`);
           if (user.especializacoes && user.especializacoes.includes(spec))
@@ -1800,6 +1886,15 @@
         document.getElementById("editNovoElogio").value = "";
         document.getElementById("editTrimestreSelect").value = "Q1";
 
+        // CARREGAR ESPECIALIZAÇÕES DO NÍVEL 2 NOS CHECKBOXES DO GESTOR
+        const specs = user.especializacoes || [];
+        document.getElementById("editSpecMidias").checked =
+          specs.includes("midias");
+        document.getElementById("editSpecRecep").checked =
+          specs.includes("recep");
+        document.getElementById("editSpecLider").checked =
+          specs.includes("lider");
+
         carregarCamposTrimestreModal();
         document.getElementById("modalEdit").classList.add("active");
       }
@@ -1886,6 +1981,16 @@
         user.missao = document.getElementById("editMissao").value;
         user.feedback = document.getElementById("editFeedback").value;
 
+        // SALVAR ESPECIALIZAÇÕES DO NÍVEL 2 DEFINIDAS PELO GESTOR
+        const novasSpecs = [];
+        if (document.getElementById("editSpecMidias").checked)
+          novasSpecs.push("midias");
+        if (document.getElementById("editSpecRecep").checked)
+          novasSpecs.push("recep");
+        if (document.getElementById("editSpecLider").checked)
+          novasSpecs.push("lider");
+        user.especializacoes = novasSpecs;
+
         // Salvar Notas do Trimestre Selecionado
         const q = document.getElementById("editTrimestreSelect").value;
         const tipoCargo = obterTipoCargo(user.cargo);
@@ -1918,7 +2023,7 @@
           carregarPerfil(user);
         }
 
-        alert("Perfil e nível salvos com sucesso!");
+        alert("Perfil e especializações salvos com sucesso!");
       }
 
       function fecharModal(modalId) {
