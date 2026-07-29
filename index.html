@@ -1291,8 +1291,9 @@
       function autenticar() {
         const pin = document.getElementById("pinInput").value;
 
-        if (pin === "9999") {
-          pinUsuarioAtual = "9999";
+        // SENHA DO GESTOR ATUALIZADA PARA 1711
+        if (pin === "1711") {
+          pinUsuarioAtual = "1711";
           trocarTela("screen-manager");
           carregarPainelGestao();
         } else if (equipe[pin]) {
