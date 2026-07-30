@@ -1,0 +1,51 @@
+.app-container {
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+.menu-cargos {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.menu-cargos button {
+  padding: 10px 15px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.painel-cargo {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.secao-detalhes {
+  margin-top: 20px;
+}
+
+.secao-detalhes h3 {
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 5px;
+  color: #333;
+}
+
+.secao-detalhes ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.secao-detalhes li {
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  background: #ffffff;
+  border-left: 4px solid #007bff;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
