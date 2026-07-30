@@ -2045,3 +2045,45 @@
     </script>
   </body>
 </html>
+<!-- COLE DENTRO DA ÁREA DO GESTOR -->
+<div class="card p-4 shadow-sm mb-4 bg-white rounded">
+  <h4 class="fw-bold mb-3">⚙️ Configurar Trilhas & Material de Apoio</h4>
+
+  <div class="mb-3">
+    <label class="form-label fw-bold">Selecione o Cargo para Editar:</label>
+    <select
+      id="selectCargoGestor"
+      class="form-select"
+      onchange="carregarFormularioCargo()"
+    >
+      <option value="Mídia">Mídia</option>
+      <option value="Recepcionista">Recepcionista</option>
+      <option value="Líder">Líder (Recreador)</option>
+      <option value="Supervisor">Supervisor</option>
+      <option value="Subgerente">Subgerente</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label fw-bold"
+      >Requisitos da Trilha (1 item por linha):</label
+    >
+    <textarea id="txtRequisitosGestor" class="form-control" rows="5"></textarea>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label fw-bold"
+      >Material de Apoio, Livros & Cursos (1 item por linha):</label
+    >
+    <textarea id="txtApoioGestor" class="form-control" rows="5"></textarea>
+  </div>
+
+  <button
+    class="btn btn-primary w-100 fw-bold"
+    onclick="salvarAlteracoesTrilha()"
+  >
+    💾 Salvar Alterações para o Cargo
+  </button>
+</div>
+<!-- COLE ONDE A TRILHA DEVE APARECER NA TELA DO COLABORADOR -->
+<div id="areaTrilhaColaborador"></div>
