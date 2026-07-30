@@ -68,40 +68,33 @@ let DADOS_CARGOS = JSON.parse(localStorage.getItem("APP_CARGOS_DATA")) || {
   },
 };
 
-// Função para salvar atualizações feitas pelo gestor
-function salvarDadosCargos() {
-  localStorage.setItem("APP_CARGOS_DATA", JSON.stringify(DADOS_CARGOS));
-}
-
-// Função para renderizar os detalhes do cargo na interface
+// Função para renderizar as informações na tela
 function renderizarCargo(nomeCargo) {
   const container = document.getElementById("conteudo-cargo");
   const cargo = DADOS_CARGOS[nomeCargo];
 
-  if (!cargo) {
-    container.innerHTML = `<p>Cargo não encontrado.</p>`;
-    return;
-  }
+  if (!cargo) return;
 
-  // Montagem da lista de Requisitos
   const htmlRequisitos = cargo.requisitos
     .map((item) => `<li>${item}</li>`)
     .join("");
 
-  // Montagem do Material de Apoio e Guia de Estudos
   const htmlApoio = cargo.apoio.map((item) => `<li>${item}</li>`).join("");
 
   container.innerHTML = `
-    <h2>${nomeCargo}</h2>
+    <h2 class="titulo-cargo">${nomeCargo}</h2>
     
     <div class="secao-detalhes">
-      <h3>📋 Requisitos para Promoção/Atuação</h3>
+      <h3>📋 Requisitos para o Cargo</h3>
       <ul>${htmlRequisitos}</ul>
     </div>
 
     <div class="secao-detalhes">
       <h3>📚 Material de Apoio & Guia de Estudos</h3>
-      <ul>${htmlApoio}</ul>
+      <ul class="apoio-lista">${htmlApoio}</ul>
     </div>
   `;
 }
+
+// Salva no localStorage na primeira execução para garantir a persistência
+localStorage.setItem("APP_CARGOS_DATA", JSON.stringify(DADOS_CARGOS));
