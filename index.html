@@ -3,33 +3,1442 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Plano de Carreira e Trilhas</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>Via Parque - Escola de Líderes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg-main: #0f172a;
+        --bg-card: #1e293b;
+        --bg-hover: #334155;
+        --accent-green: #10b981;
+        --accent-blue: #3b82f6;
+        --accent-purple: #8b5cf6;
+        --accent-orange: #f97316;
+        --accent-gold: #eab308;
+        --text-main: #f8fafc;
+        --text-muted: #94a3b8;
+        --border: #334155;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Plus Jakarta Sans", sans-serif;
+      }
+      body {
+        background-color: var(--bg-main);
+        color: var(--text-main);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        padding: 12px;
+      }
+
+      .app-container {
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+
+      /* TELAS */
+      .screen {
+        display: none;
+      }
+      .screen.active {
+        display: block;
+      }
+
+      /* TELA DE LOGIN */
+      .login-box {
+        background: var(--bg-card);
+        border-radius: 20px;
+        padding: 32px 24px;
+        text-align: center;
+        margin-top: 50px;
+        border: 1px solid var(--border);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+      }
+      .logo-badge {
+        font-size: 3.5rem;
+        margin-bottom: 12px;
+      }
+      .login-box h1 {
+        font-size: 1.5rem;
+        margin-bottom: 6px;
+        font-weight: 800;
+      }
+      .login-box p {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-bottom: 24px;
+      }
+      .pin-input {
+        width: 100%;
+        padding: 16px;
+        font-size: 1.5rem;
+        letter-spacing: 12px;
+        text-align: center;
+        background: var(--bg-main);
+        border: 2px solid var(--border);
+        color: var(--text-main);
+        border-radius: 12px;
+        margin-bottom: 16px;
+        outline: none;
+      }
+      .pin-input:focus {
+        border-color: var(--accent-blue);
+      }
+      .btn-primary {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(
+          135deg,
+          var(--accent-blue),
+          var(--accent-purple)
+        );
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+
+      /* HEADER */
+      .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        margin-bottom: 16px;
+        border-bottom: 1px solid var(--border);
+      }
+      .top-bar .unit {
+        font-weight: 700;
+        color: var(--accent-blue);
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+      }
+      .btn-logout {
+        background: none;
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        cursor: pointer;
+      }
+
+      /* CARTÃO PROFILE */
+      .profile-card {
+        background: var(--bg-card);
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 16px;
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: #334155;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        font-weight: 700;
+        border: 2px solid var(--accent-blue);
+        color: var(--accent-blue);
+        flex-shrink: 0;
+      }
+      .profile-info h2 {
+        font-size: 1.1rem;
+        font-weight: 700;
+      }
+      .profile-info .level-tag {
+        display: inline-block;
+        background: rgba(59, 130, 246, 0.15);
+        color: var(--accent-blue);
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        margin-top: 6px;
+      }
+
+      /* CARD SEÇÕES */
+      .section-card {
+        background: var(--bg-card);
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 16px;
+        border: 1px solid var(--border);
+      }
+      .section-title {
+        font-size: 0.95rem;
+        font-weight: 700;
+        margin-bottom: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--text-muted);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      /* ABAS DE TRIMESTRE */
+      .tri-tabs {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 14px;
+      }
+      .tri-btn {
+        flex: 1;
+        padding: 8px 4px;
+        background: var(--bg-main);
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        border-radius: 8px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        cursor: pointer;
+        text-align: center;
+      }
+      .tri-btn.active {
+        background: var(--accent-blue);
+        color: white;
+        border-color: var(--accent-blue);
+      }
+
+      /* DETALHAMENTO DE NOTAS */
+      .eval-box {
+        background: var(--bg-main);
+        border-radius: 12px;
+        padding: 14px;
+        border: 1px solid var(--border);
+        margin-bottom: 10px;
+      }
+      .eval-box h4 {
+        font-size: 0.85rem;
+        color: var(--accent-gold);
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        display: flex;
+        justify-content: space-between;
+      }
+      .eval-item {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.8rem;
+        padding: 4px 0;
+        border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+      }
+      .eval-item:last-child {
+        border-bottom: none;
+      }
+      .eval-item .label {
+        color: var(--text-muted);
+      }
+      .eval-item .val {
+        font-weight: 700;
+        color: var(--text-main);
+      }
+      .badge-score {
+        background: rgba(234, 179, 8, 0.15);
+        color: var(--accent-gold);
+        padding: 2px 6px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+      }
+
+      .level-step {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 8px;
+        background: var(--bg-main);
+        opacity: 0.4;
+      }
+      .level-step.active {
+        opacity: 1;
+        border: 1px solid var(--accent-blue);
+        background: rgba(59, 130, 246, 0.05);
+      }
+      .level-step.completed {
+        opacity: 1;
+        border: 1px solid var(--accent-green);
+      }
+
+      .step-number {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #334155;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.8rem;
+      }
+      .level-step.active .step-number {
+        background: var(--accent-blue);
+        color: white;
+      }
+      .level-step.completed .step-number {
+        background: var(--accent-green);
+        color: white;
+      }
+      .step-title {
+        font-size: 0.85rem;
+        font-weight: 600;
+        flex: 1;
+      }
+
+      /* ESPECIALIZAÇÕES NIVEL 2 */
+      .specs-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 8px;
+        margin: 8px 0 12px 38px;
+      }
+      .spec-item {
+        background: var(--bg-card);
+        padding: 8px;
+        border-radius: 8px;
+        text-align: center;
+        font-size: 0.75rem;
+        border: 1px dashed var(--border);
+        color: var(--text-muted);
+      }
+      .spec-item.unlocked {
+        border: 1px solid var(--accent-blue);
+        color: var(--text-main);
+        background: rgba(59, 130, 246, 0.15);
+        font-weight: 600;
+      }
+
+      /* PROGRESSO */
+      .progress-bar-bg {
+        background: var(--bg-main);
+        height: 10px;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-top: 8px;
+      }
+      .progress-bar-fill {
+        background: linear-gradient(
+          90deg,
+          var(--accent-blue),
+          var(--accent-purple)
+        );
+        height: 100%;
+        border-radius: 10px;
+        transition: width 0.3s;
+      }
+
+      /* ANIMATEAMS DATA */
+      .animateams-box {
+        background: rgba(16, 185, 129, 0.05);
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        border-radius: 12px;
+        padding: 14px;
+        margin-bottom: 16px;
+      }
+      .animateams-header {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--accent-green);
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+      .grid-3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 8px;
+        text-align: center;
+      }
+      .metric-card {
+        background: var(--bg-main);
+        padding: 8px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+      }
+      .metric-card.clickable {
+        cursor: pointer;
+        transition:
+          transform 0.2s,
+          border-color 0.2s;
+      }
+      .metric-card.clickable:hover {
+        border-color: var(--accent-gold);
+        transform: translateY(-2px);
+      }
+      .metric-value {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: var(--text-main);
+      }
+      .metric-label {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+      }
+
+      /* GESTÃO */
+      .staff-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px;
+        background: var(--bg-main);
+        border-radius: 10px;
+        margin-bottom: 8px;
+      }
+      .action-btns {
+        display: flex;
+        gap: 6px;
+      }
+      .btn-sm {
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .btn-view {
+        background: var(--accent-blue);
+        color: white;
+      }
+      .btn-edit {
+        background: var(--accent-purple);
+        color: white;
+      }
+
+      /* MODAL */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.75);
+        backdrop-filter: blur(4px);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+        padding: 16px;
+      }
+      .modal-overlay.active {
+        display: flex;
+      }
+      .modal-content {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 20px;
+        width: 100%;
+        max-width: 460px;
+        max-height: 85vh;
+        overflow-y: auto;
+      }
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+      .modal-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--text-main);
+      }
+      .close-modal {
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        font-size: 1.4rem;
+        cursor: pointer;
+      }
+      .form-group {
+        margin-bottom: 12px;
+        text-align: left;
+      }
+      .form-group label {
+        display: block;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        margin-bottom: 4px;
+        font-weight: 600;
+      }
+      .form-input,
+      .form-textarea,
+      .form-select {
+        width: 100%;
+        padding: 10px;
+        background: var(--bg-main);
+        border: 1px solid var(--border);
+        color: var(--text-main);
+        border-radius: 8px;
+        font-size: 0.85rem;
+        outline: none;
+      }
+      .form-textarea {
+        resize: vertical;
+        min-height: 60px;
+      }
+      .form-input:focus,
+      .form-textarea:focus,
+      .form-select:focus {
+        border-color: var(--accent-blue);
+      }
+
+      .eval-input-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .eval-field {
+        background: var(--bg-main);
+        padding: 8px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+      }
+      .eval-field label {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        display: block;
+        margin-bottom: 4px;
+      }
+    </style>
   </head>
   <body>
     <div class="app-container">
-      <header>
-        <h1>🎯 Guia de Carreiras & Treinamentos</h1>
-        <p>Selecione um cargo para ver os requisitos e materiais de apoio</p>
-      </header>
+      <!-- TELA 1: LOGIN POR PIN -->
+      <div id="screen-login" class="screen active">
+        <div class="login-box">
+          <div class="logo-badge">🚀</div>
+          <h1>Escola de Líderes</h1>
+          <p>Via Parque • Desenvolvimento de Pessoas</p>
 
-      <nav class="menu-cargos">
-        <button onclick="renderizarCargo('Mídia')">📱 Mídia</button>
-        <button onclick="renderizarCargo('Recepcionista')">
-          🛎️ Recepcionista
-        </button>
-        <button onclick="renderizarCargo('Líder')">👑 Líder</button>
-        <button onclick="renderizarCargo('Supervisor')">📊 Supervisor</button>
-        <button onclick="renderizarCargo('Subgerente')">⚙️ Subgerente</button>
-      </nav>
+          <input
+            type="password"
+            id="pinInput"
+            class="pin-input"
+            maxlength="4"
+            placeholder="••••"
+          />
+          <button class="btn-primary" onclick="autenticar()">
+            Acessar Perfil
+          </button>
+        </div>
+      </div>
 
-      <main id="conteudo-cargo" class="painel-cargo">
-        <p class="placeholder-texto">
-          Clique em um dos cargos acima para visualizar os detalhes.
-        </p>
-      </main>
+      <!-- TELA 2: PERFIL DO COLABORADOR -->
+      <div id="screen-profile" class="screen">
+        <div class="top-bar">
+          <span class="unit">VIA PARQUE • ESCOLA DE LÍDERES</span>
+          <button class="btn-logout" onclick="sair()">Sair</button>
+        </div>
+
+        <!-- CARTÃO DO PERFIL -->
+        <div class="profile-card">
+          <div class="avatar" id="userAvatar">--</div>
+          <div class="profile-info">
+            <h2 id="userName">Nome do Colaborador</h2>
+            <span class="level-tag" id="userLevelTag">Nível --</span>
+          </div>
+        </div>
+
+        <!-- DADOS VINDOS DO ANIMATEAMS -->
+        <div class="animateams-box">
+          <div class="animateams-header">📊 Indicadores Animateams</div>
+          <div class="grid-3">
+            <div class="metric-card">
+              <div class="metric-value" id="attRate">100%</div>
+              <div class="metric-label">Presença</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-value" id="trainRate">100%</div>
+              <div class="metric-label">Cursos</div>
+            </div>
+            <div
+              class="metric-card clickable"
+              onclick="abrirModalElogios()"
+              title="Clique para ver os elogios"
+            >
+              <div
+                class="metric-value"
+                style="color: var(--accent-gold)"
+                id="reviewsCount"
+              >
+                0x
+              </div>
+              <div class="metric-label">Elogios 🔍</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEÇÃO: AVALIAÇÃO TRIMESTRAL DA GESTÃO -->
+        <div class="section-card">
+          <div class="section-title">
+            <span>📋 Avaliação Trimestral da Gestão</span>
+          </div>
+
+          <!-- Abas dos 4 Trimestres -->
+          <div class="tri-tabs">
+            <button
+              class="tri-btn active"
+              onclick="selecionarTrimestreAba('Q1')"
+            >
+              1º Tri
+            </button>
+            <button class="tri-btn" onclick="selecionarTrimestreAba('Q2')">
+              2º Tri
+            </button>
+            <button class="tri-btn" onclick="selecionarTrimestreAba('Q3')">
+              3º Tri
+            </button>
+            <button class="tri-btn" onclick="selecionarTrimestreAba('Q4')">
+              4º Tri
+            </button>
+          </div>
+
+          <!-- Detalhamento de Performance -->
+          <div class="eval-box">
+            <h4>
+              <span>🎭 Performance</span>
+              <span class="badge-score" id="mediaPerfText">Média: -</span>
+            </h4>
+            <div id="perfCriteriaList">
+              <!-- Gerado dinamicamente -->
+            </div>
+          </div>
+
+          <!-- Detalhamento de Atitude -->
+          <div class="eval-box">
+            <h4>
+              <span>⚡ Atitude</span>
+              <span class="badge-score" id="mediaAtitText">Média: -</span>
+            </h4>
+            <div id="atitCriteriaList">
+              <!-- Gerado dinamicamente -->
+            </div>
+          </div>
+
+          <p
+            style="
+              font-size: 0.7rem;
+              color: var(--text-muted);
+              text-align: center;
+              margin-top: 6px;
+            "
+          >
+            Legenda de Notas: 1 = Insatisfatório | 2 = Regular | 3 = Bom | 4 =
+            Muito bom | 5 = Excelente
+          </p>
+        </div>
+
+        <!-- SEÇÃO: MISSÃO / PRÓXIMO DESENVOLVIMENTO -->
+        <div
+          class="section-card"
+          style="border-left: 4px solid var(--accent-purple)"
+        >
+          <div class="section-title" style="color: var(--accent-purple)">
+            🎯 Missão / Próximo Desenvolvimento
+          </div>
+          <p
+            id="userMissao"
+            style="
+              font-size: 0.88rem;
+              color: #cbd5e1;
+              line-height: 1.5;
+              font-weight: 500;
+            "
+          >
+            Carregando missão...
+          </p>
+        </div>
+
+        <!-- PROGRESSO DO PRÓXIMO NÍVEL -->
+        <div class="section-card">
+          <div class="section-title">📈 Prontidão para o Próximo Nível</div>
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              font-size: 0.85rem;
+              font-weight: 600;
+            "
+          >
+            <span>Evolução Atual</span>
+            <span id="progressText">0%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div
+              id="progressBar"
+              class="progress-bar-fill"
+              style="width: 0%"
+            ></div>
+          </div>
+        </div>
+
+        <!-- TRILHA DOS 5 NÍVEIS -->
+        <div class="section-card">
+          <div class="section-title">🗺️ Trilha de Carreira Via Parque</div>
+
+          <div class="level-step" id="step-lvl1">
+            <div class="step-number">1</div>
+            <div class="step-title">Recreador (Base Operacional)</div>
+          </div>
+
+          <div class="level-step" id="step-lvl2">
+            <div class="step-number">2</div>
+            <div class="step-title">Especializações do Nível 2</div>
+          </div>
+          <div class="specs-grid">
+            <div class="spec-item" id="spec-midias">📹 Mídias</div>
+            <div class="spec-item" id="spec-recep">📋 Recepção</div>
+            <div class="spec-item" id="spec-lider">⚡ Recreador Líder</div>
+          </div>
+
+          <div class="level-step" id="step-lvl3">
+            <div class="step-number">3</div>
+            <div class="step-title">Recepcionista Coringa</div>
+          </div>
+
+          <div class="level-step" id="step-lvl4">
+            <div class="step-number">4</div>
+            <div class="step-title">Supervisor</div>
+          </div>
+
+          <div class="level-step" id="step-lvl5">
+            <div class="step-number">5</div>
+            <div class="step-title">Subgerente Noite ⭐</div>
+          </div>
+        </div>
+
+        <!-- FEEDBACK TRIMESTRAL -->
+        <div class="section-card">
+          <div class="section-title">💬 Último Feedback da Gestão</div>
+          <p
+            id="feedbackText"
+            style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.5"
+          >
+            Sem avaliações registradas.
+          </p>
+        </div>
+      </div>
+
+      <!-- TELA 3: PAINEL DA GESTÃO / SUPERVISÃO -->
+      <div id="screen-manager" class="screen">
+        <div class="top-bar">
+          <span class="unit">PAINEL DE GESTÃO VIA PARQUE</span>
+          <button class="btn-logout" onclick="sair()">Sair</button>
+        </div>
+
+        <div class="section-card">
+          <div class="section-title">
+            👥 Equipe Cadastrada (<span id="totalStaff">0</span>)
+          </div>
+          <div id="staffList"></div>
+        </div>
+      </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- MODAL: VISUALIZAR ELOGIOS -->
+    <div id="modalElogios" class="modal-overlay">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title">👏 Elogios Recebidos</div>
+          <button class="close-modal" onclick="fecharModal('modalElogios')">
+            &times;
+          </button>
+        </div>
+        <div id="listaElogiosContent"></div>
+      </div>
+    </div>
+
+    <!-- MODAL: EDITAR PERFIL DO FUNCIONÁRIO (GESTOR) -->
+    <div id="modalEdit" class="modal-overlay">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title">✏️ Avaliar & Editar Colaborador</div>
+          <button class="close-modal" onclick="fecharModal('modalEdit')">
+            &times;
+          </button>
+        </div>
+
+        <div class="form-group">
+          <label>Nome Completo</label>
+          <input type="text" id="editNome" class="form-input" />
+        </div>
+
+        <div class="form-group">
+          <label>Cargo / Função</label>
+          <input
+            type="text"
+            id="editCargo"
+            class="form-input"
+            onchange="atualizarFormularioAvaliacao()"
+          />
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px">
+          <div class="form-group">
+            <label>Nível na Trilha (1-5)</label>
+            <input
+              type="number"
+              id="editNivel"
+              min="1"
+              max="5"
+              class="form-input"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Progresso (%)</label>
+            <input
+              type="number"
+              id="editProgresso"
+              min="0"
+              max="100"
+              class="form-input"
+            />
+          </div>
+        </div>
+
+        <!-- SELEÇÃO DE TRIMESTRE PARA AVALIAÇÃO -->
+        <div
+          style="
+            background: rgba(59, 130, 246, 0.1);
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid var(--accent-blue);
+            margin-bottom: 12px;
+          "
+        >
+          <div class="form-group" style="margin-bottom: 8px">
+            <label style="color: var(--accent-blue); font-weight: 700"
+              >📅 Selecione o Trimestre para Avaliar</label
+            >
+            <select
+              id="editTrimestreSelect"
+              class="form-select"
+              onchange="carregarCamposTrimestreModal()"
+            >
+              <option value="Q1">1º Trimestre</option>
+              <option value="Q2">2º Trimestre</option>
+              <option value="Q3">3º Trimestre</option>
+              <option value="Q4">4º Trimestre</option>
+            </select>
+          </div>
+
+          <!-- CRITÉRIOS DINÂMICOS DE PERFORMANCE -->
+          <div style="margin-top: 8px">
+            <label
+              style="
+                font-size: 0.75rem;
+                color: var(--accent-gold);
+                font-weight: 700;
+              "
+              >🎭 Critérios de Performance (Nota 1 a 5)</label
+            >
+            <div
+              id="modalPerfInputs"
+              class="eval-input-grid"
+              style="margin-top: 4px"
+            ></div>
+          </div>
+
+          <!-- CRITÉRIOS DINÂMICOS DE ATITUDE -->
+          <div style="margin-top: 10px">
+            <label
+              style="
+                font-size: 0.75rem;
+                color: var(--accent-gold);
+                font-weight: 700;
+              "
+              >⚡ Critérios de Atitude (Nota 1 a 5)</label
+            >
+            <div
+              id="modalAtitInputs"
+              class="eval-input-grid"
+              style="margin-top: 4px"
+            ></div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px">
+          <div class="form-group">
+            <label>Presença</label>
+            <input type="text" id="editPresenca" class="form-input" />
+          </div>
+
+          <div class="form-group">
+            <label>Cursos</label>
+            <input type="text" id="editCursos" class="form-input" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>🎯 Missão / Próximo Desenvolvimento</label>
+          <textarea id="editMissao" class="form-textarea"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>💬 Feedback da Gestão</label>
+          <textarea id="editFeedback" class="form-textarea"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>➕ Adicionar Novo Elogio</label>
+          <div style="display: flex; gap: 6px">
+            <input
+              type="text"
+              id="editNovoElogio"
+              class="form-input"
+              placeholder="Novo elogio recebido..."
+            />
+            <button
+              class="btn-sm btn-edit"
+              style="white-space: nowrap"
+              onclick="adicionarElogioNaEdicao()"
+            >
+              + Adicionar
+            </button>
+          </div>
+        </div>
+
+        <button
+          class="btn-primary"
+          style="margin-top: 10px"
+          onclick="salvarEdicao()"
+        >
+          Salvar Alterações
+        </button>
+      </div>
+    </div>
+
+    <script>
+      // MATRIZ DE CRITÉRIOS POR CARGO
+      const CRITERIOS = {
+        RECREADOR: {
+          perf: [
+            "Habilidade para brincar",
+            "Fidelização",
+            "Animação (festas/recreação)",
+          ],
+          atit: [
+            "Carisma",
+            "Proatividade",
+            "Energia",
+            "Valores da empresa",
+            "Relacionamento interpessoal",
+            "Pontualidade",
+            "Apresentação pessoal",
+          ],
+        },
+        RECEPCIONISTA: {
+          perf: ["Controle de Check-in/out", "Comunicação", "Vendas", "Caixa"],
+          atit: [
+            "Educação e simpatia",
+            "Atenção",
+            "Valores da empresa",
+            "Relacionamento interpessoal",
+            "Apresentação pessoal",
+            "Pontualidade",
+          ],
+        },
+        SUBGERENTE: {
+          perf: [
+            "Gestão de ocorrência",
+            "Resultado financeiro",
+            "Gestão de serviço",
+            "Desenvolvimento de pessoas",
+          ],
+          atit: [
+            "Postura em discussões",
+            "Pontualidade",
+            "Carisma",
+            "Apresentação pessoal",
+            "Energia",
+            "Valores da empresa",
+            "Relacionamento interpessoal",
+          ],
+        },
+      };
+
+      const NOMES_NOTAS = {
+        1: "1 (Insatisfatório)",
+        2: "2 (Regular)",
+        3: "3 (Bom)",
+        4: "4 (Muito bom)",
+        5: "5 (Excelente)",
+      };
+
+      function obterTipoCargo(cargoStr) {
+        const c = cargoStr.toLowerCase();
+        if (
+          c.includes("subgerente") ||
+          c.includes("gerente") ||
+          c.includes("supervisor")
+        )
+          return "SUBGERENTE";
+        if (c.includes("recep")) return "RECEPCIONISTA";
+        return "RECREADOR";
+      }
+
+      function criarAvaliacaoPadrao(
+        tipoCargo,
+        notaPerfDefault = 4,
+        notaAtitDefault = 4,
+      ) {
+        const matriz = CRITERIOS[tipoCargo];
+        const gerarBloco = (lista, notaDef) => {
+          const obj = {};
+          lista.forEach((crit) => (obj[crit] = notaDef));
+          return obj;
+        };
+
+        return {
+          Q1: {
+            perf: gerarBloco(matriz.perf, notaPerfDefault),
+            atit: gerarBloco(matriz.atit, notaAtitDefault),
+          },
+          Q2: {
+            perf: gerarBloco(matriz.perf, notaPerfDefault),
+            atit: gerarBloco(matriz.atit, notaAtitDefault),
+          },
+          Q3: {
+            perf: gerarBloco(matriz.perf, notaPerfDefault),
+            atit: gerarBloco(matriz.atit, notaAtitDefault),
+          },
+          Q4: {
+            perf: gerarBloco(matriz.perf, notaPerfDefault),
+            atit: gerarBloco(matriz.atit, notaAtitDefault),
+          },
+        };
+      }
+
+      // BANCO DE DADOS INTEGRADO DA EQUIPE VIA PARQUE
+      const equipe = {
+        1001: {
+          nome: "Patrícia",
+          cargo: "Gerente",
+          nivel: 5,
+          progresso: 100,
+          presenca: "100%",
+          cursos: "100%",
+          elogios: "12x",
+          listaElogios: [
+            "Liderança exemplar na operação",
+            "Ótima organização e gestão de tempo",
+          ],
+          missao:
+            "Capacitar supervisores para autonomia na tomada de decisões do dia a dia.",
+          especializacoes: ["midias", "recep", "lider"],
+          feedback: "Liderança executiva da unidade Via Parque.",
+          evaluations: criarAvaliacaoPadrao("SUBGERENTE", 5, 5),
+        },
+        1002: {
+          nome: "Thainá Freires",
+          cargo: "Subgerente (Dia)",
+          nivel: 5,
+          progresso: 95,
+          presenca: "100%",
+          cursos: "100%",
+          elogios: "8x",
+          listaElogios: ["Excelente acompanhamento de métricas do turno"],
+          missao: "Desenvolver novos padrões para o fluxo do turno matutino.",
+          especializacoes: ["recep", "lider"],
+          feedback: "Excelente gestão no turno do dia.",
+          evaluations: criarAvaliacaoPadrao("SUBGERENTE", 5, 5),
+        },
+        1003: {
+          nome: "Felipe Mamedes",
+          cargo: "Subgerente (Noite)",
+          nivel: 5,
+          progresso: 95,
+          presenca: "98%",
+          cursos: "100%",
+          elogios: "7x",
+          listaElogios: ["Domínio total da rotina de fechamento de loja"],
+          missao: "Aprimorar o controle de segurança nas atividades noturnas.",
+          especializacoes: ["lider"],
+          feedback: "Ótima condução da operação noturna.",
+          evaluations: criarAvaliacaoPadrao("SUBGERENTE", 4, 5),
+        },
+        1004: {
+          nome: "Ana Vitória dos Santos",
+          cargo: "Supervisora",
+          nivel: 4,
+          progresso: 85,
+          presenca: "99%",
+          cursos: "100%",
+          elogios: "9x",
+          listaElogios: ["Proatividade constante e visão operacional afiada"],
+          missao: "Treinar habilidades avançadas de resolução de conflitos.",
+          especializacoes: ["midias", "lider"],
+          feedback: "Em preparação para novos desafios na subgerência.",
+          evaluations: criarAvaliacaoPadrao("SUBGERENTE", 4, 4),
+        },
+        1005: {
+          nome: "Pâmella dos Santos",
+          cargo: "Recepcionista",
+          nivel: 3,
+          progresso: 70,
+          presenca: "95%",
+          cursos: "90%",
+          elogios: "5x",
+          listaElogios: ["Atendimento acolhedor aos clientes na entrada"],
+          missao: "Aprimorar velocidade e precisão no fechamento de caixas.",
+          especializacoes: ["recep"],
+          feedback: "Consistente no atendimento de recepção.",
+          evaluations: criarAvaliacaoPadrao("RECEPCIONISTA", 4, 4),
+        },
+        1006: {
+          nome: "Michelly Barbosa",
+          cargo: "Recreadora / Líder em Treinamento",
+          nivel: 2,
+          progresso: 60,
+          presenca: "96%",
+          cursos: "95%",
+          elogios: "6x",
+          listaElogios: ["Atenção e carinho no cuidado com os clientes"],
+          missao:
+            "Desenvolver liderança de equipe durante as atividades diárias.",
+          especializacoes: ["lider"],
+          feedback: "Excelente progresso como líder em treinamento.",
+          evaluations: criarAvaliacaoPadrao("RECREADOR", 4, 5),
+        },
+        1007: {
+          nome: "Vinícius Valente",
+          cargo: "Recreador",
+          nivel: 1,
+          progresso: 40,
+          presenca: "92%",
+          cursos: "80%",
+          elogios: "3x",
+          listaElogios: ["Animação e energia contagiante nas brincadeiras"],
+          missao: "Aumentar a pontualidade e dominar o checklist diário.",
+          especializacoes: [],
+          feedback: "Focado no desenvolvimento operacional inicial.",
+          evaluations: criarAvaliacaoPadrao("RECREADOR", 3, 4),
+        },
+      };
+
+      let usuarioAtualPIN = null;
+      let abaTrimestreAtiva = "Q1";
+      let funcionarioEmEdicaoPIN = null;
+
+      function autenticar() {
+        const pin = document.getElementById("pinInput").value;
+
+        if (pin === "9999") {
+          usuarioAtualPIN = "9999";
+          mostrarTela("screen-manager");
+          carregarPainelGestao();
+          return;
+        }
+
+        if (equipe[pin]) {
+          usuarioAtualPIN = pin;
+          mostrarTela("screen-profile");
+          carregarPerfilUsuario(pin);
+        } else {
+          alert("PIN não encontrado. Tente novamente.");
+        }
+      }
+
+      function sair() {
+        usuarioAtualPIN = null;
+        document.getElementById("pinInput").value = "";
+        mostrarTela("screen-login");
+      }
+
+      function mostrarTela(screenId) {
+        document
+          .querySelectorAll(".screen")
+          .forEach((s) => s.classList.remove("active"));
+        document.getElementById(screenId).classList.add("active");
+      }
+
+      function carregarPerfilUsuario(pin) {
+        const user = equipe[pin];
+        document.getElementById("userName").textContent = user.nome;
+        document.getElementById("userAvatar").textContent = user.nome
+          .substring(0, 2)
+          .toUpperCase();
+        document.getElementById("userLevelTag").textContent =
+          `Nível ${user.nivel} • ${user.cargo}`;
+
+        document.getElementById("attRate").textContent = user.presenca;
+        document.getElementById("trainRate").textContent = user.cursos;
+        document.getElementById("reviewsCount").textContent = user.elogios;
+
+        document.getElementById("userMissao").textContent =
+          user.missao || "Nenhuma missão atribuída no momento.";
+        document.getElementById("feedbackText").textContent =
+          user.feedback || "Sem observações registradas.";
+
+        document.getElementById("progressBar").style.width =
+          `${user.progresso}%`;
+        document.getElementById("progressText").textContent =
+          `${user.progresso}%`;
+
+        atualizarTrilhaVisual(user.nivel, user.especializacoes);
+        selecionarTrimestreAba("Q1");
+      }
+
+      function atualizarTrilhaVisual(nivel, especializacoes = []) {
+        for (let i = 1; i <= 5; i++) {
+          const stepEl = document.getElementById(`step-lvl${i}`);
+          stepEl.classList.remove("active", "completed");
+          if (i < nivel) {
+            stepEl.classList.add("completed");
+          } else if (i === nivel) {
+            stepEl.classList.add("active");
+          }
+        }
+
+        const specs = ["midias", "recep", "lider"];
+        specs.forEach((spec) => {
+          const specEl = document.getElementById(`spec-${spec}`);
+          if (especializacoes.includes(spec)) {
+            specEl.classList.add("unlocked");
+          } else {
+            specEl.classList.remove("unlocked");
+          }
+        });
+      }
+
+      function selecionarTrimestreAba(q) {
+        abaTrimestreAtiva = q;
+        document.querySelectorAll(".tri-btn").forEach((btn, index) => {
+          btn.classList.toggle("active", `Q${index + 1}` === q);
+        });
+
+        const user = equipe[usuarioAtualPIN];
+        if (!user || !user.evaluations || !user.evaluations[q]) return;
+
+        const evalData = user.evaluations[q];
+        renderizarCritériosLista("perfCriteriaList", evalData.perf);
+        renderizarCritériosLista("atitCriteriaList", evalData.atit);
+
+        document.getElementById("mediaPerfText").textContent =
+          `Média: ${calcularMediaObj(evalData.perf)}`;
+        document.getElementById("mediaAtitText").textContent =
+          `Média: ${calcularMediaObj(evalData.atit)}`;
+      }
+
+      function renderizarCritériosLista(containerId, obj) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = "";
+        if (!obj) return;
+
+        Object.keys(obj).forEach((key) => {
+          const div = document.createElement("div");
+          div.className = "eval-item";
+          div.innerHTML = `<span class="label">${key}</span><span class="val">${NOMES_NOTAS[obj[key]] || obj[key]}</span>`;
+          container.appendChild(div);
+        });
+      }
+
+      function calcularMediaObj(obj) {
+        if (!obj) return "-";
+        const keys = Object.keys(obj);
+        if (keys.length === 0) return "-";
+        const soma = keys.reduce((acc, k) => acc + Number(obj[k]), 0);
+        return (soma / keys.length).toFixed(1);
+      }
+
+      function abrirModalElogios() {
+        const user = equipe[usuarioAtualPIN];
+        const container = document.getElementById("listaElogiosContent");
+        container.innerHTML = "";
+
+        if (!user.listaElogios || user.listaElogios.length === 0) {
+          container.innerHTML =
+            "<p style='color: var(--text-muted); font-size: 0.85rem;'>Nenhum elogio detalhado registrado.</p>";
+        } else {
+          user.listaElogios.forEach((elogio) => {
+            const p = document.createElement("p");
+            p.style.cssText =
+              "background: var(--bg-main); padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 0.85rem; border: 1px solid var(--border);";
+            p.textContent = `⭐ "${elogio}"`;
+            container.appendChild(p);
+          });
+        }
+        document.getElementById("modalElogios").classList.add("active");
+      }
+
+      function fecharModal(modalId) {
+        document.getElementById(modalId).classList.remove("active");
+      }
+
+      function carregarPainelGestao() {
+        const list = document.getElementById("staffList");
+        list.innerHTML = "";
+        const keys = Object.keys(equipe);
+        document.getElementById("totalStaff").textContent = keys.length;
+
+        keys.forEach((pin) => {
+          const f = equipe[pin];
+          const div = document.createElement("div");
+          div.className = "staff-item";
+          div.innerHTML = `
+            <div>
+              <div style="font-weight: 700; font-size: 0.9rem;">${f.nome}</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">${f.cargo} • Nível ${f.nivel} (PIN: ${pin})</div>
+            </div>
+            <div class="action-btns">
+              <button class="btn-sm btn-view" onclick="visualizarComo('${pin}')">Ver</button>
+              <button class="btn-sm btn-edit" onclick="abrirModalEdicao('${pin}')">Editar</button>
+            </div>
+          `;
+          list.appendChild(div);
+        });
+      }
+
+      function visualizarComo(pin) {
+        usuarioAtualPIN = pin;
+        mostrarTela("screen-profile");
+        carregarPerfilUsuario(pin);
+      }
+
+      function abrirModalEdicao(pin) {
+        funcionarioEmEdicaoPIN = pin;
+        const f = equipe[pin];
+
+        document.getElementById("editNome").value = f.nome;
+        document.getElementById("editCargo").value = f.cargo;
+        document.getElementById("editNivel").value = f.nivel;
+        document.getElementById("editProgresso").value = f.progresso;
+        document.getElementById("editPresenca").value = f.presenca;
+        document.getElementById("editCursos").value = f.cursos;
+        document.getElementById("editMissao").value = f.missao || "";
+        document.getElementById("editFeedback").value = f.feedback || "";
+        document.getElementById("editNovoElogio").value = "";
+
+        document.getElementById("editTrimestreSelect").value = "Q1";
+        atualizarFormularioAvaliacao();
+
+        document.getElementById("modalEdit").classList.add("active");
+      }
+
+      function atualizarFormularioAvaliacao() {
+        carregarCamposTrimestreModal();
+      }
+
+      function carregarCamposTrimestreModal() {
+        if (!funcionarioEmEdicaoPIN) return;
+        const cargo = document.getElementById("editCargo").value;
+        const tipoCargo = obterTipoCargo(cargo);
+        const matriz = CRITERIOS[tipoCargo];
+        const q = document.getElementById("editTrimestreSelect").value;
+        const user = equipe[funcionarioEmEdicaoPIN];
+
+        if (!user.evaluations[q]) {
+          user.evaluations[q] = { perf: {}, atit: {} };
+        }
+
+        renderInputsAvaliacao(
+          "modalPerfInputs",
+          matriz.perf,
+          user.evaluations[q].perf,
+        );
+        renderInputsAvaliacao(
+          "modalAtitInputs",
+          matriz.atit,
+          user.evaluations[q].atit,
+        );
+      }
+
+      function renderInputsAvaliacao(containerId, criteriosLista, dadosSalvos) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = "";
+
+        criteriosLista.forEach((crit) => {
+          const valAtual =
+            dadosSalvos && dadosSalvos[crit] !== undefined
+              ? dadosSalvos[crit]
+              : 4;
+          const div = document.createElement("div");
+          div.className = "eval-field";
+          div.innerHTML = `
+            <label>${crit}</label>
+            <select class="form-select eval-select-item" data-crit="${crit}">
+              <option value="1" ${valAtual == 1 ? "selected" : ""}>1 (Insatisfatório)</option>
+              <option value="2" ${valAtual == 2 ? "selected" : ""}>2 (Regular)</option>
+              <option value="3" ${valAtual == 3 ? "selected" : ""}>3 (Bom)</option>
+              <option value="4" ${valAtual == 4 ? "selected" : ""}>4 (Muito bom)</option>
+              <option value="5" ${valAtual == 5 ? "selected" : ""}>5 (Excelente)</option>
+            </select>
+          `;
+          container.appendChild(div);
+        });
+      }
+
+      function adicionarElogioNaEdicao() {
+        const txt = document.getElementById("editNovoElogio").value.trim();
+        if (!txt) return;
+
+        const f = equipe[funcionarioEmEdicaoPIN];
+        if (!f.listaElogios) f.listaElogios = [];
+        f.listaElogios.push(txt);
+        f.elogios = `${f.listaElogios.length}x`;
+
+        document.getElementById("editNovoElogio").value = "";
+        alert("Elogio adicionado com sucesso!");
+      }
+
+      function salvarEdicao() {
+        const pin = funcionarioEmEdicaoPIN;
+        const f = equipe[pin];
+
+        f.nome = document.getElementById("editNome").value;
+        f.cargo = document.getElementById("editCargo").value;
+        f.nivel = Number(document.getElementById("editNivel").value);
+        f.progresso = Number(document.getElementById("editProgresso").value);
+        f.presenca = document.getElementById("editPresenca").value;
+        f.cursos = document.getElementById("editCursos").value;
+        f.missao = document.getElementById("editMissao").value;
+        f.feedback = document.getElementById("editFeedback").value;
+
+        const q = document.getElementById("editTrimestreSelect").value;
+        if (!f.evaluations[q]) f.evaluations[q] = { perf: {}, atit: {} };
+
+        document
+          .querySelectorAll("#modalPerfInputs .eval-select-item")
+          .forEach((sel) => {
+            const crit = sel.getAttribute("data-crit");
+            f.evaluations[q].perf[crit] = Number(sel.value);
+          });
+
+        document
+          .querySelectorAll("#modalAtitInputs .eval-select-item")
+          .forEach((sel) => {
+            const crit = sel.getAttribute("data-crit");
+            f.evaluations[q].atit[crit] = Number(sel.value);
+          });
+
+        fecharModal("modalEdit");
+        carregarPainelGestao();
+        alert("Dados atualizados com sucesso!");
+      }
+    </script>
   </body>
 </html>
