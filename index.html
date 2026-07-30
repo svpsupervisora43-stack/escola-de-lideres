@@ -591,7 +591,7 @@
           </div>
         </div>
 
-        <!-- SEÇÃO: AVALIAÇÃO TRIMESTRAL DA GESTÃO -->
+        <!-- SEÇÃO: AVALIAÇÃO TRIMESTRAL DA GESTÃO (4 BLOCOS) -->
         <div class="section-card">
           <div class="section-title">
             <span>📋 Avaliação Trimestral da Gestão</span>
@@ -1001,39 +1001,7 @@
         return "RECREADOR";
       }
 
-      function criarAvaliacaoPadrao(
-        tipoCargo,
-        notaPerfDefault = 4,
-        notaAtitDefault = 4,
-      ) {
-        const matriz = CRITERIOS[tipoCargo];
-        const gerarBloco = (lista, notaDef) => {
-          const obj = {};
-          lista.forEach((crit) => (obj[crit] = notaDef));
-          return obj;
-        };
-
-        return {
-          Q1: {
-            perf: gerarBloco(matriz.perf, notaPerfDefault),
-            atit: gerarBloco(matriz.atit, notaAtitDefault),
-          },
-          Q2: {
-            perf: gerarBloco(matriz.perf, notaPerfDefault),
-            atit: gerarBloco(matriz.atit, notaAtitDefault),
-          },
-          Q3: {
-            perf: gerarBloco(matriz.perf, notaPerfDefault),
-            atit: gerarBloco(matriz.atit, notaAtitDefault),
-          },
-          Q4: {
-            perf: gerarBloco(matriz.perf, notaPerfDefault),
-            atit: gerarBloco(matriz.atit, notaAtitDefault),
-          },
-        };
-      }
-
-      // BANCO DE DADOS INTEGRADO DA EQUIPE VIA PARQUE
+      // BANCO DE DADOS DA EQUIPE VIA PARQUE
       const equipe = {
         1001: {
           nome: "Patrícia",
@@ -1089,253 +1057,433 @@
           presenca: "99%",
           cursos: "100%",
           elogios: "9x",
-          listaElogios: ["Proatividade constante e visão operacional afiada"],
-          missao: "Treinar habilidades avançadas de resolução de conflitos.",
-          especializacoes: ["midias", "lider"],
-          feedback: "Em preparação para novos desafios na subgerência.",
+          listaElogios: ["Proatividade constante nas rotinas"],
+          missao:
+            "Assumir a gestão direta dos feedbacks semanais da equipe de recreação.",
+          especializacoes: ["recep", "lider"],
+          feedback: "Promovida a Supervisora. Foco em gestão de equipe.",
           evaluations: criarAvaliacaoPadrao("SUBGERENTE", 4, 4),
         },
         1005: {
           nome: "Pâmella dos Santos",
           cargo: "Recepcionista",
-          nivel: 3,
+          nivel: 2,
           progresso: 70,
-          presenca: "95%",
-          cursos: "90%",
-          elogios: "5x",
-          listaElogios: ["Atendimento acolhedor aos clientes na entrada"],
-          missao: "Aprimorar velocidade e precisão no fechamento de caixas.",
+          presenca: "96%",
+          cursos: "100%",
+          elogios: "4x",
+          listaElogios: ["Atendimento cordial na recepção"],
+          missao:
+            "Treinar comunicação assertiva para lidar com filas de alta demanda.",
           especializacoes: ["recep"],
-          feedback: "Consistente no atendimento de recepção.",
-          evaluations: criarAvaliacaoPadrao("RECEPCIONISTA", 4, 4),
+          feedback: "Ótimo atendimento na recepção.",
+          evaluations: criarAvaliacaoPadrao("RECEPCIONISTA", 4, 5),
         },
         1006: {
           nome: "Michelly Barbosa",
           cargo: "Recreadora / Líder em Treinamento",
           nivel: 2,
-          progresso: 60,
-          presenca: "96%",
-          cursos: "95%",
-          elogios: "6x",
-          listaElogios: ["Atenção e carinho no cuidado com os clientes"],
+          progresso: 75,
+          presenca: "97%",
+          cursos: "100%",
+          elogios: "5x",
+          listaElogios: ["Energia contagiante nas brincadeiras"],
           missao:
-            "Desenvolver liderança de equipe durante as atividades diárias.",
+            "Conduzir reuniões de alinhamento pré-festa com os recreadores.",
           especializacoes: ["lider"],
-          feedback: "Excelente progresso como líder em treinamento.",
-          evaluations: criarAvaliacaoPadrao("RECREADOR", 4, 5),
+          feedback: "Em treinamento para Líder de Recreação.",
+          evaluations: criarAvaliacaoPadrao("RECREADOR", 5, 5),
         },
         1007: {
           nome: "Vinícius Valente",
           cargo: "Recreador",
           nivel: 1,
           progresso: 40,
-          presenca: "92%",
-          cursos: "80%",
-          elogios: "3x",
-          listaElogios: ["Animação e energia contagiante nas brincadeiras"],
-          missao: "Aumentar a pontualidade e dominar o checklist diário.",
+          presenca: "95%",
+          cursos: "100%",
+          elogios: "2x",
+          listaElogios: ["Muito dedicado na segurança da pista"],
+          missao: "Aprimorar animação em festas e pontualidade nos turnos.",
           especializacoes: [],
-          feedback: "Focado no desenvolvimento operacional inicial.",
+          feedback: "Focar em pontualidade e engajamento na pista.",
           evaluations: criarAvaliacaoPadrao("RECREADOR", 3, 4),
+        },
+        1008: {
+          nome: "Alex de Oliveira",
+          cargo: "Recreador",
+          nivel: 1,
+          progresso: 50,
+          presenca: "98%",
+          cursos: "100%",
+          elogios: "3x",
+          listaElogios: ["Animação destacada no palco"],
+          missao: "Aprender as rotinas operacionais da recepção de convidados.",
+          especializacoes: [],
+          feedback: "Boa energia nas brincadeiras.",
+          evaluations: criarAvaliacaoPadrao("RECREADOR", 4, 4),
+        },
+        1009: {
+          nome: "Aline Ferreira",
+          cargo: "Recreadora",
+          nivel: 1,
+          progresso: 50,
+          presenca: "97%",
+          cursos: "100%",
+          elogios: "2x",
+          listaElogios: ["Atenção e carinho no cuidado com os pequenos"],
+          missao:
+            "Desenvolver autonomia na organização de camarim e figurinos.",
+          especializacoes: [],
+          feedback: "Atenção aos detalhes das festas.",
+          evaluations: criarAvaliacaoPadrao("RECREADOR", 4, 4),
+        },
+        1010: {
+          nome: "Davi Campello",
+          cargo: "Recreador",
+          nivel: 1,
+          progresso: 60,
+          presenca: "99%",
+          cursos: "100%",
+          elogios: "4x",
+          listaElogios: ["Sempre solícito e pró-ativo na organização"],
+          missao: "Aprender técnicas de liderança de pista para o Nível 2.",
+          especializacoes: [],
+          feedback: "Proativo na pista.",
+          evaluations: criarAvaliacaoPadrao("RECREADOR", 4, 5),
+        },
+        1011: {
+          nome: "Eduarda Gonçalves",
+          cargo: "Recreadora",
+          nivel: 1,
+          progresso: 50,
+          presenca: "98%",
+          cursos: "100%",
+          elogios: "3x",
+          listaElogios: ["Ótimo relacionamento com as famílias"],
+          missao: "Concluir curso complementar de mídias sociais internas.",
+          especializacoes: [],
+          feedback: "Bom relacionamento com as crianças.",
+          evaluations: criarAvaliacaoPadrao("RECREADOR", 4, 4),
+        },
+        1012: {
+          nome: "Geovana Isabelly",
+          cargo: "Recreadora",
+          nivel: 1,
+          progresso: 55,
+          presenca: "98%",
+          cursos: "100%",
+          elogios: "3x",
+          listaElogios: ["Comunicação clara e simpática com os pais"],
+          missao: "Praticar condução de gincanas infantis no palco principal.",
+          especializacoes: [],
+          feedback: "Boa comunicação com os pais.",
+          evaluations: criarAvaliacaoPadrao("RECREADOR", 4, 4),
+        },
+        1013: {
+          nome: "Isabelly Vitória",
+          cargo: "Recreadora",
+          nivel: 1,
+          progresso: 50,
+          presenca: "97%",
+          cursos: "100%",
+          elogios: "2x",
+          listaElogios: ["Alegria e pontualidade exemplar"],
+          missao: "Aumentar tempo de interação com grupos em eventos fechados.",
+          especializacoes: [],
+          feedback: "Pontual e animada.",
+          evaluations: criarAvaliacaoPadrao("RECREADOR", 4, 4),
+        },
+        1014: {
+          nome: "Kainá Rosendo",
+          cargo: "Recreador",
+          nivel: 1,
+          progresso: 60,
+          presenca: "99%",
+          cursos: "100%",
+          elogios: "3x",
+          listaElogios: ["Liderou muito bem os jogos de esportes no parque"],
+          missao:
+            "Apoiar a liderança nos horários de maior pico de atendimento.",
+          especializacoes: [],
+          feedback: "Destaque na condução de jogos.",
+          evaluations: criarAvaliacaoPadrao("RECREADOR", 4, 5),
+        },
+        1015: {
+          nome: "Lohana Pessoa",
+          cargo: "Recreador Mídia",
+          nivel: 1,
+          progresso: 50,
+          presenca: "98%",
+          cursos: "100%",
+          elogios: "2x",
+          listaElogios: ["Postura profissional e acolhedora"],
+          missao: "Desenvolver a produção de fotos e conteúdos de festas.",
+          especializacoes: ["midias"],
+          feedback: "Ótima postura e liderança em mídias.",
+          evaluations: criarAvaliacaoPadrao("RECREADOR", 4, 5),
+        },
+        1016: {
+          nome: "Lucas Cabral",
+          cargo: "Recreador",
+          nivel: 1,
+          progresso: 80,
+          presenca: "99%",
+          cursos: "100%",
+          elogios: "6x",
+          listaElogios: [
+            "Criatividade nas brincadeiras temáticas",
+            "Elogiado em três festas no mesmo final de semana",
+          ],
+          missao:
+            "Finalizar os módulos de Recreador Líder para promoção ao Nível 2.",
+          especializacoes: ["lider"],
+          feedback:
+            "Excelente energia nas festas. Focar em liderar grandes grupos.",
+          evaluations: criarAvaliacaoPadrao("RECREADOR", 5, 5),
+        },
+        1017: {
+          nome: "Micaela de Souza",
+          cargo: "Recreadora",
+          nivel: 1,
+          progresso: 55,
+          presenca: "98%",
+          cursos: "100%",
+          elogios: "3x",
+          listaElogios: ["Cuidado impecável com crianças pequenas"],
+          missao: "Desenvolver repertório de brincadeiras para a área baby.",
+          especializacoes: [],
+          feedback: "Atenciosa com os pequenos.",
+          evaluations: criarAvaliacaoPadrao("RECREADOR", 4, 4),
+        },
+        1018: {
+          nome: "Rosenilda Santos",
+          cargo: "ASG",
+          nivel: 1,
+          progresso: 90,
+          presenca: "100%",
+          cursos: "100%",
+          elogios: "5x",
+          listaElogios: [
+            "Manutenção da limpeza impecável em dias de casa cheia",
+          ],
+          missao: "Padronizar o checklist de higiene das áreas de recreação.",
+          especializacoes: [],
+          feedback: "Zelo e organização impecáveis na loja.",
+          evaluations: criarAvaliacaoPadrao("RECREADOR", 5, 5),
         },
       };
 
-      let usuarioAtualPIN = null;
-      let abaTrimestreAtiva = "Q1";
-      let funcionarioEmEdicaoPIN = null;
+      function criarAvaliacaoPadrao(tipoCargo, notaPerfDef, notaAtitDef) {
+        const struct = CRITERIOS[tipoCargo];
+        const triObj = {};
+        ["Q1", "Q2", "Q3", "Q4"].forEach((q) => {
+          triObj[q] = { perf: {}, atit: {} };
+          struct.perf.forEach((item) => (triObj[q].perf[item] = notaPerfDef));
+          struct.atit.forEach((item) => (triObj[q].atit[item] = notaAtitDef));
+        });
+        return triObj;
+      }
+
+      let pinUsuarioAtual = null;
+      let pinSendoEditado = null;
+      let trimestreAtivoPerfil = "Q1";
 
       function autenticar() {
         const pin = document.getElementById("pinInput").value;
 
-        if (pin === "9999") {
-          usuarioAtualPIN = "9999";
-          mostrarTela("screen-manager");
+        // SENHA DO GESTOR ATUALIZADA PARA 1711
+        if (pin === "1711") {
+          pinUsuarioAtual = "1711";
+          trocarTela("screen-manager");
           carregarPainelGestao();
-          return;
-        }
-
-        if (equipe[pin]) {
-          usuarioAtualPIN = pin;
-          mostrarTela("screen-profile");
-          carregarPerfilUsuario(pin);
+        } else if (equipe[pin]) {
+          pinUsuarioAtual = pin;
+          carregarPerfil(equipe[pin]);
+          trocarTela("screen-profile");
         } else {
-          alert("PIN não encontrado. Tente novamente.");
+          alert("PIN não encontrado!");
         }
       }
 
-      function sair() {
-        usuarioAtualPIN = null;
-        document.getElementById("pinInput").value = "";
-        mostrarTela("screen-login");
-      }
-
-      function mostrarTela(screenId) {
-        document
-          .querySelectorAll(".screen")
-          .forEach((s) => s.classList.remove("active"));
-        document.getElementById(screenId).classList.add("active");
-      }
-
-      function carregarPerfilUsuario(pin) {
-        const user = equipe[pin];
-        document.getElementById("userName").textContent = user.nome;
-        document.getElementById("userAvatar").textContent = user.nome
-          .substring(0, 2)
-          .toUpperCase();
-        document.getElementById("userLevelTag").textContent =
+      function carregarPerfil(user) {
+        document.getElementById("userName").innerText = user.nome;
+        document.getElementById("userLevelTag").innerText =
           `Nível ${user.nivel} • ${user.cargo}`;
+        document.getElementById("userAvatar").innerText = user.nome
+          .split(" ")
+          .map((n) => n[0])
+          .slice(0, 2)
+          .join("");
 
-        document.getElementById("attRate").textContent = user.presenca;
-        document.getElementById("trainRate").textContent = user.cursos;
-        document.getElementById("reviewsCount").textContent = user.elogios;
+        document.getElementById("attRate").innerText = user.presenca;
+        document.getElementById("trainRate").innerText = user.cursos;
+        document.getElementById("reviewsCount").innerText = user.elogios;
 
-        document.getElementById("userMissao").textContent =
-          user.missao || "Nenhuma missão atribuída no momento.";
-        document.getElementById("feedbackText").textContent =
-          user.feedback || "Sem observações registradas.";
-
+        document.getElementById("userMissao").innerText =
+          user.missao || "Nenhuma missão definida no momento.";
+        document.getElementById("progressText").innerText =
+          user.progresso + "%";
         document.getElementById("progressBar").style.width =
-          `${user.progresso}%`;
-        document.getElementById("progressText").textContent =
-          `${user.progresso}%`;
+          user.progresso + "%";
+        document.getElementById("feedbackText").innerText =
+          `"${user.feedback}"`;
 
-        atualizarTrilhaVisual(user.nivel, user.especializacoes);
-        selecionarTrimestreAba("Q1");
-      }
-
-      function atualizarTrilhaVisual(nivel, especializacoes = []) {
+        // Atualizar Trilha
         for (let i = 1; i <= 5; i++) {
-          const stepEl = document.getElementById(`step-lvl${i}`);
-          stepEl.classList.remove("active", "completed");
-          if (i < nivel) {
-            stepEl.classList.add("completed");
-          } else if (i === nivel) {
-            stepEl.classList.add("active");
-          }
+          const step = document.getElementById(`step-lvl${i}`);
+          step.className = "level-step";
+          if (i < user.nivel) step.classList.add("completed");
+          else if (i === user.nivel) step.classList.add("active");
         }
 
-        const specs = ["midias", "recep", "lider"];
-        specs.forEach((spec) => {
-          const specEl = document.getElementById(`spec-${spec}`);
-          if (especializacoes.includes(spec)) {
-            specEl.classList.add("unlocked");
-          } else {
-            specEl.classList.remove("unlocked");
-          }
+        ["midias", "recep", "lider"].forEach((spec) => {
+          const el = document.getElementById(`spec-${spec}`);
+          if (user.especializacoes && user.especializacoes.includes(spec))
+            el.classList.add("unlocked");
+          else el.classList.remove("unlocked");
         });
+
+        // Renderizar Avaliação do Trimestre Ativo
+        renderizarAvaliacaoPerfil(user, trimestreAtivoPerfil);
       }
 
       function selecionarTrimestreAba(q) {
-        abaTrimestreAtiva = q;
-        document.querySelectorAll(".tri-btn").forEach((btn, index) => {
-          btn.classList.toggle("active", `Q${index + 1}` === q);
-        });
+        trimestreAtivoPerfil = q;
+        const btns = document.querySelectorAll(".tri-btn");
+        btns.forEach((b) => b.classList.remove("active"));
+        event.target.classList.add("active");
 
-        const user = equipe[usuarioAtualPIN];
-        if (!user || !user.evaluations || !user.evaluations[q]) return;
-
-        const evalData = user.evaluations[q];
-        renderizarCritériosLista("perfCriteriaList", evalData.perf);
-        renderizarCritériosLista("atitCriteriaList", evalData.atit);
-
-        document.getElementById("mediaPerfText").textContent =
-          `Média: ${calcularMediaObj(evalData.perf)}`;
-        document.getElementById("mediaAtitText").textContent =
-          `Média: ${calcularMediaObj(evalData.atit)}`;
+        const user = equipe[pinUsuarioAtual];
+        if (user) renderizarAvaliacaoPerfil(user, q);
       }
 
-      function renderizarCritériosLista(containerId, obj) {
-        const container = document.getElementById(containerId);
-        container.innerHTML = "";
-        if (!obj) return;
+      function renderizarAvaliacaoPerfil(user, q) {
+        const tipo = obterTipoCargo(user.cargo);
+        const struct = CRITERIOS[tipo];
+        const dataTri = user.evaluations ? user.evaluations[q] : null;
 
-        Object.keys(obj).forEach((key) => {
-          const div = document.createElement("div");
-          div.className = "eval-item";
-          div.innerHTML = `<span class="label">${key}</span><span class="val">${NOMES_NOTAS[obj[key]] || obj[key]}</span>`;
-          container.appendChild(div);
+        const perfContainer = document.getElementById("perfCriteriaList");
+        const atitContainer = document.getElementById("atitCriteriaList");
+
+        perfContainer.innerHTML = "";
+        atitContainer.innerHTML = "";
+
+        if (!dataTri) {
+          perfContainer.innerHTML =
+            "<div class='eval-item'>Sem dados para este trimestre</div>";
+          atitContainer.innerHTML =
+            "<div class='eval-item'>Sem dados para este trimestre</div>";
+          document.getElementById("mediaPerfText").innerText = "Média: -";
+          document.getElementById("mediaAtitText").innerText = "Média: -";
+          return;
+        }
+
+        let somaPerf = 0,
+          qtdPerf = 0;
+        struct.perf.forEach((item) => {
+          const val = dataTri.perf[item] || 0;
+          somaPerf += val;
+          qtdPerf++;
+          perfContainer.innerHTML += `
+        <div class="eval-item">
+          <span class="label">${item}</span>
+          <span class="val">${val > 0 ? val + " / 5" : "Não avaliado"}</span>
+        </div>
+      `;
         });
-      }
 
-      function calcularMediaObj(obj) {
-        if (!obj) return "-";
-        const keys = Object.keys(obj);
-        if (keys.length === 0) return "-";
-        const soma = keys.reduce((acc, k) => acc + Number(obj[k]), 0);
-        return (soma / keys.length).toFixed(1);
+        let somaAtit = 0,
+          qtdAtit = 0;
+        struct.atit.forEach((item) => {
+          const val = dataTri.atit[item] || 0;
+          somaAtit += val;
+          qtdAtit++;
+          atitContainer.innerHTML += `
+        <div class="eval-item">
+          <span class="label">${item}</span>
+          <span class="val">${val > 0 ? val + " / 5" : "Não avaliado"}</span>
+        </div>
+      `;
+        });
+
+        const mediaP = qtdPerf > 0 ? (somaPerf / qtdPerf).toFixed(1) : "-";
+        const mediaA = qtdAtit > 0 ? (somaAtit / qtdAtit).toFixed(1) : "-";
+
+        document.getElementById("mediaPerfText").innerText =
+          `Média: ${mediaP} / 5`;
+        document.getElementById("mediaAtitText").innerText =
+          `Média: ${mediaA} / 5`;
       }
 
       function abrirModalElogios() {
-        const user = equipe[usuarioAtualPIN];
+        const user =
+          equipe[pinUsuarioAtual] ||
+          (pinSendoEditado ? equipe[pinSendoEditado] : null);
+        if (!user) return;
+
         const container = document.getElementById("listaElogiosContent");
         container.innerHTML = "";
 
         if (!user.listaElogios || user.listaElogios.length === 0) {
-          container.innerHTML =
-            "<p style='color: var(--text-muted); font-size: 0.85rem;'>Nenhum elogio detalhado registrado.</p>";
+          container.innerHTML = `<p style="font-size:0.85rem; color:var(--text-muted); text-align:center; padding:12px;">Nenhum elogio registrado ainda.</p>`;
         } else {
-          user.listaElogios.forEach((elogio) => {
-            const p = document.createElement("p");
-            p.style.cssText =
-              "background: var(--bg-main); padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 0.85rem; border: 1px solid var(--border);";
-            p.textContent = `⭐ "${elogio}"`;
-            container.appendChild(p);
+          user.listaElogios.forEach((item) => {
+            container.innerHTML += `
+          <div style="background:var(--bg-main); padding:12px; border-radius:10px; border:1px solid var(--border); margin-bottom:8px; font-size:0.85rem; color:var(--text-main); line-height:1.4;">
+            👏 "${item}"
+          </div>
+        `;
           });
         }
         document.getElementById("modalElogios").classList.add("active");
       }
 
-      function fecharModal(modalId) {
-        document.getElementById(modalId).classList.remove("active");
-      }
-
       function carregarPainelGestao() {
-        const list = document.getElementById("staffList");
-        list.innerHTML = "";
-        const keys = Object.keys(equipe);
-        document.getElementById("totalStaff").textContent = keys.length;
+        const container = document.getElementById("staffList");
+        container.innerHTML = "";
 
-        keys.forEach((pin) => {
-          const f = equipe[pin];
-          const div = document.createElement("div");
-          div.className = "staff-item";
-          div.innerHTML = `
-            <div>
-              <div style="font-weight: 700; font-size: 0.9rem;">${f.nome}</div>
-              <div style="font-size: 0.75rem; color: var(--text-muted);">${f.cargo} • Nível ${f.nivel} (PIN: ${pin})</div>
-            </div>
-            <div class="action-btns">
-              <button class="btn-sm btn-view" onclick="visualizarComo('${pin}')">Ver</button>
-              <button class="btn-sm btn-edit" onclick="abrirModalEdicao('${pin}')">Editar</button>
-            </div>
-          `;
-          list.appendChild(div);
+        const pins = Object.keys(equipe);
+        document.getElementById("totalStaff").innerText = pins.length;
+
+        pins.forEach((pin) => {
+          const colab = equipe[pin];
+          container.innerHTML += `
+        <div class="staff-item">
+          <div>
+            <strong style="font-size:0.9rem;">${colab.nome}</strong><br>
+            <span style="font-size:0.75rem; color:var(--text-muted);">${colab.cargo} • Nível ${colab.nivel} (PIN: ${pin})</span>
+          </div>
+          <div class="action-btns">
+            <button class="btn-sm btn-view" onclick="verPerfilDirect('${pin}')">Perfil</button>
+            <button class="btn-sm btn-edit" onclick="abrirModalEdicao('${pin}')">Editar</button>
+          </div>
+        </div>
+      `;
         });
       }
 
-      function visualizarComo(pin) {
-        usuarioAtualPIN = pin;
-        mostrarTela("screen-profile");
-        carregarPerfilUsuario(pin);
+      function verPerfilDirect(pin) {
+        pinUsuarioAtual = pin;
+        carregarPerfil(equipe[pin]);
+        trocarTela("screen-profile");
       }
 
       function abrirModalEdicao(pin) {
-        funcionarioEmEdicaoPIN = pin;
-        const f = equipe[pin];
+        pinSendoEditado = pin;
+        const user = equipe[pin];
 
-        document.getElementById("editNome").value = f.nome;
-        document.getElementById("editCargo").value = f.cargo;
-        document.getElementById("editNivel").value = f.nivel;
-        document.getElementById("editProgresso").value = f.progresso;
-        document.getElementById("editPresenca").value = f.presenca;
-        document.getElementById("editCursos").value = f.cursos;
-        document.getElementById("editMissao").value = f.missao || "";
-        document.getElementById("editFeedback").value = f.feedback || "";
+        document.getElementById("editNome").value = user.nome;
+        document.getElementById("editCargo").value = user.cargo;
+        document.getElementById("editNivel").value = user.nivel;
+        document.getElementById("editProgresso").value = user.progresso;
+        document.getElementById("editPresenca").value = user.presenca;
+        document.getElementById("editCursos").value = user.cursos;
+        document.getElementById("editMissao").value = user.missao || "";
+        document.getElementById("editFeedback").value = user.feedback || "";
         document.getElementById("editNovoElogio").value = "";
-
         document.getElementById("editTrimestreSelect").value = "Q1";
-        atualizarFormularioAvaliacao();
 
+        carregarCamposTrimestreModal();
         document.getElementById("modalEdit").classList.add("active");
       }
 
@@ -1344,100 +1492,130 @@
       }
 
       function carregarCamposTrimestreModal() {
-        if (!funcionarioEmEdicaoPIN) return;
-        const cargo = document.getElementById("editCargo").value;
-        const tipoCargo = obterTipoCargo(cargo);
-        const matriz = CRITERIOS[tipoCargo];
+        if (!pinSendoEditado || !equipe[pinSendoEditado]) return;
+        const cargoStr = document.getElementById("editCargo").value;
+        const tipoCargo = obterTipoCargo(cargoStr);
+        const struct = CRITERIOS[tipoCargo];
         const q = document.getElementById("editTrimestreSelect").value;
-        const user = equipe[funcionarioEmEdicaoPIN];
 
-        if (!user.evaluations[q]) {
-          user.evaluations[q] = { perf: {}, atit: {} };
-        }
+        const user = equipe[pinSendoEditado];
+        if (!user.evaluations)
+          user.evaluations = criarAvaliacaoPadrao(tipoCargo, 4, 4);
+        if (!user.evaluations[q]) user.evaluations[q] = { perf: {}, atit: {} };
 
-        renderInputsAvaliacao(
-          "modalPerfInputs",
-          matriz.perf,
-          user.evaluations[q].perf,
-        );
-        renderInputsAvaliacao(
-          "modalAtitInputs",
-          matriz.atit,
-          user.evaluations[q].atit,
-        );
-      }
+        const perfContainer = document.getElementById("modalPerfInputs");
+        const atitContainer = document.getElementById("modalAtitInputs");
+        perfContainer.innerHTML = "";
+        atitContainer.innerHTML = "";
 
-      function renderInputsAvaliacao(containerId, criteriosLista, dadosSalvos) {
-        const container = document.getElementById(containerId);
-        container.innerHTML = "";
+        struct.perf.forEach((item, idx) => {
+          const valAtual = user.evaluations[q].perf[item] || 4;
+          perfContainer.innerHTML += `
+        <div class="eval-field">
+          <label>${item}</label>
+          <select id="perf_input_${idx}" class="form-select">
+            ${[1, 2, 3, 4, 5].map((n) => `<option value="${n}" ${n == valAtual ? "selected" : ""}>${n}</option>`).join("")}
+          </select>
+        </div>
+      `;
+        });
 
-        criteriosLista.forEach((crit) => {
-          const valAtual =
-            dadosSalvos && dadosSalvos[crit] !== undefined
-              ? dadosSalvos[crit]
-              : 4;
-          const div = document.createElement("div");
-          div.className = "eval-field";
-          div.innerHTML = `
-            <label>${crit}</label>
-            <select class="form-select eval-select-item" data-crit="${crit}">
-              <option value="1" ${valAtual == 1 ? "selected" : ""}>1 (Insatisfatório)</option>
-              <option value="2" ${valAtual == 2 ? "selected" : ""}>2 (Regular)</option>
-              <option value="3" ${valAtual == 3 ? "selected" : ""}>3 (Bom)</option>
-              <option value="4" ${valAtual == 4 ? "selected" : ""}>4 (Muito bom)</option>
-              <option value="5" ${valAtual == 5 ? "selected" : ""}>5 (Excelente)</option>
-            </select>
-          `;
-          container.appendChild(div);
+        struct.atit.forEach((item, idx) => {
+          const valAtual = user.evaluations[q].atit[item] || 4;
+          atitContainer.innerHTML += `
+        <div class="eval-field">
+          <label>${item}</label>
+          <select id="atit_input_${idx}" class="form-select">
+            ${[1, 2, 3, 4, 5].map((n) => `<option value="${n}" ${n == valAtual ? "selected" : ""}>${n}</option>`).join("")}
+          </select>
+        </div>
+      `;
         });
       }
 
       function adicionarElogioNaEdicao() {
-        const txt = document.getElementById("editNovoElogio").value.trim();
-        if (!txt) return;
+        const input = document.getElementById("editNovoElogio");
+        const texto = input.value.trim();
 
-        const f = equipe[funcionarioEmEdicaoPIN];
-        if (!f.listaElogios) f.listaElogios = [];
-        f.listaElogios.push(txt);
-        f.elogios = `${f.listaElogios.length}x`;
+        if (!texto) {
+          alert("Digite o texto do elogio!");
+          return;
+        }
 
-        document.getElementById("editNovoElogio").value = "";
-        alert("Elogio adicionado com sucesso!");
+        if (pinSendoEditado && equipe[pinSendoEditado]) {
+          if (!equipe[pinSendoEditado].listaElogios)
+            equipe[pinSendoEditado].listaElogios = [];
+          equipe[pinSendoEditado].listaElogios.push(texto);
+          equipe[pinSendoEditado].elogios =
+            equipe[pinSendoEditado].listaElogios.length + "x";
+          input.value = "";
+          alert("Elogio registrado com sucesso!");
+        }
       }
 
       function salvarEdicao() {
-        const pin = funcionarioEmEdicaoPIN;
-        const f = equipe[pin];
+        if (!pinSendoEditado || !equipe[pinSendoEditado]) return;
 
-        f.nome = document.getElementById("editNome").value;
-        f.cargo = document.getElementById("editCargo").value;
-        f.nivel = Number(document.getElementById("editNivel").value);
-        f.progresso = Number(document.getElementById("editProgresso").value);
-        f.presenca = document.getElementById("editPresenca").value;
-        f.cursos = document.getElementById("editCursos").value;
-        f.missao = document.getElementById("editMissao").value;
-        f.feedback = document.getElementById("editFeedback").value;
+        const user = equipe[pinSendoEditado];
+        user.nome = document.getElementById("editNome").value;
+        user.cargo = document.getElementById("editCargo").value;
+        user.nivel = parseInt(document.getElementById("editNivel").value) || 1;
+        user.progresso =
+          parseInt(document.getElementById("editProgresso").value) || 0;
+        user.presenca = document.getElementById("editPresenca").value;
+        user.cursos = document.getElementById("editCursos").value;
+        user.missao = document.getElementById("editMissao").value;
+        user.feedback = document.getElementById("editFeedback").value;
 
+        // Salvar Notas do Trimestre Selecionado
         const q = document.getElementById("editTrimestreSelect").value;
-        if (!f.evaluations[q]) f.evaluations[q] = { perf: {}, atit: {} };
+        const tipoCargo = obterTipoCargo(user.cargo);
+        const struct = CRITERIOS[tipoCargo];
 
-        document
-          .querySelectorAll("#modalPerfInputs .eval-select-item")
-          .forEach((sel) => {
-            const crit = sel.getAttribute("data-crit");
-            f.evaluations[q].perf[crit] = Number(sel.value);
-          });
+        if (!user.evaluations) user.evaluations = {};
+        if (!user.evaluations[q]) user.evaluations[q] = { perf: {}, atit: {} };
 
-        document
-          .querySelectorAll("#modalAtitInputs .eval-select-item")
-          .forEach((sel) => {
-            const crit = sel.getAttribute("data-crit");
-            f.evaluations[q].atit[crit] = Number(sel.value);
-          });
+        struct.perf.forEach((item, idx) => {
+          const selectEl = document.getElementById(`perf_input_${idx}`);
+          if (selectEl)
+            user.evaluations[q].perf[item] = parseInt(selectEl.value);
+        });
+
+        struct.atit.forEach((item, idx) => {
+          const selectEl = document.getElementById(`atit_input_${idx}`);
+          if (selectEl)
+            user.evaluations[q].atit[item] = parseInt(selectEl.value);
+        });
 
         fecharModal("modalEdit");
-        carregarPainelGestao();
-        alert("Dados atualizados com sucesso!");
+
+        if (
+          document.getElementById("screen-manager").classList.contains("active")
+        ) {
+          carregarPainelGestao();
+        }
+        if (pinUsuarioAtual === pinSendoEditado) {
+          carregarPerfil(user);
+        }
+
+        alert("Perfil e avaliação salvos com sucesso!");
+      }
+
+      function fecharModal(modalId) {
+        document.getElementById(modalId).classList.remove("active");
+      }
+
+      function trocarTela(screenId) {
+        document
+          .querySelectorAll(".screen")
+          .forEach((s) => s.classList.remove("active"));
+        document.getElementById(screenId).classList.add("active");
+      }
+
+      function sair() {
+        document.getElementById("pinInput").value = "";
+        pinUsuarioAtual = null;
+        trocarTela("screen-login");
       }
     </script>
   </body>
