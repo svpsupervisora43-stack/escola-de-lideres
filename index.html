@@ -48,7 +48,6 @@
         margin: 0 auto;
       }
 
-      /* TELAS */
       .screen {
         display: none;
       }
@@ -56,7 +55,7 @@
         display: block;
       }
 
-      /* TELA DE LOGIN */
+      /* LOGIN */
       .login-box {
         background: var(--bg-card);
         border-radius: 20px;
@@ -137,7 +136,7 @@
         cursor: pointer;
       }
 
-      /* CARTÃO PROFILE */
+      /* PERFIL */
       .profile-card {
         background: var(--bg-card);
         border-radius: 16px;
@@ -197,7 +196,7 @@
         justify-content: space-between;
       }
 
-      /* ABAS DE TRIMESTRE */
+      /* ABAS TRIMESTRE */
       .tri-tabs {
         display: flex;
         gap: 6px;
@@ -221,7 +220,7 @@
         border-color: var(--accent-blue);
       }
 
-      /* DETALHAMENTO DE NOTAS */
+      /* AVALIAÇÃO */
       .eval-box {
         background: var(--bg-main);
         border-radius: 12px;
@@ -262,7 +261,7 @@
         font-size: 0.75rem;
       }
 
-      /* TRILHA E CHECKLIST DE CARGO ALVO */
+      /* TRILHA / CARGO ALVO */
       .target-role-box {
         background: var(--bg-main);
         border-radius: 12px;
@@ -381,7 +380,6 @@
         flex: 1;
       }
 
-      /* ESPECIALIZAÇÕES NIVEL 2 */
       .specs-grid {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
@@ -423,7 +421,7 @@
         transition: width 0.3s;
       }
 
-      /* ANIMATEAMS DATA */
+      /* INDICADORES */
       .animateams-box {
         background: rgba(16, 185, 129, 0.05);
         border: 1px solid rgba(16, 185, 129, 0.2);
@@ -470,7 +468,7 @@
         color: var(--text-muted);
       }
 
-      /* GESTÃO */
+      /* LISTA DA EQUIPE */
       .staff-item {
         display: flex;
         justify-content: space-between;
@@ -505,7 +503,7 @@
         color: white;
       }
 
-      /* MODAL */
+      /* MODAIS */
       .modal-overlay {
         display: none;
         position: fixed;
@@ -590,7 +588,6 @@
         gap: 8px;
       }
 
-      /* ITEM DE EDIÇÃO DA TRILHA */
       .trilha-item-row {
         display: flex;
         gap: 6px;
@@ -601,7 +598,7 @@
   </head>
   <body>
     <div class="app-container">
-      <!-- TELA 1: LOGIN POR PIN -->
+      <!-- LOGIN -->
       <div id="screen-login" class="screen active">
         <div class="login-box">
           <div class="logo-badge">🚀</div>
@@ -621,14 +618,13 @@
         </div>
       </div>
 
-      <!-- TELA 2: PERFIL DO COLABORADOR -->
+      <!-- PERFIL DO COLABORADOR -->
       <div id="screen-profile" class="screen">
         <div class="top-bar">
           <span class="unit">VIA PARQUE • ESCOLA DE LÍDERES</span>
           <button class="btn-logout" onclick="sair()">Sair</button>
         </div>
 
-        <!-- CARTÃO DO PERFIL -->
         <div class="profile-card">
           <div class="avatar" id="userAvatar">--</div>
           <div class="profile-info">
@@ -637,7 +633,6 @@
           </div>
         </div>
 
-        <!-- DADOS VINDOS DO ANIMATEAMS -->
         <div class="animateams-box">
           <div class="animateams-header">📊 Indicadores Animateams</div>
           <div class="grid-3">
@@ -666,7 +661,6 @@
           </div>
         </div>
 
-        <!-- SEÇÃO: OBJETIVO DE CARREIRA E TRILHA DE QUALIFICAÇÃO -->
         <div class="section-card" style="border: 1px solid var(--accent-blue)">
           <div class="section-title" style="color: var(--accent-blue)">
             <span>🎯 Objetivo de Carreira & Trilha</span>
@@ -688,17 +682,12 @@
               id="selectCargoAlvo"
               class="form-select"
               onchange="alterarCargoAlvo(this.value)"
-            >
-              <!-- Opções geradas via JS -->
-            </select>
+            ></select>
           </div>
 
-          <div id="containerQualificacoes">
-            <!-- Renderiza os requisitos e checklist da escolha -->
-          </div>
+          <div id="containerQualificacoes"></div>
         </div>
 
-        <!-- SEÇÃO: AVALIAÇÃO TRIMESTRAL DA GESTÃO -->
         <div class="section-card">
           <div class="section-title">
             <span>📋 Avaliação Trimestral da Gestão</span>
@@ -746,12 +735,11 @@
               margin-top: 6px;
             "
           >
-            Legenda de Notas: 1 = Insatisfatório | 2 = Regular | 3 = Bom | 4 =
-            Muito bom | 5 = Excelente
+            Legenda: 1 = Insatisfatório | 2 = Regular | 3 = Bom | 4 = Muito bom
+            | 5 = Excelente
           </p>
         </div>
 
-        <!-- SEÇÃO: MISSÃO / PRÓXIMO DESENVOLVIMENTO -->
         <div
           class="section-card"
           style="border-left: 4px solid var(--accent-purple)"
@@ -772,7 +760,6 @@
           </p>
         </div>
 
-        <!-- PROGRESSO DO PRÓXIMO NÍVEL -->
         <div class="section-card">
           <div class="section-title">📈 Prontidão Geral no Cargo Atual</div>
           <div
@@ -795,7 +782,6 @@
           </div>
         </div>
 
-        <!-- TRILHA DOS 5 NÍVEIS -->
         <div class="section-card">
           <div class="section-title">🗺️ Trilha Geral Via Parque</div>
 
@@ -830,7 +816,6 @@
           </div>
         </div>
 
-        <!-- FEEDBACK TRIMESTRAL -->
         <div class="section-card">
           <div class="section-title">💬 Último Feedback da Gestão</div>
           <p
@@ -842,7 +827,7 @@
         </div>
       </div>
 
-      <!-- TELA 3: PAINEL DA GESTÃO / SUPERVISÃO -->
+      <!-- PAINEL DA GESTÃO -->
       <div id="screen-manager" class="screen">
         <div class="top-bar">
           <span class="unit">PAINEL DE GESTÃO VIA PARQUE</span>
@@ -860,7 +845,6 @@
                 color: var(--text-muted);
               "
               onclick="restaurarDadosPadrao()"
-              title="Restaurar dados de fábrica"
             >
               🔄 Restaurar Padrões
             </button>
@@ -870,7 +854,7 @@
       </div>
     </div>
 
-    <!-- MODAL: VISUALIZAR ELOGIOS -->
+    <!-- MODAL: ELOGIOS -->
     <div id="modalElogios" class="modal-overlay">
       <div class="modal-content">
         <div class="modal-header">
@@ -883,7 +867,7 @@
       </div>
     </div>
 
-    <!-- MODAL: EDITAR PERFIL DO FUNCIONÁRIO (GESTOR) -->
+    <!-- MODAL: EDIÇÃO DO GESTOR -->
     <div id="modalEdit" class="modal-overlay">
       <div class="modal-content">
         <div class="modal-header">
@@ -927,7 +911,7 @@
           </div>
         </div>
 
-        <!-- NOVO: GERENCIADOR DE CARGOS E TRILHAS EDITÁVEL PELO GESTOR -->
+        <!-- GERENCIADOR DE CARGOS E TRILHAS EDITÁVEL -->
         <div
           class="form-group"
           style="
@@ -956,14 +940,10 @@
               id="managerTrilhaCargoSelect"
               class="form-select"
               onchange="carregarEditorTrilhaGestor()"
-            >
-              <!-- Opções via JS -->
-            </select>
+            ></select>
           </div>
 
-          <div id="editorRequisitosContainer" style="margin-bottom: 10px">
-            <!-- Requisitos do cargo selecionado vão aqui -->
-          </div>
+          <div id="editorRequisitosContainer" style="margin-bottom: 10px"></div>
 
           <div style="display: flex; gap: 6px; margin-bottom: 10px">
             <input
@@ -1008,7 +988,6 @@
           </div>
         </div>
 
-        <!-- SELEÇÃO DE ESPECIALIZAÇÕES DO NÍVEL 2 -->
         <div
           class="form-group"
           style="
@@ -1027,7 +1006,7 @@
               margin-bottom: 8px;
             "
           >
-            🎯 Especializações do Nível 2 (Atribuídas pela Gestão)
+            🎯 Especializações do Nível 2
           </label>
           <div style="display: flex; gap: 14px; flex-wrap: wrap">
             <label
@@ -1096,7 +1075,6 @@
           </div>
         </div>
 
-        <!-- SELEÇÃO DE TRIMESTRE PARA AVALIAÇÃO -->
         <div
           style="
             background: rgba(59, 130, 246, 0.1);
@@ -1208,7 +1186,172 @@
     </div>
 
     <script>
-      // ESTRUTURA BASE DA TRILHA DE QUALIFICAÇÃO
+      // DADOS OFICIAIS DA EQUIPE VIA PARQUE
+      const equipeViaParque = [
+        {
+          id: 1,
+          nome: "Patrícia",
+          cargo: "Gerente",
+          pin: "1001",
+          nivelStr: "Líder Sênior",
+          role: "manager",
+          nivel: 5,
+        },
+        {
+          id: 2,
+          nome: "Thainá Freires",
+          cargo: "Subgerente (Dia)",
+          pin: "1002",
+          nivelStr: "Líder Pleno",
+          role: "manager",
+          nivel: 5,
+        },
+        {
+          id: 3,
+          nome: "Felipe Mamedes",
+          cargo: "Subgerente (Noite)",
+          pin: "1003",
+          nivelStr: "Líder Pleno",
+          role: "manager",
+          nivel: 5,
+        },
+        {
+          id: 4,
+          nome: "Ana Vitória dos Santos",
+          cargo: "Supervisora",
+          pin: "1004",
+          nivelStr: "Líder Junior",
+          role: "manager",
+          nivel: 4,
+        },
+        {
+          id: 5,
+          nome: "Pâmella dos Santos",
+          cargo: "Recepcionista",
+          pin: "1005",
+          nivelStr: "Em Desenvolvimento",
+          role: "user",
+          nivel: 3,
+        },
+        {
+          id: 6,
+          nome: "Michelly Barbosa",
+          cargo: "Recreadora / Líder em Treinamento",
+          pin: "1006",
+          nivelStr: "Em Desenvolvimento",
+          role: "user",
+          nivel: 2,
+        },
+        {
+          id: 7,
+          nome: "Vinícius Valente",
+          cargo: "Recreador",
+          pin: "1007",
+          nivelStr: "Em Desenvolvimento",
+          role: "user",
+          nivel: 1,
+        },
+        {
+          id: 8,
+          nome: "Alex de Oliveira",
+          cargo: "Recreador",
+          pin: "1008",
+          nivelStr: "Em Desenvolvimento",
+          role: "user",
+          nivel: 1,
+        },
+        {
+          id: 9,
+          nome: "Aline Ferreira",
+          cargo: "Recreadora",
+          pin: "1009",
+          nivelStr: "Em Desenvolvimento",
+          role: "user",
+          nivel: 1,
+        },
+        {
+          id: 10,
+          nome: "Davi Campello",
+          cargo: "Recreador",
+          pin: "1010",
+          nivelStr: "Em Desenvolvimento",
+          role: "user",
+          nivel: 1,
+        },
+        {
+          id: 11,
+          nome: "Eduarda Gonçalves",
+          cargo: "Recreadora",
+          pin: "1011",
+          nivelStr: "Em Desenvolvimento",
+          role: "user",
+          nivel: 1,
+        },
+        {
+          id: 12,
+          nome: "Geovana Isabelly",
+          cargo: "Recreadora",
+          pin: "1012",
+          nivelStr: "Em Desenvolvimento",
+          role: "user",
+          nivel: 1,
+        },
+        {
+          id: 13,
+          nome: "Isabelly Vitória",
+          cargo: "Recreadora",
+          pin: "1013",
+          nivelStr: "Em Desenvolvimento",
+          role: "user",
+          nivel: 1,
+        },
+        {
+          id: 14,
+          nome: "Kainá Rosendo",
+          cargo: "Recreador",
+          pin: "1014",
+          nivelStr: "Em Desenvolvimento",
+          role: "user",
+          nivel: 1,
+        },
+        {
+          id: 15,
+          nome: "Lohana Pessoa",
+          cargo: "Recreadora",
+          pin: "1015",
+          nivelStr: "Em Desenvolvimento",
+          role: "user",
+          nivel: 1,
+        },
+        {
+          id: 16,
+          nome: "Lucas Cabral",
+          cargo: "Recreador",
+          pin: "1016",
+          nivelStr: "Em Desenvolvimento",
+          role: "user",
+          nivel: 1,
+        },
+        {
+          id: 17,
+          nome: "Micaela de Souza",
+          cargo: "Recreadora",
+          pin: "1017",
+          nivelStr: "Em Desenvolvimento",
+          role: "user",
+          nivel: 1,
+        },
+        {
+          id: 18,
+          nome: "Rosenilda Santos",
+          cargo: "ASG",
+          pin: "1018",
+          nivelStr: "Em Desenvolvimento",
+          role: "user",
+          nivel: 1,
+        },
+      ];
+
       const DEFAULT_TRILHAS = {
         Mídia: [
           "📸 Treinamento de Enquadramento, Iluminação e Captação Mobile",
@@ -1242,42 +1385,34 @@
         ],
       };
 
-      // REGISTRO DE USUÁRIOS PADRÃO
-      const DEFAULT_USERS = [
-        {
-          pin: "0000",
-          role: "manager",
-          nome: "Gestão / Supervisão",
+      // MAAPEAR EQUIPE BASE PARA O FORMATO DA APLICAÇÃO
+      const DEFAULT_USERS = equipeViaParque.map((m) => ({
+        pin: m.pin,
+        role: m.role,
+        nome: m.nome,
+        cargo: m.cargo,
+        nivel: m.nivel,
+        progresso: m.role === "manager" ? 100 : 25,
+        presenca: "100%",
+        cursos: "100%",
+        elogios: [],
+        specs: m.cargo.includes("Líder") ? ["Lider"] : [],
+        cargoAlvo: m.role === "manager" ? "Subgerente" : "Líder",
+        qualifChecked: [],
+        missao:
+          m.role === "manager"
+            ? "Desenvolver a equipe e acompanhar indicadores."
+            : "Focar na excelência operacional e atendimento.",
+        feedback: "Foco no desenvolvimento contínuo.",
+        avaliacoes: {
+          Q1: { perf: {}, atit: {} },
+          Q2: { perf: {}, atit: {} },
+          Q3: { perf: {}, atit: {} },
+          Q4: { perf: {}, atit: {} },
         },
-        {
-          pin: "1234",
-          role: "user",
-          nome: "João Silva",
-          cargo: "Recreador",
-          nivel: 1,
-          progresso: 30,
-          presenca: "98%",
-          cursos: "100%",
-          elogios: ["Ótima energia com as crianças no final de semana!"],
-          specs: [],
-          cargoAlvo: "Mídia",
-          qualifChecked: [false, false, false, false],
-          missao: "Desenvolver tecnicamente a captação de imagem para redes.",
-          feedback:
-            "Mantenha o entusiasmo e a atenção nos detalhes operacionais.",
-          avaliacoes: {
-            Q1: {
-              perf: { Animação: 4, Pontualidade: 5 },
-              atit: { "Trabalho em Equipe": 4 },
-            },
-            Q2: { perf: {}, atit: {} },
-            Q3: { perf: {}, atit: {} },
-            Q4: { perf: {}, atit: {} },
-          },
-        },
-      ];
+      }));
 
-      // INICIALIZAÇÃO DE DADOS
+      // CARREGAMENTO E PERSISTÊNCIA
       let trilhasQualificacao =
         JSON.parse(localStorage.getItem("VP_TRILHAS")) || DEFAULT_TRILHAS;
       let usuarios =
@@ -1294,7 +1429,7 @@
       function restaurarDadosPadrao() {
         if (
           confirm(
-            "Deseja restaurar todos os dados e trilhas para o padrão de fábrica?",
+            "Deseja restaurar todos os cadastros e trilhas para o padrão inicial da equipe?",
           )
         ) {
           localStorage.removeItem("VP_TRILHAS");
@@ -1306,13 +1441,12 @@
         }
       }
 
-      // AUTENTICAÇÃO
       function autenticar() {
         const pin = document.getElementById("pinInput").value;
         const user = usuarios.find((u) => u.pin === pin);
 
         if (!user) {
-          alert("PIN incorreto. Tente novamente.");
+          alert("PIN não localizado. Digite o seu código de 4 dígitos.");
           return;
         }
 
@@ -1340,7 +1474,6 @@
         document.getElementById(screenId).classList.add("active");
       }
 
-      // RENDERIZAR TELA DE PERFIL
       function renderizarPerfilUsuario() {
         document.getElementById("userName").innerText = currentUser.nome;
         document.getElementById("userAvatar").innerText = currentUser.nome
@@ -1364,7 +1497,6 @@
         document.getElementById("progressBar").style.width =
           `${currentUser.progresso || 0}%`;
 
-        // Renderiza o select de cargos alvo
         const selectCargo = document.getElementById("selectCargoAlvo");
         selectCargo.innerHTML = "";
         Object.keys(trilhasQualificacao).forEach((cargo) => {
@@ -1375,7 +1507,6 @@
           selectCargo.appendChild(opt);
         });
 
-        // Garante que o cargoAlvo existe no objeto de trilhas
         if (!trilhasQualificacao[currentUser.cargoAlvo]) {
           currentUser.cargoAlvo = Object.keys(trilhasQualificacao)[0] || "";
         }
@@ -1421,7 +1552,7 @@
 
         const headerDiv = document.createElement("div");
         headerDiv.style.display = "flex";
-        headerDiv.style.justifySpaceBetween = "space-between";
+        headerDiv.style.justifyContent = "space-between";
         headerDiv.style.alignItems = "center";
         headerDiv.style.fontSize = "0.85rem";
         headerDiv.style.fontWeight = "700";
@@ -1529,7 +1660,6 @@
           `spec-item ${specs.includes("Lider") ? "unlocked" : ""}`;
       }
 
-      // MODAL ELOGIOS
       function abrirModalElogios() {
         const content = document.getElementById("listaElogiosContent");
         content.innerHTML = "";
@@ -1549,27 +1679,22 @@
         document.getElementById(id).classList.remove("active");
       }
 
-      // PAINEL DE GESTÃO
       function renderizarPainelGestao() {
         const list = document.getElementById("staffList");
         list.innerHTML = "";
 
-        const colaboradores = usuarios.filter((u) => u.role !== "manager");
-        document.getElementById("totalStaff").innerText = colaboradores.length;
+        document.getElementById("totalStaff").innerText = usuarios.length;
 
-        colaboradores.forEach((u) => {
-          const originalIndex = usuarios.findIndex(
-            (item) => item.pin === u.pin,
-          );
+        usuarios.forEach((u, index) => {
           const div = document.createElement("div");
           div.className = "staff-item";
           div.innerHTML = `
             <div>
-              <strong style="font-size:0.9rem; display:block;">${u.nome}</strong>
-              <span style="font-size:0.75rem; color:var(--text-muted);">PIN: ${u.pin} | Nível ${u.nivel} - ${u.cargo || "Sem Cargo"}</span>
+              <strong style="font-size:0.9rem; display:block;">${u.nome} ${u.role === "manager" ? "⭐" : ""}</strong>
+              <span style="font-size:0.75rem; color:var(--text-muted);">PIN: ${u.pin} | ${u.cargo} (Nível ${u.nivel})</span>
             </div>
             <div class="action-btns">
-              <button class="btn-sm btn-edit" onclick="abrirModalEdicao(${originalIndex})">✏️ Avaliar</button>
+              <button class="btn-sm btn-edit" onclick="abrirModalEdicao(${index})">✏️ Avaliar</button>
             </div>
           `;
           list.appendChild(div);
@@ -1662,7 +1787,7 @@
         if (!novoCargo) return;
 
         if (trilhasQualificacao[novoCargo]) {
-          alert("Esse cargo já existe.");
+          alert("Este cargo já está cadastrado na trilha.");
           return;
         }
 
@@ -1680,7 +1805,7 @@
 
         if (
           confirm(
-            `Tem certeza que deseja excluir o cargo "${cargo}" e todos os seus requisitos?`,
+            `Deseja remover o cargo "${cargo}" e todos os seus requisitos?`,
           )
         ) {
           delete trilhasQualificacao[cargo];
@@ -1736,7 +1861,7 @@
         if (!u.elogios) u.elogios = [];
         u.elogios.push(input.value.trim());
         input.value = "";
-        alert("Elogio adicionado com sucesso!");
+        alert("Elogio registrado com sucesso!");
       }
 
       function salvarEdicao() {
