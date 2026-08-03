@@ -261,6 +261,80 @@
         font-size: 0.75rem;
       }
 
+      /* TRILHA E CHECKLIST DE CARGO ALVO */
+      .target-role-box {
+        background: var(--bg-main);
+        border-radius: 12px;
+        padding: 14px;
+        border: 1px solid var(--border);
+        margin-bottom: 12px;
+      }
+      .qualif-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .qualif-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        background: var(--bg-card);
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        cursor: pointer;
+        transition:
+          border-color 0.2s,
+          background 0.2s;
+      }
+      .qualif-item:hover {
+        border-color: var(--accent-blue);
+      }
+      .qualif-item.completed {
+        border-color: var(--accent-green);
+        background: rgba(16, 185, 129, 0.08);
+      }
+      .qualif-item input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        margin-top: 2px;
+        accent-color: var(--accent-green);
+        cursor: pointer;
+      }
+      .qualif-item span {
+        font-size: 0.82rem;
+        color: var(--text-main);
+        line-height: 1.4;
+      }
+      .qualif-item.completed span {
+        text-decoration: line-through;
+        color: var(--text-muted);
+      }
+
+      .status-apto-box {
+        background: linear-gradient(
+          135deg,
+          rgba(16, 185, 129, 0.2),
+          rgba(234, 179, 8, 0.15)
+        );
+        border: 2px solid var(--accent-green);
+        border-radius: 12px;
+        padding: 14px;
+        text-align: center;
+        margin-top: 14px;
+      }
+      .status-apto-box h3 {
+        font-size: 0.95rem;
+        color: var(--accent-green);
+        font-weight: 800;
+        margin-bottom: 4px;
+      }
+      .status-apto-box p {
+        font-size: 0.8rem;
+        color: var(--text-main);
+      }
+
       .level-step {
         display: flex;
         align-items: center;
@@ -591,13 +665,44 @@
           </div>
         </div>
 
-        <!-- SEÇÃO: AVALIAÇÃO TRIMESTRAL DA GESTÃO (4 BLOCOS) -->
+        <!-- SEÇÃO: OBJETIVO DE CARREIRA E TRILHA DE QUALIFICAÇÃO -->
+        <div class="section-card" style="border: 1px solid var(--accent-blue)">
+          <div class="section-title" style="color: var(--accent-blue)">
+            <span>🎯 Objetivo de Carreira & Trilha</span>
+          </div>
+
+          <div class="target-role-box">
+            <label
+              style="
+                font-size: 0.78rem;
+                color: var(--text-muted);
+                font-weight: 700;
+                display: block;
+                margin-bottom: 6px;
+              "
+            >
+              SELECIONE O PRÓXIMO CARGO QUE DESEJA ALCANÇAR:
+            </label>
+            <select
+              id="selectCargoAlvo"
+              class="form-select"
+              onchange="alterarCargoAlvo(this.value)"
+            >
+              <!-- Opções geradas via JS -->
+            </select>
+          </div>
+
+          <div id="containerQualificacoes">
+            <!-- Renderiza os requisitos e checklist da escolha -->
+          </div>
+        </div>
+
+        <!-- SEÇÃO: AVALIAÇÃO TRIMESTRAL DA GESTÃO -->
         <div class="section-card">
           <div class="section-title">
             <span>📋 Avaliação Trimestral da Gestão</span>
           </div>
 
-          <!-- Abas dos 4 Trimestres -->
           <div class="tri-tabs">
             <button
               class="tri-btn active"
@@ -616,26 +721,20 @@
             </button>
           </div>
 
-          <!-- Detalhamento de Performance -->
           <div class="eval-box">
             <h4>
               <span>🎭 Performance</span>
               <span class="badge-score" id="mediaPerfText">Média: -</span>
             </h4>
-            <div id="perfCriteriaList">
-              <!-- Gerado dinamicamente -->
-            </div>
+            <div id="perfCriteriaList"></div>
           </div>
 
-          <!-- Detalhamento de Atitude -->
           <div class="eval-box">
             <h4>
               <span>⚡ Atitude</span>
               <span class="badge-score" id="mediaAtitText">Média: -</span>
             </h4>
-            <div id="atitCriteriaList">
-              <!-- Gerado dinamicamente -->
-            </div>
+            <div id="atitCriteriaList"></div>
           </div>
 
           <p
@@ -674,7 +773,7 @@
 
         <!-- PROGRESSO DO PRÓXIMO NÍVEL -->
         <div class="section-card">
-          <div class="section-title">📈 Prontidão para o Próximo Nível</div>
+          <div class="section-title">📈 Prontidão Geral no Cargo Atual</div>
           <div
             style="
               display: flex;
@@ -683,7 +782,7 @@
               font-weight: 600;
             "
           >
-            <span>Evolução Atual</span>
+            <span>Evolução Operacional</span>
             <span id="progressText">0%</span>
           </div>
           <div class="progress-bar-bg">
@@ -697,7 +796,7 @@
 
         <!-- TRILHA DOS 5 NÍVEIS -->
         <div class="section-card">
-          <div class="section-title">🗺️ Trilha de Carreira Via Parque</div>
+          <div class="section-title">🗺️ Trilha Geral Via Parque</div>
 
           <div class="level-step" id="step-lvl1">
             <div class="step-number">1</div>
@@ -751,7 +850,19 @@
 
         <div class="section-card">
           <div class="section-title">
-            👥 Equipe Cadastrada (<span id="totalStaff">0</span>)
+            <span>👥 Equipe Cadastrada (<span id="totalStaff">0</span>)</span>
+            <button
+              class="btn-sm"
+              style="
+                background: var(--bg-main);
+                border: 1px solid var(--border);
+                color: var(--text-muted);
+              "
+              onclick="restaurarDadosPadrao()"
+              title="Restaurar dados de fábrica"
+            >
+              🔄 Restaurar Padrões
+            </button>
           </div>
           <div id="staffList"></div>
         </div>
@@ -796,20 +907,21 @@
           />
         </div>
 
+        <!-- SELEÇÃO DIRETA DO NÍVEL DO FUNCIONÁRIO -->
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px">
           <div class="form-group">
-            <label>Nível na Trilha (1-5)</label>
-            <input
-              type="number"
-              id="editNivel"
-              min="1"
-              max="5"
-              class="form-input"
-            />
+            <label>Nível na Trilha</label>
+            <select id="editNivel" class="form-select">
+              <option value="1">Nível 1 - Recreador Base</option>
+              <option value="2">Nível 2 - Especialista</option>
+              <option value="3">Nível 3 - Recepcionista Coringa</option>
+              <option value="4">Nível 4 - Supervisor</option>
+              <option value="5">Nível 5 - Subgerente ⭐</option>
+            </select>
           </div>
 
           <div class="form-group">
-            <label>Progresso (%)</label>
+            <label>Progresso Geral (%)</label>
             <input
               type="number"
               id="editProgresso"
@@ -817,6 +929,94 @@
               max="100"
               class="form-input"
             />
+          </div>
+        </div>
+
+        <!-- SELEÇÃO DE ESPECIALIZAÇÕES DO NÍVEL 2 (EXCLUSIVO DO GESTOR) -->
+        <div
+          class="form-group"
+          style="
+            background: var(--bg-main);
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+          "
+        >
+          <label
+            style="
+              color: var(--accent-blue);
+              font-weight: 700;
+              font-size: 0.8rem;
+              display: block;
+              margin-bottom: 8px;
+            "
+          >
+            🎯 Especializações do Nível 2 (Atribuídas pela Gestão)
+          </label>
+          <div style="display: flex; gap: 14px; flex-wrap: wrap">
+            <label
+              style="
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 0.82rem;
+                cursor: pointer;
+                color: var(--text-main);
+              "
+            >
+              <input
+                type="checkbox"
+                id="editSpecMidias"
+                style="
+                  accent-color: var(--accent-blue);
+                  width: 16px;
+                  height: 16px;
+                "
+              />
+              📹 Mídias
+            </label>
+            <label
+              style="
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 0.82rem;
+                cursor: pointer;
+                color: var(--text-main);
+              "
+            >
+              <input
+                type="checkbox"
+                id="editSpecRecep"
+                style="
+                  accent-color: var(--accent-blue);
+                  width: 16px;
+                  height: 16px;
+                "
+              />
+              📋 Recepção
+            </label>
+            <label
+              style="
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 0.82rem;
+                cursor: pointer;
+                color: var(--text-main);
+              "
+            >
+              <input
+                type="checkbox"
+                id="editSpecLider"
+                style="
+                  accent-color: var(--accent-blue);
+                  width: 16px;
+                  height: 16px;
+                "
+              />
+              ⚡ Recreador Líder
+            </label>
           </div>
         </div>
 
@@ -846,7 +1046,6 @@
             </select>
           </div>
 
-          <!-- CRITÉRIOS DINÂMICOS DE PERFORMANCE -->
           <div style="margin-top: 8px">
             <label
               style="
@@ -863,7 +1062,6 @@
             ></div>
           </div>
 
-          <!-- CRITÉRIOS DINÂMICOS DE ATITUDE -->
           <div style="margin-top: 10px">
             <label
               style="
@@ -933,7 +1131,50 @@
     </div>
 
     <script>
-      // MATRIZ DE CRITÉRIOS POR CARGO
+      // LISTA COMPLETA DE CARGOS DISPONÍVEIS PARA ESCOLHA
+      const TODOS_CARGOS_ALVO = [
+        "Mídia",
+        "Líder",
+        "Recepcionista",
+        "Supervisor",
+        "Subgerente",
+      ];
+
+      // TRILHAS DE QUALIFICAÇÃO PARA CADA CARGO ALVO
+      const TRILHAS_QUALIFICACAO = {
+        Mídia: [
+          "📸 Treinamento de Enquadramento, Iluminação e Captação Mobile",
+          "🎬 Curso de Edição Básica de Reels/TikTok no CapCut",
+          "📱 Diretrizes de Postura e Imagem da Marca nas Redes Sociais",
+          "📊 Produção e Entrega de 5 Conteúdos de Festas Aprovados pela Gestão",
+        ],
+        Líder: [
+          "⚡ Treinamento de Animação e Direção de Grandes Grupos de Crianças",
+          "🤝 Condução de Resolutividade e Atendimento ao Cliente na Pista",
+          "⏱️ Checklist de Abertura/Fechamento do Espaço e Equipamentos",
+          "🗣️ Realização de Briefing Operacional Supervisionado em 3 Eventos",
+        ],
+        Recepcionista: [
+          "📋 Domínio Operacional do Sistema de Check-in e Check-out",
+          "💳 Abertura, Fechamento de Caixa e Preenchimento de Relatórios",
+          "🎧 Atendimento Encantador e Gestão de Filas na Recepção",
+          "📝 10 Horas de Plantão Prático Acompanhado pela Recepção",
+        ],
+        Supervisor: [
+          "📊 Gestão de Métricas, Frequência e Escalas da Equipe no Animateams",
+          "💬 Treinamento de Cultura, Feedbacks e Gestão de Pessoas",
+          "🚨 Protocolos de Segurança, Ocorrências e Primeiros Socorros",
+          "🛡️ Liderança Prática de Turno Completo Supervisionado pela Gerência",
+        ],
+        Subgerente: [
+          "📈 Análise Financeira, DRE Simplificada e Controle de Metas da Unidade",
+          "🏬 Gestão Autônoma da Operação Completa (Abertura e Fechamento)",
+          "👥 Processos de Seleção, Contratação e Treinamento de Novos Talentos",
+          "🎯 Elaboração e Execução de Planos de Ação Operacional Trimestral",
+        ],
+      };
+
+      // MATRIZ DE CRITÉRIOS POR TIPO DE CARGO
       const CRITERIOS = {
         RECREADOR: {
           perf: [
@@ -981,14 +1222,6 @@
         },
       };
 
-      const NOMES_NOTAS = {
-        1: "1 (Insatisfatório)",
-        2: "2 (Regular)",
-        3: "3 (Bom)",
-        4: "4 (Muito bom)",
-        5: "5 (Excelente)",
-      };
-
       function obterTipoCargo(cargoStr) {
         const c = cargoStr.toLowerCase();
         if (
@@ -1001,8 +1234,23 @@
         return "RECREADOR";
       }
 
-      // BANCO DE DADOS DA EQUIPE VIA PARQUE
-      const equipe = {
+      function criarAvaliacaoPadrao(tipoCargo, notaPerfDef, notaAtitDef) {
+        const struct = CRITERIOS[tipoCargo];
+        const triObj = {};
+        ["Q1", "Q2", "Q3", "Q4"].forEach((q) => {
+          triObj[q] = { perf: {}, atit: {} };
+          struct.perf.forEach((item) => (triObj[q].perf[item] = notaPerfDef));
+          struct.atit.forEach((item) => (triObj[q].atit[item] = notaAtitDef));
+        });
+        return triObj;
+      }
+
+      function obterOpcoesCargoAlvo() {
+        return TODOS_CARGOS_ALVO;
+      }
+
+      // DADOS INICIAIS DA EQUIPE
+      const EQUIPE_INICIAL = {
         1001: {
           nome: "Patrícia",
           cargo: "Gerente",
@@ -1062,6 +1310,8 @@
             "Assumir a gestão direta dos feedbacks semanais da equipe de recreação.",
           especializacoes: ["recep", "lider"],
           feedback: "Promovida a Supervisora. Foco em gestão de equipe.",
+          cargoAlvo: "Subgerente",
+          qualificacoesConcluidas: [0, 1],
           evaluations: criarAvaliacaoPadrao("SUBGERENTE", 4, 4),
         },
         1005: {
@@ -1077,6 +1327,8 @@
             "Treinar comunicação assertiva para lidar com filas de alta demanda.",
           especializacoes: ["recep"],
           feedback: "Ótimo atendimento na recepção.",
+          cargoAlvo: "Supervisor",
+          qualificacoesConcluidas: [0],
           evaluations: criarAvaliacaoPadrao("RECEPCIONISTA", 4, 5),
         },
         1006: {
@@ -1092,6 +1344,8 @@
             "Conduzir reuniões de alinhamento pré-festa com os recreadores.",
           especializacoes: ["lider"],
           feedback: "Em treinamento para Líder de Recreação.",
+          cargoAlvo: "Recepcionista",
+          qualificacoesConcluidas: [0, 1],
           evaluations: criarAvaliacaoPadrao("RECREADOR", 5, 5),
         },
         1007: {
@@ -1106,6 +1360,8 @@
           missao: "Aprimorar animação em festas e pontualidade nos turnos.",
           especializacoes: [],
           feedback: "Focar em pontualidade e engajamento na pista.",
+          cargoAlvo: "Mídia",
+          qualificacoesConcluidas: [0],
           evaluations: criarAvaliacaoPadrao("RECREADOR", 3, 4),
         },
         1008: {
@@ -1120,6 +1376,8 @@
           missao: "Aprender as rotinas operacionais da recepção de convidados.",
           especializacoes: [],
           feedback: "Boa energia nas brincadeiras.",
+          cargoAlvo: "Líder",
+          qualificacoesConcluidas: [],
           evaluations: criarAvaliacaoPadrao("RECREADOR", 4, 4),
         },
         1009: {
@@ -1135,6 +1393,8 @@
             "Desenvolver autonomia na organização de camarim e figurinos.",
           especializacoes: [],
           feedback: "Atenção aos detalhes das festas.",
+          cargoAlvo: "Recepcionista",
+          qualificacoesConcluidas: [],
           evaluations: criarAvaliacaoPadrao("RECREADOR", 4, 4),
         },
         1010: {
@@ -1148,7 +1408,9 @@
           listaElogios: ["Sempre solícito e pró-ativo na organização"],
           missao: "Aprender técnicas de liderança de pista para o Nível 2.",
           especializacoes: [],
-          feedback: "Proativo na pista.",
+          feedback: "Proactivo na pista.",
+          cargoAlvo: "Líder",
+          qualificacoesConcluidas: [0, 1],
           evaluations: criarAvaliacaoPadrao("RECREADOR", 4, 5),
         },
         1011: {
@@ -1220,6 +1482,8 @@
           missao: "Desenvolver a produção de fotos e conteúdos de festas.",
           especializacoes: ["midias"],
           feedback: "Ótima postura e liderança em mídias.",
+          cargoAlvo: "Líder",
+          qualificacoesConcluidas: [0],
           evaluations: criarAvaliacaoPadrao("RECREADOR", 4, 5),
         },
         1016: {
@@ -1239,6 +1503,8 @@
           especializacoes: ["lider"],
           feedback:
             "Excelente energia nas festas. Focar em liderar grandes grupos.",
+          cargoAlvo: "Líder",
+          qualificacoesConcluidas: [0, 1, 2, 3],
           evaluations: criarAvaliacaoPadrao("RECREADOR", 5, 5),
         },
         1017: {
@@ -1273,17 +1539,42 @@
         },
       };
 
-      function criarAvaliacaoPadrao(tipoCargo, notaPerfDef, notaAtitDef) {
-        const struct = CRITERIOS[tipoCargo];
-        const triObj = {};
-        ["Q1", "Q2", "Q3", "Q4"].forEach((q) => {
-          triObj[q] = { perf: {}, atit: {} };
-          struct.perf.forEach((item) => (triObj[q].perf[item] = notaPerfDef));
-          struct.atit.forEach((item) => (triObj[q].atit[item] = notaAtitDef));
-        });
-        return triObj;
+      function carregarDados() {
+        const dadosSalvos = localStorage.getItem("escola_lideres_equipe");
+        if (dadosSalvos) {
+          try {
+            return JSON.parse(dadosSalvos);
+          } catch (e) {
+            return JSON.parse(JSON.stringify(EQUIPE_INICIAL));
+          }
+        }
+        return JSON.parse(JSON.stringify(EQUIPE_INICIAL));
       }
 
+      function salvarNoLocalStorage() {
+        localStorage.setItem("escola_lideres_equipe", JSON.stringify(equipe));
+      }
+
+      function restaurarDadosPadrao() {
+        if (
+          confirm(
+            "Tem certeza que deseja restaurar os dados originais de fábrica? Todas as alterações salvas serão perdidas.",
+          )
+        ) {
+          equipe = JSON.parse(JSON.stringify(EQUIPE_INICIAL));
+          salvarNoLocalStorage();
+          if (
+            document
+              .getElementById("screen-manager")
+              .classList.contains("active")
+          ) {
+            carregarPainelGestao();
+          }
+          alert("Dados restaurados com sucesso!");
+        }
+      }
+
+      let equipe = carregarDados();
       let pinUsuarioAtual = null;
       let pinSendoEditado = null;
       let trimestreAtivoPerfil = "Q1";
@@ -1291,7 +1582,6 @@
       function autenticar() {
         const pin = document.getElementById("pinInput").value;
 
-        // SENHA DO GESTOR ATUALIZADA PARA 1711
         if (pin === "1711") {
           pinUsuarioAtual = "1711";
           trocarTela("screen-manager");
@@ -1328,7 +1618,10 @@
         document.getElementById("feedbackText").innerText =
           `"${user.feedback}"`;
 
-        // Atualizar Trilha
+        // Atualizar Seção de Cargo Alvo & Trilha
+        configurarCargoAlvoETrilha(user);
+
+        // Atualizar Trilha Geral dos 5 Níveis
         for (let i = 1; i <= 5; i++) {
           const step = document.getElementById(`step-lvl${i}`);
           step.className = "level-step";
@@ -1336,6 +1629,7 @@
           else if (i === user.nivel) step.classList.add("active");
         }
 
+        // Atualizar visual das especializações do Nível 2
         ["midias", "recep", "lider"].forEach((spec) => {
           const el = document.getElementById(`spec-${spec}`);
           if (user.especializacoes && user.especializacoes.includes(spec))
@@ -1343,8 +1637,107 @@
           else el.classList.remove("unlocked");
         });
 
-        // Renderizar Avaliação do Trimestre Ativo
         renderizarAvaliacaoPerfil(user, trimestreAtivoPerfil);
+      }
+
+      function configurarCargoAlvoETrilha(user) {
+        const select = document.getElementById("selectCargoAlvo");
+        const opcoes = obterOpcoesCargoAlvo();
+
+        select.innerHTML = "";
+        opcoes.forEach((op) => {
+          select.innerHTML += `<option value="${op}">${op}</option>`;
+        });
+
+        if (user.cargoAlvo && opcoes.includes(user.cargoAlvo)) {
+          select.value = user.cargoAlvo;
+        } else {
+          user.cargoAlvo = opcoes[0];
+          if (!user.qualificacoesConcluidas) user.qualificacoesConcluidas = [];
+          salvarNoLocalStorage();
+        }
+
+        renderizarTrilhaQualificacao(user);
+      }
+
+      function alterarCargoAlvo(novoCargo) {
+        const user = equipe[pinUsuarioAtual];
+        if (!user) return;
+
+        user.cargoAlvo = novoCargo;
+        user.qualificacoesConcluidas = []; // Reseta progresso ao trocar de cargo alvo
+        salvarNoLocalStorage();
+
+        renderizarTrilhaQualificacao(user);
+      }
+
+      function renderizarTrilhaQualificacao(user) {
+        const container = document.getElementById("containerQualificacoes");
+        const cargoAlvo = user.cargoAlvo;
+        const tarefas = TRILHAS_QUALIFICACAO[cargoAlvo] || [];
+        const concluidos = user.qualificacoesConcluidas || [];
+
+        if (tarefas.length === 0) {
+          container.innerHTML = `<p style="font-size:0.85rem; color:var(--text-muted);">Nenhuma trilha encontrada.</p>`;
+          return;
+        }
+
+        const total = tarefas.length;
+        const quantConcluidos = concluidos.length;
+        const pct = Math.round((quantConcluidos / total) * 100);
+        const estaApto = quantConcluidos === total;
+
+        let html = `
+      <div style="display:flex; justify-content:space-between; font-size:0.8rem; font-weight:700; margin-bottom:4px;">
+        <span>Qualificações para ${cargoAlvo}</span>
+        <span style="color:${estaApto ? "var(--accent-green)" : "var(--accent-gold)"};">${pct}% (${quantConcluidos}/${total})</span>
+      </div>
+      <div class="progress-bar-bg" style="height:8px; margin-bottom:12px;">
+        <div class="progress-bar-fill" style="width:${pct}%; ${estaApto ? "background:var(--accent-green);" : ""}"></div>
+      </div>
+      
+      <div class="qualif-list">
+    `;
+
+        tarefas.forEach((item, index) => {
+          const isChecked = concluidos.includes(index);
+          html += `
+        <label class="qualif-item ${isChecked ? "completed" : ""}">
+          <input type="checkbox" ${isChecked ? "checked" : ""} onchange="toggleQualificacao(${index})" />
+          <span>${item}</span>
+        </label>
+      `;
+        });
+
+        html += `</div>`;
+
+        if (estaApto) {
+          html += `
+        <div class="status-apto-box">
+          <h3>🏆 STATUS: APTO PARA PROMOÇÃO!</h3>
+          <p>Parabéns! Você concluiu 100% das qualificações. Seu nome está registrado para a vaga de <strong>${cargoAlvo}</strong> assim que for aberta!</p>
+        </div>
+      `;
+        }
+
+        container.innerHTML = html;
+      }
+
+      function toggleQualificacao(index) {
+        const user = equipe[pinUsuarioAtual];
+        if (!user) return;
+
+        if (!user.qualificacoesConcluidas) user.qualificacoesConcluidas = [];
+
+        const idx = user.qualificacoesConcluidas.indexOf(index);
+        if (idx > -1) {
+          user.qualificacoesConcluidas.splice(idx, 1);
+        } else {
+          user.qualificacoesConcluidas.push(index);
+        }
+
+        salvarNoLocalStorage();
+        renderizarTrilhaQualificacao(user);
       }
 
       function selecionarTrimestreAba(q) {
@@ -1447,10 +1840,20 @@
 
         pins.forEach((pin) => {
           const colab = equipe[pin];
+
+          let statusApto = "";
+          if (colab.cargoAlvo && TRILHAS_QUALIFICACAO[colab.cargoAlvo]) {
+            const total = TRILHAS_QUALIFICACAO[colab.cargoAlvo].length;
+            const conc = (colab.qualificacoesConcluidas || []).length;
+            if (total > 0 && conc === total) {
+              statusApto = ` <span style="background:rgba(16, 185, 129, 0.2); color:var(--accent-green); padding:2px 6px; border-radius:4px; font-size:0.7rem; font-weight:700;">APTO: ${colab.cargoAlvo}</span>`;
+            }
+          }
+
           container.innerHTML += `
         <div class="staff-item">
           <div>
-            <strong style="font-size:0.9rem;">${colab.nome}</strong><br>
+            <strong style="font-size:0.9rem;">${colab.nome}</strong>${statusApto}<br>
             <span style="font-size:0.75rem; color:var(--text-muted);">${colab.cargo} • Nível ${colab.nivel} (PIN: ${pin})</span>
           </div>
           <div class="action-btns">
@@ -1474,7 +1877,7 @@
 
         document.getElementById("editNome").value = user.nome;
         document.getElementById("editCargo").value = user.cargo;
-        document.getElementById("editNivel").value = user.nivel;
+        document.getElementById("editNivel").value = user.nivel || 1;
         document.getElementById("editProgresso").value = user.progresso;
         document.getElementById("editPresenca").value = user.presenca;
         document.getElementById("editCursos").value = user.cursos;
@@ -1482,6 +1885,15 @@
         document.getElementById("editFeedback").value = user.feedback || "";
         document.getElementById("editNovoElogio").value = "";
         document.getElementById("editTrimestreSelect").value = "Q1";
+
+        // CARREGAR ESPECIALIZAÇÕES DO NÍVEL 2 NOS CHECKBOXES DO GESTOR
+        const specs = user.especializacoes || [];
+        document.getElementById("editSpecMidias").checked =
+          specs.includes("midias");
+        document.getElementById("editSpecRecep").checked =
+          specs.includes("recep");
+        document.getElementById("editSpecLider").checked =
+          specs.includes("lider");
 
         carregarCamposTrimestreModal();
         document.getElementById("modalEdit").classList.add("active");
@@ -1548,8 +1960,10 @@
           equipe[pinSendoEditado].listaElogios.push(texto);
           equipe[pinSendoEditado].elogios =
             equipe[pinSendoEditado].listaElogios.length + "x";
+
+          salvarNoLocalStorage();
           input.value = "";
-          alert("Elogio registrado com sucesso!");
+          alert("Elogio registrado e salvo com sucesso!");
         }
       }
 
@@ -1566,6 +1980,16 @@
         user.cursos = document.getElementById("editCursos").value;
         user.missao = document.getElementById("editMissao").value;
         user.feedback = document.getElementById("editFeedback").value;
+
+        // SALVAR ESPECIALIZAÇÕES DO NÍVEL 2 DEFINIDAS PELO GESTOR
+        const novasSpecs = [];
+        if (document.getElementById("editSpecMidias").checked)
+          novasSpecs.push("midias");
+        if (document.getElementById("editSpecRecep").checked)
+          novasSpecs.push("recep");
+        if (document.getElementById("editSpecLider").checked)
+          novasSpecs.push("lider");
+        user.especializacoes = novasSpecs;
 
         // Salvar Notas do Trimestre Selecionado
         const q = document.getElementById("editTrimestreSelect").value;
@@ -1587,6 +2011,7 @@
             user.evaluations[q].atit[item] = parseInt(selectEl.value);
         });
 
+        salvarNoLocalStorage();
         fecharModal("modalEdit");
 
         if (
@@ -1598,7 +2023,7 @@
           carregarPerfil(user);
         }
 
-        alert("Perfil e avaliação salvos com sucesso!");
+        alert("Perfil e especializações salvos com sucesso!");
       }
 
       function fecharModal(modalId) {
