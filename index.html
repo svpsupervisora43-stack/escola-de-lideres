@@ -1002,7 +1002,9 @@
       }
 
       // BANCO DE DADOS DA EQUIPE VIA PARQUE
-      const equipe = {
+      let equipe = JSON.parse(
+        localStorage.getItem("viaParque_equipe_animateams"),
+      ) || {
         1001: {
           nome: "Patrícia",
           cargo: "Gerente",
@@ -1011,12 +1013,8 @@
           presenca: "100%",
           cursos: "100%",
           elogios: "12x",
-          listaElogios: [
-            "Liderança exemplar na operação",
-            "Ótima organização e gestão de tempo",
-          ],
-          missao:
-            "Capacitar supervisores para autonomia na tomada de decisões do dia a dia.",
+          listaElogios: ["Liderança exemplar na operação"],
+          missao: "Capacitar supervisores para autonomia.",
           especializacoes: ["midias", "recep", "lider"],
           feedback: "Liderança executiva da unidade Via Parque.",
           evaluations: criarAvaliacaoPadrao("SUBGERENTE", 5, 5),

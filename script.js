@@ -126,3 +126,10 @@ const equipeViaParque = [
     nivel: "Em Desenvolvimento",
   },
 ];
+// Carregar do localStorage se existir, senão usa o objeto padrão
+let equipe = JSON.parse(localStorage.getItem('viaParque_equipe')) || { ... };
+
+// E na função salvarEdicao() ou após alterações:
+function persistirDados() {
+  localStorage.setItem('viaParque_equipe', JSON.stringify(equipe));
+}
