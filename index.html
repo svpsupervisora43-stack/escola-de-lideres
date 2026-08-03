@@ -21,6 +21,7 @@
         --accent-purple: #8b5cf6;
         --accent-orange: #f97316;
         --accent-gold: #eab308;
+        --accent-red: #ef4444;
         --text-main: #f8fafc;
         --text-muted: #94a3b8;
         --border: #334155;
@@ -499,6 +500,10 @@
         background: var(--accent-purple);
         color: white;
       }
+      .btn-danger {
+        background: var(--accent-red);
+        color: white;
+      }
 
       /* MODAL */
       .modal-overlay {
@@ -584,17 +589,13 @@
         grid-template-columns: 1fr 1fr;
         gap: 8px;
       }
-      .eval-field {
-        background: var(--bg-main);
-        padding: 8px;
-        border-radius: 8px;
-        border: 1px solid var(--border);
-      }
-      .eval-field label {
-        font-size: 0.7rem;
-        color: var(--text-muted);
-        display: block;
-        margin-bottom: 4px;
+
+      /* ITEM DE EDIÇÃO DA TRILHA */
+      .trilha-item-row {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        margin-bottom: 6px;
       }
     </style>
   </head>
@@ -899,15 +900,9 @@
 
         <div class="form-group">
           <label>Cargo / Função</label>
-          <input
-            type="text"
-            id="editCargo"
-            class="form-input"
-            onchange="atualizarFormularioAvaliacao()"
-          />
+          <input type="text" id="editCargo" class="form-input" />
         </div>
 
-        <!-- SELEÇÃO DIRETA DO NÍVEL DO FUNCIONÁRIO -->
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px">
           <div class="form-group">
             <label>Nível na Trilha</label>
@@ -932,7 +927,88 @@
           </div>
         </div>
 
-        <!-- SELEÇÃO DE ESPECIALIZAÇÕES DO NÍVEL 2 (EXCLUSIVO DO GESTOR) -->
+        <!-- NOVO: GERENCIADOR DE CARGOS E TRILHAS EDITÁVEL PELO GESTOR -->
+        <div
+          class="form-group"
+          style="
+            background: var(--bg-main);
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--accent-purple);
+            margin-bottom: 16px;
+          "
+        >
+          <label
+            style="
+              color: var(--accent-purple);
+              font-weight: 700;
+              font-size: 0.82rem;
+              display: block;
+              margin-bottom: 8px;
+            "
+          >
+            🛠️ Editar Trilha de Qualificações (Gestão)
+          </label>
+
+          <div class="form-group">
+            <label>Selecione o Cargo para Editar Requisitos:</label>
+            <select
+              id="managerTrilhaCargoSelect"
+              class="form-select"
+              onchange="carregarEditorTrilhaGestor()"
+            >
+              <!-- Opções via JS -->
+            </select>
+          </div>
+
+          <div id="editorRequisitosContainer" style="margin-bottom: 10px">
+            <!-- Requisitos do cargo selecionado vão aqui -->
+          </div>
+
+          <div style="display: flex; gap: 6px; margin-bottom: 10px">
+            <input
+              type="text"
+              id="novoRequisitoInput"
+              class="form-input"
+              placeholder="Novo requisito..."
+            />
+            <button
+              class="btn-sm btn-edit"
+              style="white-space: nowrap"
+              onclick="adicionarRequisitoGestor()"
+            >
+              + Item
+            </button>
+          </div>
+
+          <div
+            style="
+              display: flex;
+              gap: 6px;
+              border-top: 1px dashed var(--border);
+              padding-top: 8px;
+            "
+          >
+            <input
+              type="text"
+              id="novoCargoNomeInput"
+              class="form-input"
+              placeholder="Criar novo cargo..."
+            />
+            <button
+              class="btn-sm btn-view"
+              style="white-space: nowrap"
+              onclick="adicionarCargoGestor()"
+            >
+              + Cargo
+            </button>
+            <button class="btn-sm btn-danger" onclick="excluirCargoGestor()">
+              Excluir Cargo
+            </button>
+          </div>
+        </div>
+
+        <!-- SELEÇÃO DE ESPECIALIZAÇÕES DO NÍVEL 2 -->
         <div
           class="form-group"
           style="
@@ -1028,6 +1104,7 @@
             border-radius: 12px;
             border: 1px solid var(--accent-blue);
             margin-bottom: 12px;
+            margin-top: 12px;
           "
         >
           <div class="form-group" style="margin-bottom: 8px">
@@ -1131,17 +1208,8 @@
     </div>
 
     <script>
-      // LISTA COMPLETA DE CARGOS DISPONÍVEIS PARA ESCOLHA
-      const TODOS_CARGOS_ALVO = [
-        "Mídia",
-        "Líder",
-        "Recepcionista",
-        "Supervisor",
-        "Subgerente",
-      ];
-
-      // TRILHAS DE QUALIFICAÇÃO PARA CADA CARGO ALVO
-      const TRILHAS_QUALIFICACAO = {
+      // ESTRUTURA BASE DA TRILHA DE QUALIFICAÇÃO
+      const DEFAULT_TRILHAS = {
         Mídia: [
           "📸 Treinamento de Enquadramento, Iluminação e Captação Mobile",
           "🎬 Curso de Edição Básica de Reels/TikTok no CapCut",
@@ -1149,898 +1217,567 @@
           "📊 Produção e Entrega de 5 Conteúdos de Festas Aprovados pela Gestão",
         ],
         Líder: [
-          "⚡ Treinamento de Animação e Direção de Grandes Grupos de Crianças",
-          "🤝 Condução de Resolutividade e Atendimento ao Cliente na Pista",
-          "⏱️ Checklist de Abertura/Fechamento do Espaço e Equipamentos",
-          "🗣️ Realização de Briefing Operacional Supervisionado em 3 Eventos",
+          "⚡ Domínio de Dinâmicas de Grupo e Animação de Pista",
+          "📢 Comunicação Assertiva e Gerenciamento de Conflitos",
+          "🛡️ Treinamento de Protocolos de Segurança em Brinquedos",
+          "👥 Apadrinhamento e Treinamento Prático de 2 Novos Recreadores",
         ],
         Recepcionista: [
-          "📋 Domínio Operacional do Sistema de Check-in e Check-out",
-          "💳 Abertura, Fechamento de Caixa e Preenchimento de Relatórios",
-          "🎧 Atendimento Encantador e Gestão de Filas na Recepção",
-          "📝 10 Horas de Plantão Prático Acompanhado pela Recepção",
+          "📋 Domínio do Sistema de Acesso e Emissão de Etiquetas",
+          "💬 Excelência no Atendimento ao Cliente e Resolução de Objeções",
+          "💳 Operação Prática de Caixa e Fechamento de Turno",
+          "🎯 Alinhamento com Protocolos de Abertura e Fechamento de Unidade",
         ],
         Supervisor: [
-          "📊 Gestão de Métricas, Frequência e Escalas da Equipe no Animateams",
-          "💬 Treinamento de Cultura, Feedbacks e Gestão de Pessoas",
-          "🚨 Protocolos de Segurança, Ocorrências e Primeiros Socorros",
-          "🛡️ Liderança Prática de Turno Completo Supervisionado pela Gerência",
+          "📈 Gestão de Escalas, Coberturas e Indicadores de Operação",
+          "🧠 Liderança de Equipe e Condução de Reuniões de Alinhamento",
+          "🔍 Auditoria Interna de Segurança e Padrões de Qualidade",
+          "🚨 Gestão de Crise e Atendimento Diretivo de Clientes VIP/Ocorrências",
         ],
         Subgerente: [
-          "📈 Análise Financeira, DRE Simplificada e Controle de Metas da Unidade",
-          "🏬 Gestão Autônoma da Operação Completa (Abertura e Fechamento)",
-          "👥 Processos de Seleção, Contratação e Treinamento de Novos Talentos",
-          "🎯 Elaboração e Execução de Planos de Ação Operacional Trimestral",
+          "⭐ Gestão Completa do Turno Noturno e Visão Geral do Negócio",
+          "📊 Análise de Metas, DRE Simplificado e Gestão de Custos da Unidade",
+          "🤝 Capacidade Autônoma para Tomada de Decisão em Turnos de Pico",
+          "👑 Formação de Novos Líderes e Sucessão de Cargos",
         ],
       };
 
-      // MATRIZ DE CRITÉRIOS POR TIPO DE CARGO
-      const CRITERIOS = {
-        RECREADOR: {
-          perf: [
-            "Habilidade para brincar",
-            "Fidelização",
-            "Animação (festas/recreação)",
-          ],
-          atit: [
-            "Carisma",
-            "Proatividade",
-            "Energia",
-            "Valores da empresa",
-            "Relacionamento interpessoal",
-            "Pontualidade",
-            "Apresentação pessoal",
-          ],
+      // REGISTRO DE USUÁRIOS PADRÃO
+      const DEFAULT_USERS = [
+        {
+          pin: "0000",
+          role: "manager",
+          nome: "Gestão / Supervisão",
         },
-        RECEPCIONISTA: {
-          perf: ["Controle de Check-in/out", "Comunicação", "Vendas", "Caixa"],
-          atit: [
-            "Educação e simpatia",
-            "Atenção",
-            "Valores da empresa",
-            "Relacionamento interpessoal",
-            "Apresentação pessoal",
-            "Pontualidade",
-          ],
-        },
-        SUBGERENTE: {
-          perf: [
-            "Gestão de ocorrência",
-            "Resultado financeiro",
-            "Gestão de serviço",
-            "Desenvolvimento de pessoas",
-          ],
-          atit: [
-            "Postura em discussões",
-            "Pontualidade",
-            "Carisma",
-            "Apresentação pessoal",
-            "Energia",
-            "Valores da empresa",
-            "Relacionamento interpessoal",
-          ],
-        },
-      };
-
-      function obterTipoCargo(cargoStr) {
-        const c = cargoStr.toLowerCase();
-        if (
-          c.includes("subgerente") ||
-          c.includes("gerente") ||
-          c.includes("supervisor")
-        )
-          return "SUBGERENTE";
-        if (c.includes("recep")) return "RECEPCIONISTA";
-        return "RECREADOR";
-      }
-
-      function criarAvaliacaoPadrao(tipoCargo, notaPerfDef, notaAtitDef) {
-        const struct = CRITERIOS[tipoCargo];
-        const triObj = {};
-        ["Q1", "Q2", "Q3", "Q4"].forEach((q) => {
-          triObj[q] = { perf: {}, atit: {} };
-          struct.perf.forEach((item) => (triObj[q].perf[item] = notaPerfDef));
-          struct.atit.forEach((item) => (triObj[q].atit[item] = notaAtitDef));
-        });
-        return triObj;
-      }
-
-      function obterOpcoesCargoAlvo() {
-        return TODOS_CARGOS_ALVO;
-      }
-
-      // DADOS INICIAIS DA EQUIPE
-      const EQUIPE_INICIAL = {
-        1001: {
-          nome: "Patrícia",
-          cargo: "Gerente",
-          nivel: 5,
-          progresso: 100,
-          presenca: "100%",
-          cursos: "100%",
-          elogios: "12x",
-          listaElogios: [
-            "Liderança exemplar na operação",
-            "Ótima organização e gestão de tempo",
-          ],
-          missao:
-            "Capacitar supervisores para autonomia na tomada de decisões do dia a dia.",
-          especializacoes: ["midias", "recep", "lider"],
-          feedback: "Liderança executiva da unidade Via Parque.",
-          evaluations: criarAvaliacaoPadrao("SUBGERENTE", 5, 5),
-        },
-        1002: {
-          nome: "Thainá Freires",
-          cargo: "Subgerente (Dia)",
-          nivel: 5,
-          progresso: 95,
-          presenca: "100%",
-          cursos: "100%",
-          elogios: "8x",
-          listaElogios: ["Excelente acompanhamento de métricas do turno"],
-          missao: "Desenvolver novos padrões para o fluxo do turno matutino.",
-          especializacoes: ["recep", "lider"],
-          feedback: "Excelente gestão no turno do dia.",
-          evaluations: criarAvaliacaoPadrao("SUBGERENTE", 5, 5),
-        },
-        1003: {
-          nome: "Felipe Mamedes",
-          cargo: "Subgerente (Noite)",
-          nivel: 5,
-          progresso: 95,
-          presenca: "98%",
-          cursos: "100%",
-          elogios: "7x",
-          listaElogios: ["Domínio total da rotina de fechamento de loja"],
-          missao: "Aprimorar o controle de segurança nas atividades noturnas.",
-          especializacoes: ["lider"],
-          feedback: "Ótima condução da operação noturna.",
-          evaluations: criarAvaliacaoPadrao("SUBGERENTE", 4, 5),
-        },
-        1004: {
-          nome: "Ana Vitória dos Santos",
-          cargo: "Supervisora",
-          nivel: 4,
-          progresso: 85,
-          presenca: "99%",
-          cursos: "100%",
-          elogios: "9x",
-          listaElogios: ["Proatividade constante nas rotinas"],
-          missao:
-            "Assumir a gestão direta dos feedbacks semanais da equipe de recreação.",
-          especializacoes: ["recep", "lider"],
-          feedback: "Promovida a Supervisora. Foco em gestão de equipe.",
-          cargoAlvo: "Subgerente",
-          qualificacoesConcluidas: [0, 1],
-          evaluations: criarAvaliacaoPadrao("SUBGERENTE", 4, 4),
-        },
-        1005: {
-          nome: "Pâmella dos Santos",
-          cargo: "Recepcionista",
-          nivel: 2,
-          progresso: 70,
-          presenca: "96%",
-          cursos: "100%",
-          elogios: "4x",
-          listaElogios: ["Atendimento cordial na recepção"],
-          missao:
-            "Treinar comunicação assertiva para lidar com filas de alta demanda.",
-          especializacoes: ["recep"],
-          feedback: "Ótimo atendimento na recepção.",
-          cargoAlvo: "Supervisor",
-          qualificacoesConcluidas: [0],
-          evaluations: criarAvaliacaoPadrao("RECEPCIONISTA", 4, 5),
-        },
-        1006: {
-          nome: "Michelly Barbosa",
-          cargo: "Recreadora / Líder em Treinamento",
-          nivel: 2,
-          progresso: 75,
-          presenca: "97%",
-          cursos: "100%",
-          elogios: "5x",
-          listaElogios: ["Energia contagiante nas brincadeiras"],
-          missao:
-            "Conduzir reuniões de alinhamento pré-festa com os recreadores.",
-          especializacoes: ["lider"],
-          feedback: "Em treinamento para Líder de Recreação.",
-          cargoAlvo: "Recepcionista",
-          qualificacoesConcluidas: [0, 1],
-          evaluations: criarAvaliacaoPadrao("RECREADOR", 5, 5),
-        },
-        1007: {
-          nome: "Vinícius Valente",
+        {
+          pin: "1234",
+          role: "user",
+          nome: "João Silva",
           cargo: "Recreador",
           nivel: 1,
-          progresso: 40,
-          presenca: "95%",
+          progresso: 30,
+          presenca: "98%",
           cursos: "100%",
-          elogios: "2x",
-          listaElogios: ["Muito dedicado na segurança da pista"],
-          missao: "Aprimorar animação em festas e pontualidade nos turnos.",
-          especializacoes: [],
-          feedback: "Focar em pontualidade e engajamento na pista.",
+          elogios: ["Ótima energia com as crianças no final de semana!"],
+          specs: [],
           cargoAlvo: "Mídia",
-          qualificacoesConcluidas: [0],
-          evaluations: criarAvaliacaoPadrao("RECREADOR", 3, 4),
-        },
-        1008: {
-          nome: "Alex de Oliveira",
-          cargo: "Recreador",
-          nivel: 1,
-          progresso: 50,
-          presenca: "98%",
-          cursos: "100%",
-          elogios: "3x",
-          listaElogios: ["Animação destacada no palco"],
-          missao: "Aprender as rotinas operacionais da recepção de convidados.",
-          especializacoes: [],
-          feedback: "Boa energia nas brincadeiras.",
-          cargoAlvo: "Líder",
-          qualificacoesConcluidas: [],
-          evaluations: criarAvaliacaoPadrao("RECREADOR", 4, 4),
-        },
-        1009: {
-          nome: "Aline Ferreira",
-          cargo: "Recreadora",
-          nivel: 1,
-          progresso: 50,
-          presenca: "97%",
-          cursos: "100%",
-          elogios: "2x",
-          listaElogios: ["Atenção e carinho no cuidado com os pequenos"],
-          missao:
-            "Desenvolver autonomia na organização de camarim e figurinos.",
-          especializacoes: [],
-          feedback: "Atenção aos detalhes das festas.",
-          cargoAlvo: "Recepcionista",
-          qualificacoesConcluidas: [],
-          evaluations: criarAvaliacaoPadrao("RECREADOR", 4, 4),
-        },
-        1010: {
-          nome: "Davi Campello",
-          cargo: "Recreador",
-          nivel: 1,
-          progresso: 60,
-          presenca: "99%",
-          cursos: "100%",
-          elogios: "4x",
-          listaElogios: ["Sempre solícito e pró-ativo na organização"],
-          missao: "Aprender técnicas de liderança de pista para o Nível 2.",
-          especializacoes: [],
-          feedback: "Proactivo na pista.",
-          cargoAlvo: "Líder",
-          qualificacoesConcluidas: [0, 1],
-          evaluations: criarAvaliacaoPadrao("RECREADOR", 4, 5),
-        },
-        1011: {
-          nome: "Eduarda Gonçalves",
-          cargo: "Recreadora",
-          nivel: 1,
-          progresso: 50,
-          presenca: "98%",
-          cursos: "100%",
-          elogios: "3x",
-          listaElogios: ["Ótimo relacionamento com as famílias"],
-          missao: "Concluir curso complementar de mídias sociais internas.",
-          especializacoes: [],
-          feedback: "Bom relacionamento com as crianças.",
-          evaluations: criarAvaliacaoPadrao("RECREADOR", 4, 4),
-        },
-        1012: {
-          nome: "Geovana Isabelly",
-          cargo: "Recreadora",
-          nivel: 1,
-          progresso: 55,
-          presenca: "98%",
-          cursos: "100%",
-          elogios: "3x",
-          listaElogios: ["Comunicação clara e simpática com os pais"],
-          missao: "Praticar condução de gincanas infantis no palco principal.",
-          especializacoes: [],
-          feedback: "Boa comunicação com os pais.",
-          evaluations: criarAvaliacaoPadrao("RECREADOR", 4, 4),
-        },
-        1013: {
-          nome: "Isabelly Vitória",
-          cargo: "Recreadora",
-          nivel: 1,
-          progresso: 50,
-          presenca: "97%",
-          cursos: "100%",
-          elogios: "2x",
-          listaElogios: ["Alegria e pontualidade exemplar"],
-          missao: "Aumentar tempo de interação com grupos em eventos fechados.",
-          especializacoes: [],
-          feedback: "Pontual e animada.",
-          evaluations: criarAvaliacaoPadrao("RECREADOR", 4, 4),
-        },
-        1014: {
-          nome: "Kainá Rosendo",
-          cargo: "Recreador",
-          nivel: 1,
-          progresso: 60,
-          presenca: "99%",
-          cursos: "100%",
-          elogios: "3x",
-          listaElogios: ["Liderou muito bem os jogos de esportes no parque"],
-          missao:
-            "Apoiar a liderança nos horários de maior pico de atendimento.",
-          especializacoes: [],
-          feedback: "Destaque na condução de jogos.",
-          evaluations: criarAvaliacaoPadrao("RECREADOR", 4, 5),
-        },
-        1015: {
-          nome: "Lohana Pessoa",
-          cargo: "Recreador Mídia",
-          nivel: 1,
-          progresso: 50,
-          presenca: "98%",
-          cursos: "100%",
-          elogios: "2x",
-          listaElogios: ["Postura profissional e acolhedora"],
-          missao: "Desenvolver a produção de fotos e conteúdos de festas.",
-          especializacoes: ["midias"],
-          feedback: "Ótima postura e liderança em mídias.",
-          cargoAlvo: "Líder",
-          qualificacoesConcluidas: [0],
-          evaluations: criarAvaliacaoPadrao("RECREADOR", 4, 5),
-        },
-        1016: {
-          nome: "Lucas Cabral",
-          cargo: "Recreador",
-          nivel: 1,
-          progresso: 80,
-          presenca: "99%",
-          cursos: "100%",
-          elogios: "6x",
-          listaElogios: [
-            "Criatividade nas brincadeiras temáticas",
-            "Elogiado em três festas no mesmo final de semana",
-          ],
-          missao:
-            "Finalizar os módulos de Recreador Líder para promoção ao Nível 2.",
-          especializacoes: ["lider"],
+          qualifChecked: [false, false, false, false],
+          missao: "Desenvolver tecnicamente a captação de imagem para redes.",
           feedback:
-            "Excelente energia nas festas. Focar em liderar grandes grupos.",
-          cargoAlvo: "Líder",
-          qualificacoesConcluidas: [0, 1, 2, 3],
-          evaluations: criarAvaliacaoPadrao("RECREADOR", 5, 5),
+            "Mantenha o entusiasmo e a atenção nos detalhes operacionais.",
+          avaliacoes: {
+            Q1: {
+              perf: { Animação: 4, Pontualidade: 5 },
+              atit: { "Trabalho em Equipe": 4 },
+            },
+            Q2: { perf: {}, atit: {} },
+            Q3: { perf: {}, atit: {} },
+            Q4: { perf: {}, atit: {} },
+          },
         },
-        1017: {
-          nome: "Micaela de Souza",
-          cargo: "Recreadora",
-          nivel: 1,
-          progresso: 55,
-          presenca: "98%",
-          cursos: "100%",
-          elogios: "3x",
-          listaElogios: ["Cuidado impecável com crianças pequenas"],
-          missao: "Desenvolver repertório de brincadeiras para a área baby.",
-          especializacoes: [],
-          feedback: "Atenciosa com os pequenos.",
-          evaluations: criarAvaliacaoPadrao("RECREADOR", 4, 4),
-        },
-        1018: {
-          nome: "Rosenilda Santos",
-          cargo: "ASG",
-          nivel: 1,
-          progresso: 90,
-          presenca: "100%",
-          cursos: "100%",
-          elogios: "5x",
-          listaElogios: [
-            "Manutenção da limpeza impecável em dias de casa cheia",
-          ],
-          missao: "Padronizar o checklist de higiene das áreas de recreação.",
-          especializacoes: [],
-          feedback: "Zelo e organização impecáveis na loja.",
-          evaluations: criarAvaliacaoPadrao("RECREADOR", 5, 5),
-        },
-      };
+      ];
 
-      function carregarDados() {
-        const dadosSalvos = localStorage.getItem("escola_lideres_equipe");
-        if (dadosSalvos) {
-          try {
-            return JSON.parse(dadosSalvos);
-          } catch (e) {
-            return JSON.parse(JSON.stringify(EQUIPE_INICIAL));
-          }
-        }
-        return JSON.parse(JSON.stringify(EQUIPE_INICIAL));
-      }
+      // INICIALIZAÇÃO DE DADOS
+      let trilhasQualificacao =
+        JSON.parse(localStorage.getItem("VP_TRILHAS")) || DEFAULT_TRILHAS;
+      let usuarios =
+        JSON.parse(localStorage.getItem("VP_USUARIOS")) || DEFAULT_USERS;
+      let currentUser = null;
+      let editUserIndex = null;
+      let selectedTrimestreAba = "Q1";
 
-      function salvarNoLocalStorage() {
-        localStorage.setItem("escola_lideres_equipe", JSON.stringify(equipe));
+      function salvarDadosStorage() {
+        localStorage.setItem("VP_TRILHAS", JSON.stringify(trilhasQualificacao));
+        localStorage.setItem("VP_USUARIOS", JSON.stringify(usuarios));
       }
 
       function restaurarDadosPadrao() {
         if (
           confirm(
-            "Tem certeza que deseja restaurar os dados originais de fábrica? Todas as alterações salvas serão perdidas.",
+            "Deseja restaurar todos os dados e trilhas para o padrão de fábrica?",
           )
         ) {
-          equipe = JSON.parse(JSON.stringify(EQUIPE_INICIAL));
-          salvarNoLocalStorage();
-          if (
-            document
-              .getElementById("screen-manager")
-              .classList.contains("active")
-          ) {
-            carregarPainelGestao();
-          }
-          alert("Dados restaurados com sucesso!");
+          localStorage.removeItem("VP_TRILHAS");
+          localStorage.removeItem("VP_USUARIOS");
+          trilhasQualificacao = JSON.parse(JSON.stringify(DEFAULT_TRILHAS));
+          usuarios = JSON.parse(JSON.stringify(DEFAULT_USERS));
+          salvarDadosStorage();
+          location.reload();
         }
       }
 
-      let equipe = carregarDados();
-      let pinUsuarioAtual = null;
-      let pinSendoEditado = null;
-      let trimestreAtivoPerfil = "Q1";
-
+      // AUTENTICAÇÃO
       function autenticar() {
         const pin = document.getElementById("pinInput").value;
+        const user = usuarios.find((u) => u.pin === pin);
 
-        if (pin === "1711") {
-          pinUsuarioAtual = "1711";
-          trocarTela("screen-manager");
-          carregarPainelGestao();
-        } else if (equipe[pin]) {
-          pinUsuarioAtual = pin;
-          carregarPerfil(equipe[pin]);
-          trocarTela("screen-profile");
-        } else {
-          alert("PIN não encontrado!");
-        }
-      }
-
-      function carregarPerfil(user) {
-        document.getElementById("userName").innerText = user.nome;
-        document.getElementById("userLevelTag").innerText =
-          `Nível ${user.nivel} • ${user.cargo}`;
-        document.getElementById("userAvatar").innerText = user.nome
-          .split(" ")
-          .map((n) => n[0])
-          .slice(0, 2)
-          .join("");
-
-        document.getElementById("attRate").innerText = user.presenca;
-        document.getElementById("trainRate").innerText = user.cursos;
-        document.getElementById("reviewsCount").innerText = user.elogios;
-
-        document.getElementById("userMissao").innerText =
-          user.missao || "Nenhuma missão definida no momento.";
-        document.getElementById("progressText").innerText =
-          user.progresso + "%";
-        document.getElementById("progressBar").style.width =
-          user.progresso + "%";
-        document.getElementById("feedbackText").innerText =
-          `"${user.feedback}"`;
-
-        // Atualizar Seção de Cargo Alvo & Trilha
-        configurarCargoAlvoETrilha(user);
-
-        // Atualizar Trilha Geral dos 5 Níveis
-        for (let i = 1; i <= 5; i++) {
-          const step = document.getElementById(`step-lvl${i}`);
-          step.className = "level-step";
-          if (i < user.nivel) step.classList.add("completed");
-          else if (i === user.nivel) step.classList.add("active");
-        }
-
-        // Atualizar visual das especializações do Nível 2
-        ["midias", "recep", "lider"].forEach((spec) => {
-          const el = document.getElementById(`spec-${spec}`);
-          if (user.especializacoes && user.especializacoes.includes(spec))
-            el.classList.add("unlocked");
-          else el.classList.remove("unlocked");
-        });
-
-        renderizarAvaliacaoPerfil(user, trimestreAtivoPerfil);
-      }
-
-      function configurarCargoAlvoETrilha(user) {
-        const select = document.getElementById("selectCargoAlvo");
-        const opcoes = obterOpcoesCargoAlvo();
-
-        select.innerHTML = "";
-        opcoes.forEach((op) => {
-          select.innerHTML += `<option value="${op}">${op}</option>`;
-        });
-
-        if (user.cargoAlvo && opcoes.includes(user.cargoAlvo)) {
-          select.value = user.cargoAlvo;
-        } else {
-          user.cargoAlvo = opcoes[0];
-          if (!user.qualificacoesConcluidas) user.qualificacoesConcluidas = [];
-          salvarNoLocalStorage();
-        }
-
-        renderizarTrilhaQualificacao(user);
-      }
-
-      function alterarCargoAlvo(novoCargo) {
-        const user = equipe[pinUsuarioAtual];
-        if (!user) return;
-
-        user.cargoAlvo = novoCargo;
-        user.qualificacoesConcluidas = []; // Reseta progresso ao trocar de cargo alvo
-        salvarNoLocalStorage();
-
-        renderizarTrilhaQualificacao(user);
-      }
-
-      function renderizarTrilhaQualificacao(user) {
-        const container = document.getElementById("containerQualificacoes");
-        const cargoAlvo = user.cargoAlvo;
-        const tarefas = TRILHAS_QUALIFICACAO[cargoAlvo] || [];
-        const concluidos = user.qualificacoesConcluidas || [];
-
-        if (tarefas.length === 0) {
-          container.innerHTML = `<p style="font-size:0.85rem; color:var(--text-muted);">Nenhuma trilha encontrada.</p>`;
+        if (!user) {
+          alert("PIN incorreto. Tente novamente.");
           return;
         }
 
-        const total = tarefas.length;
-        const quantConcluidos = concluidos.length;
-        const pct = Math.round((quantConcluidos / total) * 100);
-        const estaApto = quantConcluidos === total;
+        currentUser = user;
+        document.getElementById("pinInput").value = "";
 
-        let html = `
-      <div style="display:flex; justify-content:space-between; font-size:0.8rem; font-weight:700; margin-bottom:4px;">
-        <span>Qualificações para ${cargoAlvo}</span>
-        <span style="color:${estaApto ? "var(--accent-green)" : "var(--accent-gold)"};">${pct}% (${quantConcluidos}/${total})</span>
-      </div>
-      <div class="progress-bar-bg" style="height:8px; margin-bottom:12px;">
-        <div class="progress-bar-fill" style="width:${pct}%; ${estaApto ? "background:var(--accent-green);" : ""}"></div>
-      </div>
-      
-      <div class="qualif-list">
-    `;
-
-        tarefas.forEach((item, index) => {
-          const isChecked = concluidos.includes(index);
-          html += `
-        <label class="qualif-item ${isChecked ? "completed" : ""}">
-          <input type="checkbox" ${isChecked ? "checked" : ""} onchange="toggleQualificacao(${index})" />
-          <span>${item}</span>
-        </label>
-      `;
-        });
-
-        html += `</div>`;
-
-        if (estaApto) {
-          html += `
-        <div class="status-apto-box">
-          <h3>🏆 STATUS: APTO PARA PROMOÇÃO!</h3>
-          <p>Parabéns! Você concluiu 100% das qualificações. Seu nome está registrado para a vaga de <strong>${cargoAlvo}</strong> assim que for aberta!</p>
-        </div>
-      `;
-        }
-
-        container.innerHTML = html;
-      }
-
-      function toggleQualificacao(index) {
-        const user = equipe[pinUsuarioAtual];
-        if (!user) return;
-
-        if (!user.qualificacoesConcluidas) user.qualificacoesConcluidas = [];
-
-        const idx = user.qualificacoesConcluidas.indexOf(index);
-        if (idx > -1) {
-          user.qualificacoesConcluidas.splice(idx, 1);
+        if (user.role === "manager") {
+          mostrarTela("screen-manager");
+          renderizarPainelGestao();
         } else {
-          user.qualificacoesConcluidas.push(index);
-        }
-
-        salvarNoLocalStorage();
-        renderizarTrilhaQualificacao(user);
-      }
-
-      function selecionarTrimestreAba(q) {
-        trimestreAtivoPerfil = q;
-        const btns = document.querySelectorAll(".tri-btn");
-        btns.forEach((b) => b.classList.remove("active"));
-        event.target.classList.add("active");
-
-        const user = equipe[pinUsuarioAtual];
-        if (user) renderizarAvaliacaoPerfil(user, q);
-      }
-
-      function renderizarAvaliacaoPerfil(user, q) {
-        const tipo = obterTipoCargo(user.cargo);
-        const struct = CRITERIOS[tipo];
-        const dataTri = user.evaluations ? user.evaluations[q] : null;
-
-        const perfContainer = document.getElementById("perfCriteriaList");
-        const atitContainer = document.getElementById("atitCriteriaList");
-
-        perfContainer.innerHTML = "";
-        atitContainer.innerHTML = "";
-
-        if (!dataTri) {
-          perfContainer.innerHTML =
-            "<div class='eval-item'>Sem dados para este trimestre</div>";
-          atitContainer.innerHTML =
-            "<div class='eval-item'>Sem dados para este trimestre</div>";
-          document.getElementById("mediaPerfText").innerText = "Média: -";
-          document.getElementById("mediaAtitText").innerText = "Média: -";
-          return;
-        }
-
-        let somaPerf = 0,
-          qtdPerf = 0;
-        struct.perf.forEach((item) => {
-          const val = dataTri.perf[item] || 0;
-          somaPerf += val;
-          qtdPerf++;
-          perfContainer.innerHTML += `
-        <div class="eval-item">
-          <span class="label">${item}</span>
-          <span class="val">${val > 0 ? val + " / 5" : "Não avaliado"}</span>
-        </div>
-      `;
-        });
-
-        let somaAtit = 0,
-          qtdAtit = 0;
-        struct.atit.forEach((item) => {
-          const val = dataTri.atit[item] || 0;
-          somaAtit += val;
-          qtdAtit++;
-          atitContainer.innerHTML += `
-        <div class="eval-item">
-          <span class="label">${item}</span>
-          <span class="val">${val > 0 ? val + " / 5" : "Não avaliado"}</span>
-        </div>
-      `;
-        });
-
-        const mediaP = qtdPerf > 0 ? (somaPerf / qtdPerf).toFixed(1) : "-";
-        const mediaA = qtdAtit > 0 ? (somaAtit / qtdAtit).toFixed(1) : "-";
-
-        document.getElementById("mediaPerfText").innerText =
-          `Média: ${mediaP} / 5`;
-        document.getElementById("mediaAtitText").innerText =
-          `Média: ${mediaA} / 5`;
-      }
-
-      function abrirModalElogios() {
-        const user =
-          equipe[pinUsuarioAtual] ||
-          (pinSendoEditado ? equipe[pinSendoEditado] : null);
-        if (!user) return;
-
-        const container = document.getElementById("listaElogiosContent");
-        container.innerHTML = "";
-
-        if (!user.listaElogios || user.listaElogios.length === 0) {
-          container.innerHTML = `<p style="font-size:0.85rem; color:var(--text-muted); text-align:center; padding:12px;">Nenhum elogio registrado ainda.</p>`;
-        } else {
-          user.listaElogios.forEach((item) => {
-            container.innerHTML += `
-          <div style="background:var(--bg-main); padding:12px; border-radius:10px; border:1px solid var(--border); margin-bottom:8px; font-size:0.85rem; color:var(--text-main); line-height:1.4;">
-            👏 "${item}"
-          </div>
-        `;
-          });
-        }
-        document.getElementById("modalElogios").classList.add("active");
-      }
-
-      function carregarPainelGestao() {
-        const container = document.getElementById("staffList");
-        container.innerHTML = "";
-
-        const pins = Object.keys(equipe);
-        document.getElementById("totalStaff").innerText = pins.length;
-
-        pins.forEach((pin) => {
-          const colab = equipe[pin];
-
-          let statusApto = "";
-          if (colab.cargoAlvo && TRILHAS_QUALIFICACAO[colab.cargoAlvo]) {
-            const total = TRILHAS_QUALIFICACAO[colab.cargoAlvo].length;
-            const conc = (colab.qualificacoesConcluidas || []).length;
-            if (total > 0 && conc === total) {
-              statusApto = ` <span style="background:rgba(16, 185, 129, 0.2); color:var(--accent-green); padding:2px 6px; border-radius:4px; font-size:0.7rem; font-weight:700;">APTO: ${colab.cargoAlvo}</span>`;
-            }
-          }
-
-          container.innerHTML += `
-        <div class="staff-item">
-          <div>
-            <strong style="font-size:0.9rem;">${colab.nome}</strong>${statusApto}<br>
-            <span style="font-size:0.75rem; color:var(--text-muted);">${colab.cargo} • Nível ${colab.nivel} (PIN: ${pin})</span>
-          </div>
-          <div class="action-btns">
-            <button class="btn-sm btn-view" onclick="verPerfilDirect('${pin}')">Perfil</button>
-            <button class="btn-sm btn-edit" onclick="abrirModalEdicao('${pin}')">Editar</button>
-          </div>
-        </div>
-      `;
-        });
-      }
-
-      function verPerfilDirect(pin) {
-        pinUsuarioAtual = pin;
-        carregarPerfil(equipe[pin]);
-        trocarTela("screen-profile");
-      }
-
-      function abrirModalEdicao(pin) {
-        pinSendoEditado = pin;
-        const user = equipe[pin];
-
-        document.getElementById("editNome").value = user.nome;
-        document.getElementById("editCargo").value = user.cargo;
-        document.getElementById("editNivel").value = user.nivel || 1;
-        document.getElementById("editProgresso").value = user.progresso;
-        document.getElementById("editPresenca").value = user.presenca;
-        document.getElementById("editCursos").value = user.cursos;
-        document.getElementById("editMissao").value = user.missao || "";
-        document.getElementById("editFeedback").value = user.feedback || "";
-        document.getElementById("editNovoElogio").value = "";
-        document.getElementById("editTrimestreSelect").value = "Q1";
-
-        // CARREGAR ESPECIALIZAÇÕES DO NÍVEL 2 NOS CHECKBOXES DO GESTOR
-        const specs = user.especializacoes || [];
-        document.getElementById("editSpecMidias").checked =
-          specs.includes("midias");
-        document.getElementById("editSpecRecep").checked =
-          specs.includes("recep");
-        document.getElementById("editSpecLider").checked =
-          specs.includes("lider");
-
-        carregarCamposTrimestreModal();
-        document.getElementById("modalEdit").classList.add("active");
-      }
-
-      function atualizarFormularioAvaliacao() {
-        carregarCamposTrimestreModal();
-      }
-
-      function carregarCamposTrimestreModal() {
-        if (!pinSendoEditado || !equipe[pinSendoEditado]) return;
-        const cargoStr = document.getElementById("editCargo").value;
-        const tipoCargo = obterTipoCargo(cargoStr);
-        const struct = CRITERIOS[tipoCargo];
-        const q = document.getElementById("editTrimestreSelect").value;
-
-        const user = equipe[pinSendoEditado];
-        if (!user.evaluations)
-          user.evaluations = criarAvaliacaoPadrao(tipoCargo, 4, 4);
-        if (!user.evaluations[q]) user.evaluations[q] = { perf: {}, atit: {} };
-
-        const perfContainer = document.getElementById("modalPerfInputs");
-        const atitContainer = document.getElementById("modalAtitInputs");
-        perfContainer.innerHTML = "";
-        atitContainer.innerHTML = "";
-
-        struct.perf.forEach((item, idx) => {
-          const valAtual = user.evaluations[q].perf[item] || 4;
-          perfContainer.innerHTML += `
-        <div class="eval-field">
-          <label>${item}</label>
-          <select id="perf_input_${idx}" class="form-select">
-            ${[1, 2, 3, 4, 5].map((n) => `<option value="${n}" ${n == valAtual ? "selected" : ""}>${n}</option>`).join("")}
-          </select>
-        </div>
-      `;
-        });
-
-        struct.atit.forEach((item, idx) => {
-          const valAtual = user.evaluations[q].atit[item] || 4;
-          atitContainer.innerHTML += `
-        <div class="eval-field">
-          <label>${item}</label>
-          <select id="atit_input_${idx}" class="form-select">
-            ${[1, 2, 3, 4, 5].map((n) => `<option value="${n}" ${n == valAtual ? "selected" : ""}>${n}</option>`).join("")}
-          </select>
-        </div>
-      `;
-        });
-      }
-
-      function adicionarElogioNaEdicao() {
-        const input = document.getElementById("editNovoElogio");
-        const texto = input.value.trim();
-
-        if (!texto) {
-          alert("Digite o texto do elogio!");
-          return;
-        }
-
-        if (pinSendoEditado && equipe[pinSendoEditado]) {
-          if (!equipe[pinSendoEditado].listaElogios)
-            equipe[pinSendoEditado].listaElogios = [];
-          equipe[pinSendoEditado].listaElogios.push(texto);
-          equipe[pinSendoEditado].elogios =
-            equipe[pinSendoEditado].listaElogios.length + "x";
-
-          salvarNoLocalStorage();
-          input.value = "";
-          alert("Elogio registrado e salvo com sucesso!");
+          mostrarTela("screen-profile");
+          renderizarPerfilUsuario();
         }
       }
 
-      function salvarEdicao() {
-        if (!pinSendoEditado || !equipe[pinSendoEditado]) return;
-
-        const user = equipe[pinSendoEditado];
-        user.nome = document.getElementById("editNome").value;
-        user.cargo = document.getElementById("editCargo").value;
-        user.nivel = parseInt(document.getElementById("editNivel").value) || 1;
-        user.progresso =
-          parseInt(document.getElementById("editProgresso").value) || 0;
-        user.presenca = document.getElementById("editPresenca").value;
-        user.cursos = document.getElementById("editCursos").value;
-        user.missao = document.getElementById("editMissao").value;
-        user.feedback = document.getElementById("editFeedback").value;
-
-        // SALVAR ESPECIALIZAÇÕES DO NÍVEL 2 DEFINIDAS PELO GESTOR
-        const novasSpecs = [];
-        if (document.getElementById("editSpecMidias").checked)
-          novasSpecs.push("midias");
-        if (document.getElementById("editSpecRecep").checked)
-          novasSpecs.push("recep");
-        if (document.getElementById("editSpecLider").checked)
-          novasSpecs.push("lider");
-        user.especializacoes = novasSpecs;
-
-        // Salvar Notas do Trimestre Selecionado
-        const q = document.getElementById("editTrimestreSelect").value;
-        const tipoCargo = obterTipoCargo(user.cargo);
-        const struct = CRITERIOS[tipoCargo];
-
-        if (!user.evaluations) user.evaluations = {};
-        if (!user.evaluations[q]) user.evaluations[q] = { perf: {}, atit: {} };
-
-        struct.perf.forEach((item, idx) => {
-          const selectEl = document.getElementById(`perf_input_${idx}`);
-          if (selectEl)
-            user.evaluations[q].perf[item] = parseInt(selectEl.value);
-        });
-
-        struct.atit.forEach((item, idx) => {
-          const selectEl = document.getElementById(`atit_input_${idx}`);
-          if (selectEl)
-            user.evaluations[q].atit[item] = parseInt(selectEl.value);
-        });
-
-        salvarNoLocalStorage();
-        fecharModal("modalEdit");
-
-        if (
-          document.getElementById("screen-manager").classList.contains("active")
-        ) {
-          carregarPainelGestao();
-        }
-        if (pinUsuarioAtual === pinSendoEditado) {
-          carregarPerfil(user);
-        }
-
-        alert("Perfil e especializações salvos com sucesso!");
+      function sair() {
+        currentUser = null;
+        mostrarTela("screen-login");
       }
 
-      function fecharModal(modalId) {
-        document.getElementById(modalId).classList.remove("active");
-      }
-
-      function trocarTela(screenId) {
+      function mostrarTela(screenId) {
         document
           .querySelectorAll(".screen")
           .forEach((s) => s.classList.remove("active"));
         document.getElementById(screenId).classList.add("active");
       }
 
-      function sair() {
-        document.getElementById("pinInput").value = "";
-        pinUsuarioAtual = null;
-        trocarTela("screen-login");
+      // RENDERIZAR TELA DE PERFIL
+      function renderizarPerfilUsuario() {
+        document.getElementById("userName").innerText = currentUser.nome;
+        document.getElementById("userAvatar").innerText = currentUser.nome
+          .substring(0, 2)
+          .toUpperCase();
+        document.getElementById("userLevelTag").innerText =
+          `Nível ${currentUser.nivel} • ${currentUser.cargo || "Colaborador"}`;
+        document.getElementById("attRate").innerText =
+          currentUser.presenca || "100%";
+        document.getElementById("trainRate").innerText =
+          currentUser.cursos || "100%";
+        document.getElementById("reviewsCount").innerText =
+          `${currentUser.elogios ? currentUser.elogios.length : 0}x`;
+        document.getElementById("userMissao").innerText =
+          currentUser.missao || "Nenhuma missão definida.";
+        document.getElementById("feedbackText").innerText =
+          currentUser.feedback || "Nenhum feedback registrado.";
+
+        document.getElementById("progressText").innerText =
+          `${currentUser.progresso || 0}%`;
+        document.getElementById("progressBar").style.width =
+          `${currentUser.progresso || 0}%`;
+
+        // Renderiza o select de cargos alvo
+        const selectCargo = document.getElementById("selectCargoAlvo");
+        selectCargo.innerHTML = "";
+        Object.keys(trilhasQualificacao).forEach((cargo) => {
+          const opt = document.createElement("option");
+          opt.value = cargo;
+          opt.innerText = cargo;
+          if (currentUser.cargoAlvo === cargo) opt.selected = true;
+          selectCargo.appendChild(opt);
+        });
+
+        // Garante que o cargoAlvo existe no objeto de trilhas
+        if (!trilhasQualificacao[currentUser.cargoAlvo]) {
+          currentUser.cargoAlvo = Object.keys(trilhasQualificacao)[0] || "";
+        }
+
+        renderizarQualificacoesCargoAlvo();
+        renderizarAvaliacoesTrimestre();
+        renderizarTrilhaGeral();
+      }
+
+      function renderizarQualificacoesCargoAlvo() {
+        const container = document.getElementById("containerQualificacoes");
+        container.innerHTML = "";
+
+        const cargo = currentUser.cargoAlvo;
+        const requisitos = trilhasQualificacao[cargo] || [];
+
+        if (!currentUser.qualifChecked) currentUser.qualifChecked = [];
+
+        let concluidos = 0;
+
+        const listDiv = document.createElement("div");
+        listDiv.className = "qualif-list";
+
+        requisitos.forEach((req, idx) => {
+          const isChecked = currentUser.qualifChecked[idx] || false;
+          if (isChecked) concluidos++;
+
+          const item = document.createElement("div");
+          item.className = `qualif-item ${isChecked ? "completed" : ""}`;
+          item.onclick = () => alternarCheckQualificacao(idx);
+
+          item.innerHTML = `
+            <input type="checkbox" ${isChecked ? "checked" : ""} onclick="event.stopPropagation(); alternarCheckQualificacao(${idx})">
+            <span>${req}</span>
+          `;
+          listDiv.appendChild(item);
+        });
+
+        const pct =
+          requisitos.length > 0
+            ? Math.round((concluidos / requisitos.length) * 100)
+            : 0;
+
+        const headerDiv = document.createElement("div");
+        headerDiv.style.display = "flex";
+        headerDiv.style.justifySpaceBetween = "space-between";
+        headerDiv.style.alignItems = "center";
+        headerDiv.style.fontSize = "0.85rem";
+        headerDiv.style.fontWeight = "700";
+        headerDiv.innerHTML = `
+          <span>Qualificações para ${cargo}</span>
+          <span style="color: var(--accent-gold);">${pct}% (${concluidos}/${requisitos.length})</span>
+        `;
+
+        container.appendChild(headerDiv);
+        container.appendChild(listDiv);
+
+        if (pct === 100 && requisitos.length > 0) {
+          const aptoBox = document.createElement("div");
+          aptoBox.className = "status-apto-box";
+          aptoBox.innerHTML = `
+            <h3>🌟 APTO PARA PROMOÇÃO!</h3>
+            <p>Você completou todos os requisitos da trilha para ${cargo}. Procure a gestão!</p>
+          `;
+          container.appendChild(aptoBox);
+        }
+      }
+
+      function alternarCheckQualificacao(idx) {
+        if (!currentUser.qualifChecked) currentUser.qualifChecked = [];
+        currentUser.qualifChecked[idx] = !currentUser.qualifChecked[idx];
+        salvarDadosStorage();
+        renderizarQualificacoesCargoAlvo();
+      }
+
+      function alterarCargoAlvo(novoCargo) {
+        currentUser.cargoAlvo = novoCargo;
+        currentUser.qualifChecked = [];
+        salvarDadosStorage();
+        renderizarQualificacoesCargoAlvo();
+      }
+
+      function selecionarTrimestreAba(q) {
+        selectedTrimestreAba = q;
+        document.querySelectorAll(".tri-btn").forEach((btn) => {
+          btn.classList.toggle(
+            "active",
+            btn.innerText.includes(q.replace("Q", "")),
+          );
+        });
+        renderizarAvaliacoesTrimestre();
+      }
+
+      function renderizarAvaliacoesTrimestre() {
+        const perfList = document.getElementById("perfCriteriaList");
+        const atitList = document.getElementById("atitCriteriaList");
+        perfList.innerHTML = "";
+        atitList.innerHTML = "";
+
+        const evalData = currentUser.avaliacoes?.[selectedTrimestreAba] || {
+          perf: {},
+          atit: {},
+        };
+
+        let sumPerf = 0,
+          countPerf = 0;
+        Object.entries(evalData.perf || {}).forEach(([k, v]) => {
+          sumPerf += Number(v);
+          countPerf++;
+          perfList.innerHTML += `<div class="eval-item"><span class="label">${k}</span><span class="val">${v} / 5</span></div>`;
+        });
+
+        let sumAtit = 0,
+          countAtit = 0;
+        Object.entries(evalData.atit || {}).forEach(([k, v]) => {
+          sumAtit += Number(v);
+          countAtit++;
+          atitList.innerHTML += `<div class="eval-item"><span class="label">${k}</span><span class="val">${v} / 5</span></div>`;
+        });
+
+        document.getElementById("mediaPerfText").innerText = countPerf
+          ? `Média: ${(sumPerf / countPerf).toFixed(1)}`
+          : "Média: -";
+        document.getElementById("mediaAtitText").innerText = countAtit
+          ? `Média: ${(sumAtit / countAtit).toFixed(1)}`
+          : "Média: -";
+
+        if (countPerf === 0)
+          perfList.innerHTML = `<span style="font-size:0.75rem; color:var(--text-muted)">Sem registros neste trimestre.</span>`;
+        if (countAtit === 0)
+          atitList.innerHTML = `<span style="font-size:0.75rem; color:var(--text-muted)">Sem registros neste trimestre.</span>`;
+      }
+
+      function renderizarTrilhaGeral() {
+        const lvl = currentUser.nivel || 1;
+        for (let i = 1; i <= 5; i++) {
+          const step = document.getElementById(`step-lvl${i}`);
+          if (step) {
+            step.className = "level-step";
+            if (i < lvl) step.classList.add("completed");
+            else if (i === lvl) step.classList.add("active");
+          }
+        }
+
+        const specs = currentUser.specs || [];
+        document.getElementById("spec-midias").className =
+          `spec-item ${specs.includes("Midias") ? "unlocked" : ""}`;
+        document.getElementById("spec-recep").className =
+          `spec-item ${specs.includes("Recepcao") ? "unlocked" : ""}`;
+        document.getElementById("spec-lider").className =
+          `spec-item ${specs.includes("Lider") ? "unlocked" : ""}`;
+      }
+
+      // MODAL ELOGIOS
+      function abrirModalElogios() {
+        const content = document.getElementById("listaElogiosContent");
+        content.innerHTML = "";
+        const elogios = currentUser.elogios || [];
+
+        if (elogios.length === 0) {
+          content.innerHTML = `<p style="font-size:0.85rem; color:var(--text-muted); text-align:center;">Nenhum elogio registrado ainda.</p>`;
+        } else {
+          elogios.forEach((e) => {
+            content.innerHTML += `<div style="background:var(--bg-main); padding:10px; border-radius:8px; margin-bottom:8px; font-size:0.85rem; border:1px solid var(--border);">👏 ${e}</div>`;
+          });
+        }
+        document.getElementById("modalElogios").classList.add("active");
+      }
+
+      function fecharModal(id) {
+        document.getElementById(id).classList.remove("active");
+      }
+
+      // PAINEL DE GESTÃO
+      function renderizarPainelGestao() {
+        const list = document.getElementById("staffList");
+        list.innerHTML = "";
+
+        const colaboradores = usuarios.filter((u) => u.role !== "manager");
+        document.getElementById("totalStaff").innerText = colaboradores.length;
+
+        colaboradores.forEach((u) => {
+          const originalIndex = usuarios.findIndex(
+            (item) => item.pin === u.pin,
+          );
+          const div = document.createElement("div");
+          div.className = "staff-item";
+          div.innerHTML = `
+            <div>
+              <strong style="font-size:0.9rem; display:block;">${u.nome}</strong>
+              <span style="font-size:0.75rem; color:var(--text-muted);">PIN: ${u.pin} | Nível ${u.nivel} - ${u.cargo || "Sem Cargo"}</span>
+            </div>
+            <div class="action-btns">
+              <button class="btn-sm btn-edit" onclick="abrirModalEdicao(${originalIndex})">✏️ Avaliar</button>
+            </div>
+          `;
+          list.appendChild(div);
+        });
+      }
+
+      function abrirModalEdicao(index) {
+        editUserIndex = index;
+        const u = usuarios[index];
+
+        document.getElementById("editNome").value = u.nome || "";
+        document.getElementById("editCargo").value = u.cargo || "";
+        document.getElementById("editNivel").value = u.nivel || 1;
+        document.getElementById("editProgresso").value = u.progresso || 0;
+
+        const specs = u.specs || [];
+        document.getElementById("editSpecMidias").checked =
+          specs.includes("Midias");
+        document.getElementById("editSpecRecep").checked =
+          specs.includes("Recepcao");
+        document.getElementById("editSpecLider").checked =
+          specs.includes("Lider");
+
+        document.getElementById("editPresenca").value = u.presenca || "100%";
+        document.getElementById("editCursos").value = u.cursos || "100%";
+        document.getElementById("editMissao").value = u.missao || "";
+        document.getElementById("editFeedback").value = u.feedback || "";
+
+        popularSelectTrilhaGestor();
+        carregarCamposTrimestreModal();
+        document.getElementById("modalEdit").classList.add("active");
+      }
+
+      function popularSelectTrilhaGestor() {
+        const select = document.getElementById("managerTrilhaCargoSelect");
+        select.innerHTML = "";
+        Object.keys(trilhasQualificacao).forEach((c) => {
+          const opt = document.createElement("option");
+          opt.value = c;
+          opt.innerText = c;
+          select.appendChild(opt);
+        });
+        carregarEditorTrilhaGestor();
+      }
+
+      function carregarEditorTrilhaGestor() {
+        const cargo = document.getElementById("managerTrilhaCargoSelect").value;
+        const container = document.getElementById("editorRequisitosContainer");
+        container.innerHTML = "";
+
+        if (!cargo || !trilhasQualificacao[cargo]) return;
+
+        trilhasQualificacao[cargo].forEach((req, idx) => {
+          const row = document.createElement("div");
+          row.className = "trilha-item-row";
+          row.innerHTML = `
+            <input type="text" class="form-input" value="${req}" onchange="atualizarItemTrilhaGestor('${cargo}', ${idx}, this.value)" />
+            <button class="btn-sm btn-danger" onclick="removerItemTrilhaGestor('${cargo}', ${idx})">❌</button>
+          `;
+          container.appendChild(row);
+        });
+      }
+
+      function atualizarItemTrilhaGestor(cargo, idx, val) {
+        trilhasQualificacao[cargo][idx] = val;
+        salvarDadosStorage();
+      }
+
+      function removerItemTrilhaGestor(cargo, idx) {
+        trilhasQualificacao[cargo].splice(idx, 1);
+        salvarDadosStorage();
+        carregarEditorTrilhaGestor();
+      }
+
+      function adicionarRequisitoGestor() {
+        const cargo = document.getElementById("managerTrilhaCargoSelect").value;
+        const input = document.getElementById("novoRequisitoInput");
+        if (!input.value.trim() || !cargo) return;
+
+        if (!trilhasQualificacao[cargo]) trilhasQualificacao[cargo] = [];
+        trilhasQualificacao[cargo].push(input.value.trim());
+        input.value = "";
+        salvarDadosStorage();
+        carregarEditorTrilhaGestor();
+      }
+
+      function adicionarCargoGestor() {
+        const input = document.getElementById("novoCargoNomeInput");
+        const novoCargo = input.value.trim();
+        if (!novoCargo) return;
+
+        if (trilhasQualificacao[novoCargo]) {
+          alert("Esse cargo já existe.");
+          return;
+        }
+
+        trilhasQualificacao[novoCargo] = [];
+        input.value = "";
+        salvarDadosStorage();
+        popularSelectTrilhaGestor();
+        document.getElementById("managerTrilhaCargoSelect").value = novoCargo;
+        carregarEditorTrilhaGestor();
+      }
+
+      function excluirCargoGestor() {
+        const cargo = document.getElementById("managerTrilhaCargoSelect").value;
+        if (!cargo) return;
+
+        if (
+          confirm(
+            `Tem certeza que deseja excluir o cargo "${cargo}" e todos os seus requisitos?`,
+          )
+        ) {
+          delete trilhasQualificacao[cargo];
+          salvarDadosStorage();
+          popularSelectTrilhaGestor();
+        }
+      }
+
+      function carregarCamposTrimestreModal() {
+        const q = document.getElementById("editTrimestreSelect").value;
+        const u = usuarios[editUserIndex];
+        const evalData = u.avaliacoes?.[q] || { perf: {}, atit: {} };
+
+        const perfContainer = document.getElementById("modalPerfInputs");
+        const atitContainer = document.getElementById("modalAtitInputs");
+        perfContainer.innerHTML = "";
+        atitContainer.innerHTML = "";
+
+        const defaultPerf = ["Animação", "Pontualidade", "Normas Internas"];
+        const defaultAtit = ["Trabalho em Equipe", "Proatividade", "Respeito"];
+
+        const perfKeys = Array.from(
+          new Set([...defaultPerf, ...Object.keys(evalData.perf || {})]),
+        );
+        const atitKeys = Array.from(
+          new Set([...defaultAtit, ...Object.keys(evalData.atit || {})]),
+        );
+
+        perfKeys.forEach((k) => {
+          perfContainer.innerHTML += `
+            <div class="eval-field">
+              <label>${k}</label>
+              <input type="number" min="1" max="5" class="form-input perf-field-val" data-key="${k}" value="${evalData.perf?.[k] || ""}" placeholder="1-5" />
+            </div>
+          `;
+        });
+
+        atitKeys.forEach((k) => {
+          atitContainer.innerHTML += `
+            <div class="eval-field">
+              <label>${k}</label>
+              <input type="number" min="1" max="5" class="form-input atit-field-val" data-key="${k}" value="${evalData.atit?.[k] || ""}" placeholder="1-5" />
+            </div>
+          `;
+        });
+      }
+
+      function adicionarElogioNaEdicao() {
+        const input = document.getElementById("editNovoElogio");
+        if (!input.value.trim()) return;
+
+        const u = usuarios[editUserIndex];
+        if (!u.elogios) u.elogios = [];
+        u.elogios.push(input.value.trim());
+        input.value = "";
+        alert("Elogio adicionado com sucesso!");
+      }
+
+      function salvarEdicao() {
+        const u = usuarios[editUserIndex];
+
+        u.nome = document.getElementById("editNome").value;
+        u.cargo = document.getElementById("editCargo").value;
+        u.nivel = parseInt(document.getElementById("editNivel").value);
+        u.progresso =
+          parseInt(document.getElementById("editProgresso").value) || 0;
+
+        u.specs = [];
+        if (document.getElementById("editSpecMidias").checked)
+          u.specs.push("Midias");
+        if (document.getElementById("editSpecRecep").checked)
+          u.specs.push("Recepcao");
+        if (document.getElementById("editSpecLider").checked)
+          u.specs.push("Lider");
+
+        u.presenca = document.getElementById("editPresenca").value;
+        u.cursos = document.getElementById("editCursos").value;
+        u.missao = document.getElementById("editMissao").value;
+        u.feedback = document.getElementById("editFeedback").value;
+
+        const q = document.getElementById("editTrimestreSelect").value;
+        if (!u.avaliacoes) u.avaliacoes = {};
+        if (!u.avaliacoes[q]) u.avaliacoes[q] = { perf: {}, atit: {} };
+
+        document.querySelectorAll(".perf-field-val").forEach((input) => {
+          if (input.value)
+            u.avaliacoes[q].perf[input.dataset.key] = parseInt(input.value);
+        });
+
+        document.querySelectorAll(".atit-field-val").forEach((input) => {
+          if (input.value)
+            u.avaliacoes[q].atit[input.dataset.key] = parseInt(input.value);
+        });
+
+        salvarDadosStorage();
+        fecharModal("modalEdit");
+        renderizarPainelGestao();
       }
     </script>
   </body>
